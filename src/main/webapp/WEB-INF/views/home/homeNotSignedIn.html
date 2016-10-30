@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Welcome to the Spring MVC Quickstart application! Get started quickly by signing up!</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <script src="http://code.jquery.com/jquery-latest.js"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div th:replace="fragments/header :: header">Header</div>
+<div class="container">
+    <div class="text-center">
+        <h1>Test</h1>
+        <p class="lead">
+            Welcome to the Spring MVC Quickstart application!
+            Get started quickly by signing up.
+        </p>
+        <p>
+            <a href="/signup" th:href="@{/signup}" class="btn btn-success btn-lg">Sign up</a>
+        </p>
+        <button id="btnTestLocal">Test local jdbc</button>
+        <button id="btnTestRemote">Test remote jdbc</button>
+        <h3><a href="/test/downloadExcel.xls">Download Excel Document</a></h3>
+    </div>
+    <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
+</div>
+</body>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+	    $("#btnTestLocal").click(function(){
+            $.get("/test/jdbc/local", function(data, status){
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+        });
+        $("#btnTestRemote").click(function(){
+            $.get("/test/jdbc/remote", function(data, status){
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+        });
+    });
+</script>
+
+</html>
