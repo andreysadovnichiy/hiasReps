@@ -16,6 +16,15 @@ import java.util.Map;
  */
 public class ReportOneBuilder extends AbstractXlsView {
 
+    private Sheet buildReport1(Workbook workbook) {
+        Sheet sheet = workbook.createSheet("Sheet test2");
+        sheet.setDefaultColumnWidth(50);
+        Row header = sheet.createRow(0);
+
+        header.createCell(0).setCellValue("Hello world");
+        return sheet;
+    }
+
     @Override
     protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
 
@@ -28,7 +37,7 @@ public class ReportOneBuilder extends AbstractXlsView {
         Font font = workbook.createFont();
         font.setFontName("Arial");
         style.setFillForegroundColor(HSSFColor.BLUE.index);
-        font.setColor(HSSFColor.WHITE.index);
+        font.setColor(HSSFColor.BLACK.index);
         style.setFont(font);
 
         Row header = sheet.createRow(0);
@@ -47,5 +56,7 @@ public class ReportOneBuilder extends AbstractXlsView {
 
         header.createCell(4).setCellValue("Price");
         header.getCell(4).setCellStyle(style);
+
+        Sheet sheet1 = buildReport1(workbook);
     }
 }
