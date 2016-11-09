@@ -22,7 +22,9 @@
         </p>
         <button id="btnTestLocal">Test local jdbc</button>
         <button id="btnTestRemote">Test remote jdbc</button>
-        <h3><a href="/test/downloadExcel.xls">Download Excel Document</a></h3>
+        <button id="btnTestRemote1">Test remote jdbc query 1</button>
+        <h3><a href="/test/jdbc/remote/named1.xls">Download 1 Excel Document</a></h3>
+        <h3><a href="/test/jdbc/remote/named2.xls">Download 2 Excel Document</a></h3>
     </div>
     <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
 </div>
@@ -37,6 +39,11 @@
         });
         $("#btnTestRemote").click(function(){
             $.get("/test/jdbc/remote", function(data, status){
+                alert("Data: " + data + "\nStatus: " + status);
+            });
+        });
+        $("#btnTestRemote1").click(function(){
+            $.get("/test/jdbc/remote/named", function(data, status){
                 alert("Data: " + data + "\nStatus: " + status);
             });
         });

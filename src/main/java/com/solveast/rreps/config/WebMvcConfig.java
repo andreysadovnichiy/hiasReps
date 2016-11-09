@@ -73,6 +73,8 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
         return templateEngine;
     }
 
+
+
     @Bean(name="excelViewResolver")
     public ViewResolver getXlsViewResolver(){
         ResourceBundleViewResolver resolver = new ResourceBundleViewResolver();
@@ -81,14 +83,6 @@ class WebMvcConfig extends WebMvcConfigurationSupport {
         return resolver;
     }
 
-    /*@Override
-    protected void configureViewResolvers(ViewResolverRegistry registry) {
-        ResourceBundleViewResolver viewResolver = new ResourceBundleViewResolver();
-        viewResolver.setBasename("excel-views");
-        viewResolver.setOrder(1);
-        registry.viewResolver(viewResolver);
-    }
-*/
     @Bean
     public ViewResolver viewResolver() {
         ThymeleafViewResolver thymeleafViewResolver = new ThymeleafViewResolver();

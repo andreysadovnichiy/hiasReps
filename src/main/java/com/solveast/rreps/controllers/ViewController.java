@@ -1,14 +1,17 @@
 package com.solveast.rreps.controllers;
 
-import com.solveast.rreps.model.schemas.clients.FStatus;
-import com.solveast.rreps.model.schemas.clients.Person;
-import com.solveast.rreps.model.schemas.clients.Person1;
+import com.solveast.rreps.model.db.schemas.clients.FStatus;
+import com.solveast.rreps.model.db.schemas.clients.TClient;
+import com.solveast.rreps.model.db.schemas.clients.TRegistrationForm;
+import com.solveast.rreps.model.db.schemas.tasks.TAction;
+import com.solveast.rreps.model.schemas.Query1;
 import com.solveast.rreps.model.service.report_one.ReportOneService;
 import com.solveast.rreps.model.view.excel.ReportOneBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -16,7 +19,11 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Андрей on 28.10.2016.
@@ -24,84 +31,152 @@ import java.util.List;
 @Controller
 public class ViewController {
     @Autowired
-    @Qualifier("jdbcTemplateRemote")
-    private JdbcTemplate jdbcTemplate;
-    @Autowired
-    @Qualifier("jdbcTemplateLocal")
-    private JdbcTemplate localJdbcTemplate;
-    @Autowired
-    private ReportOneService reportOneService;
-/*
-    excelViewReportTwo.(class)=com.solveast.rreps.model.view.excel.ReportTwoBuilder
-excelViewReportThree.(class)=com.solveast.rreps.model.view.excel.ReportThreeBuilder
-excelViewReportFour.(class)=com.solveast.rreps.model.view.excel.ReportFourBuilder
-excelViewReportFive.(class)=com.solveast.rreps.model.view.excel.ReportFiveBuilder
-excelViewReportSix.(class)=com.solveast.rreps.model.view.excel.ReportSixBuilder
-excelViewReportSeven.(class)=com.solveast.rreps.model.view.excel.ReportSevenBuilder
-    */
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
     @RequestMapping("/test/downloadExcel.xls")
     @ResponseBody
     public ReportOneBuilder testExcelView() {
-//        @Bean(name="excelViewResolver")
-        return  new ReportOneBuilder();
-//        return new ModelAndView("excelViewReportOne", "listBooks", null);
+        return new ReportOneBuilder();
     }
 
-    @RequestMapping("/test/jdbc/local")
+    @RequestMapping("/test/jdbc/remote/named1.xls")
     @ResponseBody
-    public String testJdbcLocal() {
+    public ModelAndView testNamedJdbcRemote() {
 
-        String sql1 = "SELECT * FROM [study].person";
-        List<Person1> persons = localJdbcTemplate.query(sql1, new RowMapper<Person1>() {
-            @Override
-            public Person1 mapRow(ResultSet rs, int i) throws SQLException {
-                return new Person1(rs.getLong("id"), rs.getInt("age"));
+        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
+        Timestamp to = Timestamp.valueOf(LocalDateTime.now());
+
+        Map namedParameters = new HashMap();
+        namedParameters.put("from", from);
+        namedParameters.put("to", to);
+
+        String sql1 = "SELECT client_id, applicant_id, register_time," +
+                " sex_cd, iso3166_3, birth_date, applicant" +
+                " FROM clients.t_client" +
+                " WHERE (register_time BETWEEN :from AND :to) AND applicant=TRUE";
+
+        List<TClient> clients =
+                (List<TClient>) namedParameterJdbcTemplate.query(sql1, namedParameters, new RowMapper<TClient>() {
+                    @Override
+                    public TClient mapRow(ResultSet rs, int i) throws SQLException {
+                        TClient client = new TClient();
+                        client.setClientId(rs.getLong("client_id"));
+                        client.setApplicantId(rs.getLong("applicant_id"));
+                        client.setRegisterTime(rs.getTimestamp("register_time"));
+                        client.setSexCd(rs.getString("sex_cd"));
+                        client.setIso3166_3(rs.getString("iso3166_3"));
+                        client.setBirthDate(rs.getDate("birth_date"));
+                        client.setApplicant(rs.getBoolean("applicant"));
+                        return client;
+                    }
+                });
+
+        String sql2 = "SELECT client_id, unhcr_date" +
+                " FROM clients.t_registration_form" +
+                " WHERE unhcr_date BETWEEN :from AND :to";
+
+        List<TRegistrationForm> registrationForms =
+                (List<TRegistrationForm>) namedParameterJdbcTemplate.query(sql2, namedParameters, new RowMapper<TRegistrationForm>() {
+                    @Override
+                    public TRegistrationForm mapRow(ResultSet rs, int i) throws SQLException {
+                        TRegistrationForm form = new TRegistrationForm();
+                        form.setClientId(rs.getLong("client_id"));
+                        form.setUnhcrDate(rs.getTimestamp("unhcr_date"));
+                        return form;
+                    }
+                });
+
+        Map<Long, Query1> query1Map = new HashMap<>();
+        clients.forEach(client -> {
+            Query1 query = new Query1();
+            query.setClientId(client.getClientId());
+            query.setApplicantId(client.getApplicantId());
+            query.setRegisterTime(client.getRegisterTime());
+            query.setSexCd(client.getSexCd());
+            query.setIso3166_3(client.getIso3166_3());
+            query.setBirthDate(client.getBirthDate());
+            query1Map.put(query.getClientId(), query);
+        });
+        registrationForms.forEach(form -> {
+            if (query1Map.containsKey(form.getClientId())) {
+                Query1 query = query1Map.get(form.getClientId());
+                query.setUnhcrDate(form.getUnhcrDate());
             }
         });
 
-        if (persons == null)
-            return "null";
-        if (persons.isEmpty())
-            return "isEmpty";
-        if (persons.get(0) != null)
-            return persons.get(0).toString();
-
-        return "test";
+        return new ModelAndView("excelViewReportOne", "model", query1Map);
     }
 
-    @RequestMapping("/test/jdbc/remote")
+    @RequestMapping("/test/jdbc/remote/named2.xls")
     @ResponseBody
-    public String testJdbcRemote() {
+    public ModelAndView testNamedJdbcRemote2() {
 
-        String sql = "SELECT * FROM [clients].r_file_status";
-//        String sql = "SELECT * FROM clients.r_file_status";
-//        String sql = "select * from test.clients.r_file_status";
+        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
+        Timestamp to = Timestamp.valueOf(LocalDateTime.now());
 
-        String report = reportOneService.getReport();
+        Map namedParameters = new HashMap();
+        namedParameters.put("from", from);
+        namedParameters.put("to", to);
 
-        List<FStatus> items = jdbcTemplate.query(sql, new RowMapper<FStatus>() {
-            @Override
-            public FStatus mapRow(ResultSet rs, int rowNum) {
-                FStatus item = new FStatus();
-                try {
-                    item.setFileStatusId(rs.getLong("file_status_id"));
-                    item.setActive(rs.getBoolean("active"));
-                    item.setOrd(rs.getInt("ord"));
-                } catch (SQLException e) {
-                    System.out.println(e.getMessage());
-//                    e.printStackTrace();
-                }
-                return item;
-            }
-        });
+        String sql1 = "SELECT client_id, register_time" +
+                " FROM clients.t_client" +
+                " WHERE register_time BETWEEN :from AND :to";
+//        " WHERE (register_time BETWEEN :from AND :to) AND applicant=TRUE"; applicant учитывать??
 
-        if (items == null)
-            return "null";
-        if (items.isEmpty())
-            return "isEmpty";
-        if (items.get(0) != null)
-            return items.get(0).toString();
+        List<TClient> clients =
+                (List<TClient>) namedParameterJdbcTemplate.query(sql1, namedParameters, new RowMapper<TClient>() {
+                    @Override
+                    public TClient mapRow(ResultSet rs, int i) throws SQLException {
+                        TClient client = new TClient();
+                        client.setClientId(rs.getLong("client_id"));
+                        client.setRegisterTime(rs.getTimestamp("register_time"));
+//                        client.setApplicant(rs.getBoolean("applicant"));
+                        return client;
+                    }
+                });
 
-        return "test";
+        String sql2 = "SELECT client_id, unhcr_date" +
+                " FROM clients.t_registration_form" +
+                " WHERE unhcr_date BETWEEN :from AND :to";
+
+        List<TRegistrationForm> registrationForms =
+                (List<TRegistrationForm>) namedParameterJdbcTemplate.query(sql2, namedParameters, new RowMapper<TRegistrationForm>() {
+                    @Override
+                    public TRegistrationForm mapRow(ResultSet rs, int i) throws SQLException {
+                        TRegistrationForm form = new TRegistrationForm();
+                        form.setClientId(rs.getLong("client_id"));
+                        form.setUnhcrDate(rs.getTimestamp("unhcr_date"));
+                        return form;
+                    }
+                });
+
+
+        String sql3 = "SELECT action_id, client_id, action_type, action_state_cd" +
+                " ,real_time_start, real_time_stop, scheduled_time_start, scheduled_time_stop" +
+                " FROM tasks.t_action" +
+                " WHERE action_type = 'CLA' AND action_state_cd = 'CLS' AND " +
+                " ((real_time_start BETWEEN :from AND :to) OR (real_time_stop BETWEEN :from AND :to) OR " +
+                       " (scheduled_time_start BETWEEN :from AND :to) OR (scheduled_time_stop BETWEEN :from AND :to))";
+
+        List<TAction> actions =
+                (List<TAction>) namedParameterJdbcTemplate.query(sql3, namedParameters, new RowMapper<TAction>() {
+                    @Override
+                    public TAction mapRow(ResultSet rs, int i) throws SQLException {
+                        TAction action = new TAction();
+                        action.setActionId(rs.getLong("action_id"));
+                        action.setClientId(rs.getLong("client_id"));
+                        action.setActionType(rs.getString("action_type"));
+                        action.setActionStateCd(rs.getString("action_state_cd"));
+                        action.setRealTimeStart(rs.getTimestamp("real_time_start"));
+                        action.setRealTimeStop(rs.getTimestamp("real_time_stop"));
+                        action.setScheduledTimeStart(rs.getTimestamp("scheduled_time_start"));
+                        action.setScheduledTimeStop(rs.getTimestamp("scheduled_time_stop"));
+                        return action;
+                    }
+                });
+
+        String sql31 = "SELECT JOIN";
+
+        return null;
     }
 }

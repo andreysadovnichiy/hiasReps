@@ -1,7 +1,6 @@
 package com.solveast.rreps.model.service.report_one;
 
-import com.solveast.rreps.model.schemas.clients.dao.FStatusDao;
-import com.solveast.rreps.model.schemas.clients.dao.TClientDao;
+import com.solveast.rreps.model.db.schemas.clients.dao.TClientDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,8 +35,6 @@ clients.t_client:applicant_id = clients.t_client:client_id апликанта, �
 public class ReportOneService {
     @Autowired
     private TClientDao tClientDao;
-    @Autowired
-    private FStatusDao fStatusDao;
 
     public String getReport() {
         return tClientDao.getClientById(1L).toString();

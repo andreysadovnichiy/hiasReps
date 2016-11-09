@@ -1,34 +1,114 @@
 package com.solveast.rreps.model.view.excel;
 
-import org.apache.poi.hssf.usermodel.HSSFFont;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.hssf.util.HSSFColor;
+import com.solveast.rreps.model.schemas.Query1;
 import org.apache.poi.ss.usermodel.*;
-import org.springframework.web.servlet.view.document.AbstractExcelView;
-import org.springframework.web.servlet.view.document.AbstractXlsView;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Map;
 
 /**
  * Created by Андрей on 29.10.2016.
  */
-public class ReportOneBuilder extends AbstractXlsView {
+@Service
+public class ReportOneBuilder extends AbstractXlsxView {
+    private final String excelFilePath = "patterns.xls";
 
-    private Sheet buildReport1(Workbook workbook) {
-        Sheet sheet = workbook.createSheet("Sheet test2");
-        sheet.setDefaultColumnWidth(50);
-        Row header = sheet.createRow(0);
+    @Override
+    protected Workbook createWorkbook(Map<String, Object> model, HttpServletRequest request) {
+        FileInputStream inputStream = null;
+        Workbook workbook = null;
+        Sheet sheet = null;
+        try {
+            ClassLoader classLoader = getClass().getClassLoader();
+            File file = new File(classLoader.getResource("patterns.xlsx").getFile());
 
-        header.createCell(0).setCellValue("Hello world");
-        return sheet;
+            inputStream = new FileInputStream(file);
+            workbook = new XSSFWorkbook(inputStream);
+            inputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return workbook;
     }
 
     @Override
     protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
 
-        Sheet sheet = workbook.createSheet("New fucking sheet");
+        Map<Long, Query1> model = (Map<Long, Query1>) map.get("model");
+
+        Sheet sheet = workbook.getSheet("Запрос 1");
+
+        Row row = null;
+        Cell cell8 = null;
+        Cell cell9 = null;
+        Cell cell10 = null;
+        Cell cell11 = null;
+        Cell cell12 = null;
+        Cell cell13 = null;
+        Cell cell14 = null;
+
+        int rowShift = 3;
+        int i = 0;
+        Date date;
+
+        DataFormat format = workbook.createDataFormat();
+        CellStyle dateStyle = workbook.createCellStyle();
+        dateStyle.setDataFormat(format.getFormat("dd.mm.yyyy"));
+
+        for (Map.Entry<Long, Query1> entry : model.entrySet()) {
+            row = sheet.getRow(rowShift + i);
+            if (row == null) {
+                row = sheet.createRow(rowShift + i);
+            }
+
+            cell8 = row.createCell(8);
+            cell8.setCellValue(entry.getValue().getClientId());
+
+            cell9 = row.createCell(9);
+            cell9.setCellValue(entry.getValue().getApplicantId());
+
+            cell10 = row.createCell(10);
+            cell10.setCellStyle(dateStyle);
+            date = Date.from(entry.getValue().getRegisterTime().atZone(ZoneId.systemDefault()).toInstant());
+            cell10.setCellValue(date);
+
+            if (entry.getValue().getUnhcrDate() != null) {
+                cell11 = row.createCell(11);
+                cell11.setCellStyle(dateStyle);
+                date = Date.from(entry.getValue().getUnhcrDate().atZone(ZoneId.systemDefault()).toInstant());
+                cell11.setCellValue(date);
+            }
+
+            cell12 = row.createCell(12);
+            cell12.setCellValue(entry.getValue().getSexCd());
+
+            cell13 = row.createCell(13);
+            cell13.setCellValue(entry.getValue().getIso3166_3());
+
+            cell14 = row.createCell(14);
+            cell14.setCellStyle(dateStyle);
+            cell14.setCellValue(entry.getValue().getBirthDate());
+
+            i++;
+        }
+    }
+}
+
+/*
+
+Sheet sheet = workbook.createSheet("New fucking sheet");
 
         sheet.setDefaultColumnWidth(30);
 
@@ -57,6 +137,5 @@ public class ReportOneBuilder extends AbstractXlsView {
         header.createCell(4).setCellValue("Price");
         header.getCell(4).setCellStyle(style);
 
-        Sheet sheet1 = buildReport1(workbook);
-    }
-}
+
+ */
