@@ -1,15 +1,12 @@
 package com.solveast.rreps.controllers;
 
-import com.solveast.rreps.model.db.schemas.clients.FStatus;
 import com.solveast.rreps.model.db.schemas.clients.TClient;
 import com.solveast.rreps.model.db.schemas.clients.TRegistrationForm;
 import com.solveast.rreps.model.db.schemas.tasks.TAction;
 import com.solveast.rreps.model.schemas.Query1;
-import com.solveast.rreps.model.service.report_one.ReportOneService;
+import com.solveast.rreps.model.service.ReportOneService;
 import com.solveast.rreps.model.view.excel.ReportOneBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -33,6 +30,9 @@ public class ViewController {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @Autowired
+    private ReportOneService reportOneService;
+
     @RequestMapping("/test/downloadExcel.xls")
     @ResponseBody
     public ReportOneBuilder testExcelView() {
@@ -46,38 +46,7 @@ public class ViewController {
         Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
         Timestamp to = Timestamp.valueOf(LocalDateTime.now());
 
-        Map namedParameters = new HashMap();
-        namedParameters.put("from", from);
-        namedParameters.put("to", to);
-
-        String sql1 = "SELECT cl.client_id, cl.applicant_id, cl.register_time, rf.unhcr_date," +
-                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.applicant" +
-                " FROM clients.t_client AS cl" +
-                " LEFT JOIN clients.t_registration_form AS rf" +
-                " ON cl.client_id = rf.client_id" +
-                " WHERE (cl.register_time BETWEEN :from AND :to) AND applicant = TRUE";
-
-        List<Query1> query =
-                (List<Query1>) namedParameterJdbcTemplate.query(sql1, namedParameters, new RowMapper<Query1>() {
-                    @Override
-                    public Query1 mapRow(ResultSet rs, int i) throws SQLException {
-                        Query1 item = new Query1();
-                        System.out.printf(i++ + "\n");
-                        item.setClientId(rs.getLong("client_id"));
-                        item.setApplicantId(rs.getLong("applicant_id"));
-                        item.setRegisterTime(rs.getTimestamp("register_time"));
-                        item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
-                        item.setSexCd(rs.getString("sex_cd"));
-                        item.setIso3166_3(rs.getString("iso3166_3"));
-                        item.setBirthDate(rs.getDate("birth_date"));
-                        item.setApplicant(rs.getBoolean("applicant"));
-                        System.out.printf(item.toString());
-                        return item;
-                    }
-                });
-
-
-        return new ModelAndView("excelViewReportOne", "model", query);
+        return new ModelAndView("excelViewReportOne", "model", reportOneService.getData(from, to));
     }
 
     @RequestMapping("/test/jdbc/remote/named2.xls")
@@ -129,7 +98,7 @@ public class ViewController {
                 " FROM tasks.t_action" +
                 " WHERE action_type = 'CLA' AND action_state_cd = 'CLS' AND " +
                 " ((real_time_start BETWEEN :from AND :to) OR (real_time_stop BETWEEN :from AND :to) OR " +
-                       " (scheduled_time_start BETWEEN :from AND :to) OR (scheduled_time_stop BETWEEN :from AND :to))";
+                " (scheduled_time_start BETWEEN :from AND :to) OR (scheduled_time_stop BETWEEN :from AND :to))";
 
         List<TAction> actions =
                 (List<TAction>) namedParameterJdbcTemplate.query(sql3, namedParameters, new RowMapper<TAction>() {
