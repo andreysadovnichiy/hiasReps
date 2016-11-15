@@ -1,5 +1,6 @@
 package com.solveast.rreps.model.schemas;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ public class Query1 {
     private String sexCd;
     private String iso3166_3;
     private Date birthDate;
+    private Boolean applicant;
 
     public Long getClientId() {
         return clientId;
@@ -35,16 +37,18 @@ public class Query1 {
         return registerTime;
     }
 
-    public void setRegisterTime(LocalDateTime registerTime) {
-        this.registerTime = registerTime;
+    public void setRegisterTime(Timestamp registerTime) {
+        if (registerTime != null)
+            this.registerTime = registerTime.toLocalDateTime();
     }
 
     public LocalDateTime getUnhcrDate() {
         return unhcrDate;
     }
 
-    public void setUnhcrDate(LocalDateTime unhcrDate) {
-        this.unhcrDate = unhcrDate;
+    public void setUnhcrDate(Timestamp unhcrDate) {
+        if (unhcrDate != null)
+            this.unhcrDate = unhcrDate.toLocalDateTime();
     }
 
     public String getSexCd() {
@@ -71,6 +75,22 @@ public class Query1 {
         this.birthDate = birthDate;
     }
 
+    public void setRegisterTime(LocalDateTime registerTime) {
+        this.registerTime = registerTime;
+    }
+
+    public void setUnhcrDate(LocalDateTime unhcrDate) {
+        this.unhcrDate = unhcrDate;
+    }
+
+    public Boolean getApplicant() {
+        return applicant;
+    }
+
+    public void setApplicant(Boolean applicant) {
+        this.applicant = applicant;
+    }
+
     @Override
     public String toString() {
         return "Query1{" +
@@ -81,6 +101,7 @@ public class Query1 {
                 ", sexCd='" + sexCd + '\'' +
                 ", iso3166_3='" + iso3166_3 + '\'' +
                 ", birthDate=" + birthDate +
+                ", applicant=" + applicant +
                 '}';
     }
 }

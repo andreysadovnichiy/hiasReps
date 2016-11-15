@@ -8,7 +8,7 @@
     <artifactId>rreps</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <age>Spring MVC Application</age>
+    <name>Spring MVC Application</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-version>1.8</java-version>

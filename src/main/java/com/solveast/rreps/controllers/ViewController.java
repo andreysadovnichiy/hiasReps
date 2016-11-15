@@ -50,61 +50,34 @@ public class ViewController {
         namedParameters.put("from", from);
         namedParameters.put("to", to);
 
-        String sql1 = "SELECT client_id, applicant_id, register_time," +
-                " sex_cd, iso3166_3, birth_date, applicant" +
-                " FROM clients.t_client" +
-                " WHERE (register_time BETWEEN :from AND :to) AND applicant=TRUE";
+        String sql1 = "SELECT cl.client_id, cl.applicant_id, cl.register_time, rf.unhcr_date," +
+                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.applicant" +
+                " FROM clients.t_client AS cl" +
+                " LEFT JOIN clients.t_registration_form AS rf" +
+                " ON cl.client_id = rf.client_id" +
+                " WHERE (cl.register_time BETWEEN :from AND :to) AND applicant = TRUE";
 
-        List<TClient> clients =
-                (List<TClient>) namedParameterJdbcTemplate.query(sql1, namedParameters, new RowMapper<TClient>() {
+        List<Query1> query =
+                (List<Query1>) namedParameterJdbcTemplate.query(sql1, namedParameters, new RowMapper<Query1>() {
                     @Override
-                    public TClient mapRow(ResultSet rs, int i) throws SQLException {
-                        TClient client = new TClient();
-                        client.setClientId(rs.getLong("client_id"));
-                        client.setApplicantId(rs.getLong("applicant_id"));
-                        client.setRegisterTime(rs.getTimestamp("register_time"));
-                        client.setSexCd(rs.getString("sex_cd"));
-                        client.setIso3166_3(rs.getString("iso3166_3"));
-                        client.setBirthDate(rs.getDate("birth_date"));
-                        client.setApplicant(rs.getBoolean("applicant"));
-                        return client;
+                    public Query1 mapRow(ResultSet rs, int i) throws SQLException {
+                        Query1 item = new Query1();
+                        System.out.printf(i++ + "\n");
+                        item.setClientId(rs.getLong("client_id"));
+                        item.setApplicantId(rs.getLong("applicant_id"));
+                        item.setRegisterTime(rs.getTimestamp("register_time"));
+                        item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
+                        item.setSexCd(rs.getString("sex_cd"));
+                        item.setIso3166_3(rs.getString("iso3166_3"));
+                        item.setBirthDate(rs.getDate("birth_date"));
+                        item.setApplicant(rs.getBoolean("applicant"));
+                        System.out.printf(item.toString());
+                        return item;
                     }
                 });
 
-        String sql2 = "SELECT client_id, unhcr_date" +
-                " FROM clients.t_registration_form" +
-                " WHERE unhcr_date BETWEEN :from AND :to";
 
-        List<TRegistrationForm> registrationForms =
-                (List<TRegistrationForm>) namedParameterJdbcTemplate.query(sql2, namedParameters, new RowMapper<TRegistrationForm>() {
-                    @Override
-                    public TRegistrationForm mapRow(ResultSet rs, int i) throws SQLException {
-                        TRegistrationForm form = new TRegistrationForm();
-                        form.setClientId(rs.getLong("client_id"));
-                        form.setUnhcrDate(rs.getTimestamp("unhcr_date"));
-                        return form;
-                    }
-                });
-
-        Map<Long, Query1> query1Map = new HashMap<>();
-        clients.forEach(client -> {
-            Query1 query = new Query1();
-            query.setClientId(client.getClientId());
-            query.setApplicantId(client.getApplicantId());
-            query.setRegisterTime(client.getRegisterTime());
-            query.setSexCd(client.getSexCd());
-            query.setIso3166_3(client.getIso3166_3());
-            query.setBirthDate(client.getBirthDate());
-            query1Map.put(query.getClientId(), query);
-        });
-        registrationForms.forEach(form -> {
-            if (query1Map.containsKey(form.getClientId())) {
-                Query1 query = query1Map.get(form.getClientId());
-                query.setUnhcrDate(form.getUnhcrDate());
-            }
-        });
-
-        return new ModelAndView("excelViewReportOne", "model", query1Map);
+        return new ModelAndView("excelViewReportOne", "model", query);
     }
 
     @RequestMapping("/test/jdbc/remote/named2.xls")

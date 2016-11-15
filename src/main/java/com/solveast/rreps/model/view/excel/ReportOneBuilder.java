@@ -14,6 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,7 +47,9 @@ public class ReportOneBuilder extends AbstractXlsxView {
     @Override
     protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
 
-        Map<Long, Query1> model = (Map<Long, Query1>) map.get("model");
+//        Map<Long, Query1> model = (Map<Long, Query1>) map.get("model");
+
+        List<Query1> model = (List<Query1>) map.get("model");
 
         Sheet sheet = workbook.getSheet("Запрос 1");
 
@@ -67,39 +70,41 @@ public class ReportOneBuilder extends AbstractXlsxView {
         CellStyle dateStyle = workbook.createCellStyle();
         dateStyle.setDataFormat(format.getFormat("dd.mm.yyyy"));
 
-        for (Map.Entry<Long, Query1> entry : model.entrySet()) {
+
+        for (Query1 item : model) {
+//        for (Map.Entry<Long, Query1> entry : model.entrySet()) {
             row = sheet.getRow(rowShift + i);
             if (row == null) {
                 row = sheet.createRow(rowShift + i);
             }
 
             cell8 = row.createCell(8);
-            cell8.setCellValue(entry.getValue().getClientId());
+            cell8.setCellValue(item.getClientId());
 
             cell9 = row.createCell(9);
-            cell9.setCellValue(entry.getValue().getApplicantId());
+            cell9.setCellValue(item.getApplicantId());
 
             cell10 = row.createCell(10);
             cell10.setCellStyle(dateStyle);
-            date = Date.from(entry.getValue().getRegisterTime().atZone(ZoneId.systemDefault()).toInstant());
+            date = Date.from(item.getRegisterTime().atZone(ZoneId.systemDefault()).toInstant());
             cell10.setCellValue(date);
 
-            if (entry.getValue().getUnhcrDate() != null) {
+            if (item.getUnhcrDate() != null) {
                 cell11 = row.createCell(11);
                 cell11.setCellStyle(dateStyle);
-                date = Date.from(entry.getValue().getUnhcrDate().atZone(ZoneId.systemDefault()).toInstant());
+                date = Date.from(item.getUnhcrDate().atZone(ZoneId.systemDefault()).toInstant());
                 cell11.setCellValue(date);
             }
 
             cell12 = row.createCell(12);
-            cell12.setCellValue(entry.getValue().getSexCd());
+            cell12.setCellValue(item.getSexCd());
 
             cell13 = row.createCell(13);
-            cell13.setCellValue(entry.getValue().getIso3166_3());
+            cell13.setCellValue(item.getIso3166_3());
 
             cell14 = row.createCell(14);
             cell14.setCellStyle(dateStyle);
-            cell14.setCellValue(entry.getValue().getBirthDate());
+            cell14.setCellValue(item.getBirthDate());
 
             i++;
         }
