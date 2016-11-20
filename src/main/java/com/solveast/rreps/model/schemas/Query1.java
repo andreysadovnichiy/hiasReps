@@ -14,7 +14,7 @@ public class Query1 {
     private LocalDateTime unhcrDate;
     private String sexCd;
     private String iso3166_3;
-    private Date birthDate;
+    private LocalDateTime birthDate;
     private Boolean applicant;
 
     public Long getClientId() {
@@ -67,12 +67,13 @@ public class Query1 {
         this.iso3166_3 = iso3166_3;
     }
 
-    public Date getBirthDate() {
+    public LocalDateTime getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthDate(Timestamp birthDate) {
+        if (birthDate != null)
+            this.birthDate = birthDate.toLocalDateTime();
     }
 
     public void setRegisterTime(LocalDateTime registerTime) {

@@ -17,7 +17,7 @@ import java.util.Map;
  * Created by Андрей on 16.11.2016.
  */
 @Repository
-public class ReportOneDao {
+public class ReportTwoDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -45,7 +45,7 @@ public class ReportOneDao {
                         item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
                         item.setSexCd(rs.getString("sex_cd"));
                         item.setIso3166_3(rs.getString("iso3166_3"));
-                        item.setBirthDate(rs.getTimestamp("birth_date"));
+                        item.setBirthDate(rs.getDate("birth_date"));
                         item.setApplicant(rs.getBoolean("applicant"));
                         return item;
                     }

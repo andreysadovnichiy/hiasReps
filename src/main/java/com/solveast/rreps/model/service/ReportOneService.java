@@ -3,11 +3,16 @@ package com.solveast.rreps.model.service;
 import com.solveast.rreps.model.dao.ReportOneDao;
 import com.solveast.rreps.model.db.schemas.clients.dao.TClientDao;
 import com.solveast.rreps.model.schemas.Query1;
+import com.solveast.rreps.model.schemas.Report1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.List;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.*;
 
 /**
  * Created by Андрей on 28.10.2016.
@@ -41,7 +46,49 @@ public class ReportOneService {
     @Autowired
     private ReportOneDao reportDao;
 
-    public List<Query1> getData(Timestamp from, Timestamp to) {
-        return reportDao.getQuery(from, to);
+    public Map<String, Object> getData(Timestamp from, Timestamp to) {
+        Map<String, Object> data = new HashMap<>();
+
+        List<Query1> rawData = reportDao.getQuery(from, to);
+        data.put("rawData", rawData);
+
+        Map<String, Report1> proccessedData = processData(rawData);
+        data.put("proccessedData", proccessedData);
+
+        return data;
+    }
+
+    public Map<String, Report1> processData(List<Query1> querys) {
+        int adultYear = 18;
+        int nowYear = LocalDateTime.now().getYear();
+
+        Map<String, Report1> report1Map = new HashMap<>();
+
+        for (Query1 client : querys) {
+            String country = client.getIso3166_3();
+            Report1 report = report1Map.get(country);
+            if (report == null)
+                report = new Report1();
+
+            int birthDateYear = nowYear - 100;
+            if (client.getBirthDate() != null)
+                birthDateYear = client.getBirthDate().getYear();
+
+            if (nowYear - birthDateYear < adultYear) {
+                if (client.getSexCd().equals("m"))
+                    report.setBoys(report.getBoys() + 1);
+                else
+                    report.setGirls(report.getGirls() + 1);
+            } else {
+                if (client.getSexCd().equals("m"))
+                    report.setMale(report.getMale() + 1);
+                else
+                    report.setFemale(report.getFemale() + 1);
+            }
+
+            report.setIso3166_3(country);
+            report1Map.put(country, report);
+        }
+        return report1Map;
     }
 }
