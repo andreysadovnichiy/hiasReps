@@ -63,7 +63,6 @@ public class ReportOneBuilder extends AbstractXlsxView {
         Cell cell4 = null;
         Cell cell5 = null;
         Cell cell6 = null;
-
         Cell cell8 = null;
         Cell cell9 = null;
         Cell cell10 = null;
@@ -71,6 +70,7 @@ public class ReportOneBuilder extends AbstractXlsxView {
         Cell cell12 = null;
         Cell cell13 = null;
         Cell cell14 = null;
+        Cell cell15 = null;
 
         int rowShift = 3;
         int i = 0;
@@ -85,6 +85,7 @@ public class ReportOneBuilder extends AbstractXlsxView {
         CellStyle templStyle12 = sheet.getRow(rowShift).getCell(12).getCellStyle();
         CellStyle templStyle13 = sheet.getRow(rowShift).getCell(13).getCellStyle();
         CellStyle templStyle14 = sheet.getRow(rowShift).getCell(14).getCellStyle();
+        CellStyle templStyle15 = sheet.getRow(rowShift).getCell(15).getCellStyle();
 
         for (Query1 item : rawData) {
             row = sheet.getRow(rowShift + i);
@@ -120,15 +121,15 @@ public class ReportOneBuilder extends AbstractXlsxView {
             cell13.setCellValue(item.getIso3166_3());
             cell13.setCellStyle(templStyle13);
 
-            /*cell14 = row.createCell(14);
+            cell14 = row.createCell(14);
             cell14.setCellStyle(templStyle14);
-            cell14.setCellValue(item.getBirthDate());
-*/
+            cell14.setCellValue(item.getUn_relationship_cd());
+
             if (item.getBirthDate() != null) {
-                cell14 = row.createCell(14);
-                cell14.setCellStyle(templStyle14);
+                cell15 = row.createCell(15);
+                cell15.setCellStyle(templStyle15);
                 date = Date.from(item.getBirthDate().atZone(ZoneId.systemDefault()).toInstant());
-                cell14.setCellValue(date);
+                cell15.setCellValue(date);
             }
 
             i++;

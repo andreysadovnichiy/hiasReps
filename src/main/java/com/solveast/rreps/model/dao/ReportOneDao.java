@@ -28,7 +28,7 @@ public class ReportOneDao {
         namedParameters.put("to", to);
 
         String sql = "SELECT cl.client_id, cl.applicant_id, cl.register_time, rf.unhcr_date," +
-                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.applicant" +
+                " cl.sex_cd, cl.iso3166_3, cl.birth_date, un_relationship_cd, cl.applicant" +
                 " FROM clients.t_client AS cl" +
                 " LEFT JOIN clients.t_registration_form AS rf" +
                 " ON cl.client_id = rf.client_id" +
@@ -46,6 +46,7 @@ public class ReportOneDao {
                         item.setSexCd(rs.getString("sex_cd"));
                         item.setIso3166_3(rs.getString("iso3166_3"));
                         item.setBirthDate(rs.getTimestamp("birth_date"));
+                        item.setUn_relationship_cd(rs.getString("un_relationship_cd"));
                         item.setApplicant(rs.getBoolean("applicant"));
                         return item;
                     }

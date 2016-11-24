@@ -1,6 +1,11 @@
 package com.solveast.rreps.controllers;
 
+import com.solveast.rreps.model.dao.ReportTwoDao;
+import com.solveast.rreps.model.schemas.Query21;
+import com.solveast.rreps.model.schemas.Query22;
+import com.solveast.rreps.model.schemas.Query23;
 import com.solveast.rreps.model.service.ReportOneService;
+import com.solveast.rreps.model.service.ReportTwoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Controller;
@@ -11,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,10 +29,14 @@ public class XlsViewController {
 
     @Autowired
     private ReportOneService reportOneService;
+    @Autowired
+    private ReportTwoService reportTwoService;
+    @Autowired
+    private ReportTwoDao reportTwoDao;
 
 
     @RequestMapping("/test/jdbc/remote/named1.xls")
-    public ModelAndView testNamedJdbcRemote() {
+    public ModelAndView xlsReportOne() {
 
         Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
         Timestamp to = Timestamp.valueOf(LocalDateTime.now());
@@ -34,6 +44,19 @@ public class XlsViewController {
         Map<String, Object> data = reportOneService.getData(from, to);
 
         return new ModelAndView("excelViewReportOne", "model", data);
+    }
+
+    @RequestMapping("/test/jdbc/remote/named2.xls")
+    public ModelAndView xlsReportTwo() {
+
+        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(200));
+        Timestamp to = Timestamp.valueOf(LocalDateTime.now());
+
+        List<Query21> query21 = reportTwoDao.getQuery21(from, to);
+        List<Query22> query22 = reportTwoDao.getQuery22(from, to);
+        List<Query23> query23 = reportTwoDao.getQuery23(from, to);
+
+        return new ModelAndView("excelViewReportOne", "model", query21);
     }
 
 /*    @RequestMapping("/test/jdbc/remote/named2.xls")

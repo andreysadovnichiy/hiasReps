@@ -1,6 +1,9 @@
 package com.solveast.rreps.model.dao;
 
 import com.solveast.rreps.model.schemas.Query1;
+import com.solveast.rreps.model.schemas.Query21;
+import com.solveast.rreps.model.schemas.Query22;
+import com.solveast.rreps.model.schemas.Query23;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -21,32 +24,82 @@ public class ReportTwoDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Query1> getQuery(Timestamp from, Timestamp to) {
+    public List<Query21> getQuery21(Timestamp from, Timestamp to) {
 
         Map namedParameters = new HashMap();
         namedParameters.put("from", from);
         namedParameters.put("to", to);
 
-        String sql = "SELECT cl.client_id, cl.applicant_id, cl.register_time, rf.unhcr_date," +
-                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.applicant" +
-                " FROM clients.t_client AS cl" +
-                " LEFT JOIN clients.t_registration_form AS rf" +
-                " ON cl.client_id = rf.client_id" +
-                " WHERE (cl.register_time BETWEEN :from AND :to) AND applicant = TRUE";
+        String sql = "SELECT ta.client_id, ta.action_type, ta.action_state_cd, " +
+                " ta.real_time_start, ta.real_time_stop, ta.scheduled_time_start, ta.scheduled_time_stop" +
+                " FROM tasks.t_action AS ta" +
+                " WHERE (ta.action_type = 'CLA' AND ta.action_state_cd = 'CLS')" +
+                " AND " +
+                " ((ta.real_time_start BETWEEN :from AND :to)" +
+                " OR (ta.real_time_stop BETWEEN :from AND :to)" +
+                " OR (ta.scheduled_time_start BETWEEN :from AND :to)" +
+                " OR (ta.scheduled_time_stop BETWEEN :from AND :to))";
 
-        List<Query1> query =
-                (List<Query1>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query1>() {
+        List<Query21> query =
+                (List<Query21>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query21>() {
                     @Override
-                    public Query1 mapRow(ResultSet rs, int i) throws SQLException {
-                        Query1 item = new Query1();
+                    public Query21 mapRow(ResultSet rs, int i) throws SQLException {
+                        Query21 item = new Query21();
                         item.setClientId(rs.getLong("client_id"));
-                        item.setApplicantId(rs.getLong("applicant_id"));
+                        item.setActionType(rs.getString("action_type"));
+                        item.setActionStateCd(rs.getString("action_state_cd"));
+                        item.setRealTimeStart(rs.getTimestamp("real_time_start"));
+                        item.setRealTimeStop(rs.getTimestamp("real_time_stop"));
+                        item.setScheduledTimeStart(rs.getTimestamp("scheduled_time_start"));
+                        item.setScheduledTimeStop(rs.getTimestamp("scheduled_time_stop"));
+                        return item;
+                    }
+                });
+
+        return query;
+    }
+
+    public List<Query22> getQuery22(Timestamp from, Timestamp to) {
+
+        Map namedParameters = new HashMap();
+        namedParameters.put("from", from);
+        namedParameters.put("to", to);
+
+        String sql = "SELECT cl.client_id, cl.register_time" +
+                " FROM clients.t_client AS cl" +
+                " WHERE (cl.register_time BETWEEN :from AND :to)";
+
+        List<Query22> query =
+                (List<Query22>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query22>() {
+                    @Override
+                    public Query22 mapRow(ResultSet rs, int i) throws SQLException {
+                        Query22 item = new Query22();
+                        item.setClientId(rs.getLong("client_id"));
                         item.setRegisterTime(rs.getTimestamp("register_time"));
-                        item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
-                        item.setSexCd(rs.getString("sex_cd"));
-                        item.setIso3166_3(rs.getString("iso3166_3"));
-                        item.setBirthDate(rs.getDate("birth_date"));
-                        item.setApplicant(rs.getBoolean("applicant"));
+                        return item;
+                    }
+                });
+
+        return query;
+    }
+
+    public List<Query23> getQuery23(Timestamp from, Timestamp to) {
+
+        Map namedParameters = new HashMap();
+        namedParameters.put("from", from);
+        namedParameters.put("to", to);
+
+        String sql = "SELECT fr.client_id, fr.register_time" +
+                " FROM clients.t_registration_form AS fr" +
+                " WHERE (fr.register_time BETWEEN :from AND :to)";
+
+        List<Query23> query =
+                (List<Query23>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query23>() {
+                    @Override
+                    public Query23 mapRow(ResultSet rs, int i) throws SQLException {
+                        Query23 item = new Query23();
+                        item.setClientId(rs.getLong("client_id"));
+                        item.setRegisterTime(rs.getTimestamp("register_time"));
                         return item;
                     }
                 });

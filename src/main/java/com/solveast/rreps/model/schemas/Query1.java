@@ -15,6 +15,7 @@ public class Query1 {
     private String sexCd;
     private String iso3166_3;
     private LocalDateTime birthDate;
+    private String un_relationship_cd;
     private Boolean applicant;
 
     public Long getClientId() {
@@ -92,6 +93,14 @@ public class Query1 {
         this.applicant = applicant;
     }
 
+    public String getUn_relationship_cd() {
+        return un_relationship_cd;
+    }
+
+    public void setUn_relationship_cd(String un_relationship_cd) {
+        this.un_relationship_cd = un_relationship_cd;
+    }
+
     @Override
     public String toString() {
         return "Query1{" +
@@ -102,6 +111,7 @@ public class Query1 {
                 ", sexCd='" + sexCd + '\'' +
                 ", iso3166_3='" + iso3166_3 + '\'' +
                 ", birthDate=" + birthDate +
+                ", un_relationship_cd='" + un_relationship_cd + '\'' +
                 ", applicant=" + applicant +
                 '}';
     }
