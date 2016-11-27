@@ -1,16 +1,18 @@
 package com.solveast.rreps.controllers;
 
+import com.solveast.rreps.model.dao.ReportThreeDao;
 import com.solveast.rreps.model.dao.ReportTwoDao;
-import com.solveast.rreps.model.schemas.Query21;
-import com.solveast.rreps.model.schemas.Query22;
-import com.solveast.rreps.model.schemas.Query23;
+import com.solveast.rreps.model.queries.Query21;
+import com.solveast.rreps.model.queries.Query22;
+import com.solveast.rreps.model.queries.Query23;
+import com.solveast.rreps.model.queries.Query3;
+import com.solveast.rreps.model.service.ReportFourService;
 import com.solveast.rreps.model.service.ReportOneService;
+import com.solveast.rreps.model.service.ReportThreeService;
 import com.solveast.rreps.model.service.ReportTwoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,7 +34,9 @@ public class XlsViewController {
     @Autowired
     private ReportTwoService reportTwoService;
     @Autowired
-    private ReportTwoDao reportTwoDao;
+    private ReportThreeService reportThreeService;
+    @Autowired
+    private ReportFourService reportFourService;
 
 
     @RequestMapping("/test/jdbc/remote/named1.xls")
@@ -49,86 +53,34 @@ public class XlsViewController {
     @RequestMapping("/test/jdbc/remote/named2.xls")
     public ModelAndView xlsReportTwo() {
 
-        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(200));
+        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
         Timestamp to = Timestamp.valueOf(LocalDateTime.now());
 
-        List<Query21> query21 = reportTwoDao.getQuery21(from, to);
-        List<Query22> query22 = reportTwoDao.getQuery22(from, to);
-        List<Query23> query23 = reportTwoDao.getQuery23(from, to);
+        Map<String, Object> data = reportTwoService.getData(from, to);
 
-        return new ModelAndView("excelViewReportOne", "model", query21);
+        return new ModelAndView("excelViewReportOne", "model", data);
     }
 
-/*    @RequestMapping("/test/jdbc/remote/named2.xls")
-    @ResponseBody
-    public ModelAndView testNamedJdbcRemote2() {
+    @RequestMapping("/test/jdbc/remote/named3.xls")
+    public ModelAndView xlsReportThree() {
 
         Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
         Timestamp to = Timestamp.valueOf(LocalDateTime.now());
 
-        Map namedParameters = new HashMap();
-        namedParameters.put("from", from);
-        namedParameters.put("to", to);
+        List<Query3> query = reportThreeService.getData(from, to);
 
-        String sql1 = "SELECT client_id, register_time" +
-                " FROM clients.t_client" +
-                " WHERE register_time BETWEEN :from AND :to";
-//        " WHERE (register_time BETWEEN :from AND :to) AND applicant=TRUE"; applicant учитывать??
+        return new ModelAndView("excelViewReportOne", "model", query);
+    }
 
-        List<TClient> clients =
-                (List<TClient>) namedParameterJdbcTemplate.query(sql1, namedParameters, new RowMapper<TClient>() {
-                    @Override
-                    public TClient mapRow(ResultSet rs, int i) throws SQLException {
-                        TClient client = new TClient();
-                        client.setClientId(rs.getLong("client_id"));
-                        client.setRegisterTime(rs.getTimestamp("register_time"));
-//                        client.setApplicant(rs.getBoolean("applicant"));
-                        return client;
-                    }
-                });
+    @RequestMapping("/test/jdbc/remote/named4.xls")
+    public ModelAndView xlsReportFour() {
 
-        String sql2 = "SELECT client_id, unhcr_date" +
-                " FROM clients.t_registration_form" +
-                " WHERE unhcr_date BETWEEN :from AND :to";
+        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
+        Timestamp to = Timestamp.valueOf(LocalDateTime.now());
 
-        List<TRegistrationForm> registrationForms =
-                (List<TRegistrationForm>) namedParameterJdbcTemplate.query(sql2, namedParameters, new RowMapper<TRegistrationForm>() {
-                    @Override
-                    public TRegistrationForm mapRow(ResultSet rs, int i) throws SQLException {
-                        TRegistrationForm form = new TRegistrationForm();
-                        form.setClientId(rs.getLong("client_id"));
-                        form.setUnhcrDate(rs.getTimestamp("unhcr_date"));
-                        return form;
-                    }
-                });
+        Map<String, Object> data = reportFourService.getData(from, to);
 
+        return new ModelAndView("excelViewReportOne", "model", data);
+    }
 
-        String sql3 = "SELECT action_id, client_id, action_type, action_state_cd" +
-                " ,real_time_start, real_time_stop, scheduled_time_start, scheduled_time_stop" +
-                " FROM tasks.t_action" +
-                " WHERE action_type = 'CLA' AND action_state_cd = 'CLS' AND " +
-                " ((real_time_start BETWEEN :from AND :to) OR (real_time_stop BETWEEN :from AND :to) OR " +
-                " (scheduled_time_start BETWEEN :from AND :to) OR (scheduled_time_stop BETWEEN :from AND :to))";
-
-        List<TAction> actions =
-                (List<TAction>) namedParameterJdbcTemplate.query(sql3, namedParameters, new RowMapper<TAction>() {
-                    @Override
-                    public TAction mapRow(ResultSet rs, int i) throws SQLException {
-                        TAction action = new TAction();
-                        action.setActionId(rs.getLong("action_id"));
-                        action.setClientId(rs.getLong("client_id"));
-                        action.setActionType(rs.getString("action_type"));
-                        action.setActionStateCd(rs.getString("action_state_cd"));
-                        action.setRealTimeStart(rs.getTimestamp("real_time_start"));
-                        action.setRealTimeStop(rs.getTimestamp("real_time_stop"));
-                        action.setScheduledTimeStart(rs.getTimestamp("scheduled_time_start"));
-                        action.setScheduledTimeStop(rs.getTimestamp("scheduled_time_stop"));
-                        return action;
-                    }
-                });
-
-        String sql31 = "SELECT JOIN";
-
-        return null;
-    }*/
 }

@@ -1,9 +1,8 @@
 package com.solveast.rreps.model.dao;
 
-import com.solveast.rreps.model.schemas.Query1;
-import com.solveast.rreps.model.schemas.Query21;
-import com.solveast.rreps.model.schemas.Query22;
-import com.solveast.rreps.model.schemas.Query23;
+import com.solveast.rreps.model.queries.Query21;
+import com.solveast.rreps.model.queries.Query22;
+import com.solveast.rreps.model.queries.Query23;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -65,7 +64,7 @@ public class ReportTwoDao {
         namedParameters.put("from", from);
         namedParameters.put("to", to);
 
-        String sql = "SELECT cl.client_id, cl.register_time" +
+        String sql = "SELECT cl.client_id, cl.sex_cd, cl.birth_date, cl.register_time" +
                 " FROM clients.t_client AS cl" +
                 " WHERE (cl.register_time BETWEEN :from AND :to)";
 
@@ -76,6 +75,8 @@ public class ReportTwoDao {
                         Query22 item = new Query22();
                         item.setClientId(rs.getLong("client_id"));
                         item.setRegisterTime(rs.getTimestamp("register_time"));
+                        item.setBirthDate(rs.getTimestamp("birth_date"));
+                        item.setSexCd(rs.getString("sex_cd"));
                         return item;
                     }
                 });
@@ -89,8 +90,9 @@ public class ReportTwoDao {
         namedParameters.put("from", from);
         namedParameters.put("to", to);
 
-        String sql = "SELECT fr.client_id, fr.register_time" +
+        String sql = "SELECT fr.client_id, cl.sex_cd, cl.birth_date, fr.register_time" +
                 " FROM clients.t_registration_form AS fr" +
+                " LEFT JOIN clients.t_client AS cl ON cl.client_id = fr.client_id" +
                 " WHERE (fr.register_time BETWEEN :from AND :to)";
 
         List<Query23> query =
@@ -100,6 +102,8 @@ public class ReportTwoDao {
                         Query23 item = new Query23();
                         item.setClientId(rs.getLong("client_id"));
                         item.setRegisterTime(rs.getTimestamp("register_time"));
+                        item.setBirthDate(rs.getTimestamp("birth_date"));
+                        item.setSexCd(rs.getString("sex_cd"));
                         return item;
                     }
                 });

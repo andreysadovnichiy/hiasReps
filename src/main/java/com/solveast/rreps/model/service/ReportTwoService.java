@@ -1,8 +1,8 @@
 package com.solveast.rreps.model.service;
 
 import com.solveast.rreps.model.dao.ReportOneDao;
-import com.solveast.rreps.model.schemas.Query1;
-import com.solveast.rreps.model.schemas.Report1;
+import com.solveast.rreps.model.queries.Query1;
+import com.solveast.rreps.model.queries.Report1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

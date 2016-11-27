@@ -1,17 +1,13 @@
 package com.solveast.rreps.model.service;
 
 import com.solveast.rreps.model.dao.ReportOneDao;
-import com.solveast.rreps.model.db.schemas.clients.dao.TClientDao;
-import com.solveast.rreps.model.schemas.Query1;
-import com.solveast.rreps.model.schemas.Report1;
+import com.solveast.rreps.model.queries.Query1;
+import com.solveast.rreps.model.queries.Report1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 /**

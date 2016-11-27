@@ -1,31 +1,21 @@
-package com.solveast.rreps.model.db.schemas.tasks;
+package com.solveast.rreps.model.queries;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
- * Created by Андрей on 07.11.2016.
+ * Created by Андрей on 25.11.2016.
  */
-public class TAction {
-    private Long actionId;
+public class Query21 {
     private Long clientId;
+    private String sexCd;
+    private LocalDateTime birthDate;
     private String actionType;
     private String actionStateCd;
     private LocalDateTime realTimeStart;
     private LocalDateTime realTimeStop;
     private LocalDateTime scheduledTimeStart;
     private LocalDateTime scheduledTimeStop;
-
-    public TAction() {
-    }
-
-    public Long getActionId() {
-        return actionId;
-    }
-
-    public void setActionId(Long actionId) {
-        this.actionId = actionId;
-    }
 
     public Long getClientId() {
         return clientId;
@@ -55,55 +45,61 @@ public class TAction {
         return realTimeStart;
     }
 
-    public void setRealTimeStart(LocalDateTime realTimeStart) {
-        this.realTimeStart = realTimeStart;
+    public String getSexCd() {
+        return sexCd;
+    }
+
+    public void setSexCd(String sexCd) {
+        this.sexCd = sexCd;
+    }
+
+    public LocalDateTime getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Timestamp birthDate) {
+        if (birthDate != null)
+            this.birthDate = birthDate.toLocalDateTime();
     }
 
     public void setRealTimeStart(Timestamp realTimeStart) {
-        this.realTimeStart = realTimeStart.toLocalDateTime();
+        if (realTimeStart != null)
+            this.realTimeStart = realTimeStart.toLocalDateTime();
     }
 
     public LocalDateTime getRealTimeStop() {
         return realTimeStop;
     }
 
-    public void setRealTimeStop(LocalDateTime realTimeStop) {
-        this.realTimeStop = realTimeStop;
-    }
-
     public void setRealTimeStop(Timestamp realTimeStop) {
-        this.realTimeStop = realTimeStop.toLocalDateTime();
+        if (realTimeStop != null)
+            this.realTimeStop = realTimeStop.toLocalDateTime();
     }
 
     public LocalDateTime getScheduledTimeStart() {
         return scheduledTimeStart;
     }
 
-    public void setScheduledTimeStart(LocalDateTime scheduledTimeStart) {
-        this.scheduledTimeStart = scheduledTimeStart;
-    }
-
     public void setScheduledTimeStart(Timestamp scheduledTimeStart) {
-        this.scheduledTimeStart = scheduledTimeStart.toLocalDateTime();
+        if (scheduledTimeStart != null)
+            this.scheduledTimeStart = scheduledTimeStart.toLocalDateTime();
     }
 
     public LocalDateTime getScheduledTimeStop() {
         return scheduledTimeStop;
     }
 
-    public void setScheduledTimeStop(LocalDateTime scheduledTimeStop) {
-        this.scheduledTimeStop = scheduledTimeStop;
-    }
-
     public void setScheduledTimeStop(Timestamp scheduledTimeStop) {
-        this.scheduledTimeStop = scheduledTimeStop.toLocalDateTime();
+        if (scheduledTimeStop != null)
+            this.scheduledTimeStop = scheduledTimeStop.toLocalDateTime();
     }
 
     @Override
     public String toString() {
-        return "TAction{" +
-                "actionId=" + actionId +
-                ", clientId=" + clientId +
+        return "Query21{" +
+                "clientId=" + clientId +
+                ", sexCd='" + sexCd + '\'' +
+                ", birthDate=" + birthDate +
                 ", actionType='" + actionType + '\'' +
                 ", actionStateCd='" + actionStateCd + '\'' +
                 ", realTimeStart=" + realTimeStart +

@@ -1,4 +1,4 @@
-package com.solveast.rreps.model.schemas;
+package com.solveast.rreps.model.queries;
 
 /**
  * Created by Андрей on 20.11.2016.

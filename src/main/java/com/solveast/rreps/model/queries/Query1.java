@@ -1,8 +1,7 @@
-package com.solveast.rreps.model.schemas;
+package com.solveast.rreps.model.queries;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * Created by Андрей on 06.11.2016.

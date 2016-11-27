@@ -1,8 +1,7 @@
 package com.solveast.rreps.model.view.excel;
 
-import com.solveast.rreps.model.schemas.Query1;
-import com.solveast.rreps.model.schemas.Report1;
-import org.apache.poi.hpsf.Util;
+import com.solveast.rreps.model.queries.Query1;
+import com.solveast.rreps.model.queries.Report1;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
