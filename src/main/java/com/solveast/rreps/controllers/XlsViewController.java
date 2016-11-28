@@ -80,7 +80,6 @@ public class XlsViewController {
 
         Map<String, Object> data = reportFourService.getData(from, to);
 
-        return new ModelAndView("excelViewReportOne", "model", data);
+        return new ModelAndView("excelViewReportFour", "model", data);
     }
-
 }
