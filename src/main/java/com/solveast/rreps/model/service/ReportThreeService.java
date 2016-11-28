@@ -19,7 +19,6 @@ public class ReportThreeService {
 
 
     public List<Query3> getData(Timestamp from, Timestamp to) {
-
         return reportDao.getQuery3(from, to);
     }
 }

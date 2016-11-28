@@ -3,16 +3,11 @@ package com.solveast.rreps.model.view.excel;
 import com.solveast.rreps.model.queries.Query1;
 import com.solveast.rreps.model.queries.Report1;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -27,22 +22,7 @@ public class ReportOneBuilder extends AbstractXlsxView {
 
     @Override
     protected Workbook createWorkbook(Map<String, Object> model, HttpServletRequest request) {
-        FileInputStream inputStream = null;
-        Workbook workbook = null;
-        Sheet sheet = null;
-        try {
-            ClassLoader classLoader = getClass().getClassLoader();
-            File file = new File(classLoader.getResource("patterns.xlsx").getFile());
-
-            inputStream = new FileInputStream(file);
-            workbook = new XSSFWorkbook(inputStream);
-            inputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return workbook;
+        return new WorkbookFactory(ForReport.ONE).getWorkbook();
     }
 
     @Override

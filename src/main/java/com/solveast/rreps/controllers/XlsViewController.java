@@ -67,9 +67,9 @@ public class XlsViewController {
         Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
         Timestamp to = Timestamp.valueOf(LocalDateTime.now());
 
-        List<Query3> query = reportThreeService.getData(from, to);
+        List<Query3> data = reportThreeService.getData(from, to);
 
-        return new ModelAndView("excelViewReportOne", "model", query);
+        return new ModelAndView("excelViewReportThree", "model", data);
     }
 
     @RequestMapping("/test/jdbc/remote/named4.xls")
