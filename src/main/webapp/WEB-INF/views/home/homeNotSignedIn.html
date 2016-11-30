@@ -27,11 +27,20 @@
         </p>
 
         <div class="form-group">
-            <div class='input-group date' id='datetimepicker1'>
+            <div class='input-group date' id='fromDate'>
                 <input type='text' class="form-control" />
                 <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
+            </div>
+            <div class='input-group date' id='toDate'>
+                <input type='text' class="form-control" />
+                <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <div>
+                <button id="btnSendDate">Hi</button>
             </div>
         </div>
 
@@ -48,11 +57,37 @@
 	jQuery(document).ready(function($){
 
 
-	    $('#datetimepicker1').datetimepicker({
+        $('#btnSendDate').click(function ()
+            {
+                var from = $("#fromDate").find("input").val();
+                var to = $("#toDate").find("input").val();
+
+                $.ajax({
+                    //headers: {
+                    //    Accept : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                    //    "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
+                    //},
+                    type: "get",
+                    url: "/test/jdbc/remote/named1.xls",
+                    data: {from: from, to: to}
+                    //,
+                    //success: function(msg){
+                    //}
+                });
+            });
+
+	    $('#fromDate').datetimepicker({
 	        defaultDate: new Date(),
 	        locale: 'ru',
-	        format: 'DD MMM YYYY',
+	        format: 'DD MM YYYY',
 	    });
+
+	    $('#toDate').datetimepicker({
+	        defaultDate: new Date(),
+	        locale: 'ru',
+	        format: 'DD MM YYYY',
+	    });
+
 
 	    $("#btnTestLocal").click(function(){
             $.get("/test/jdbc/local", function(data, status){

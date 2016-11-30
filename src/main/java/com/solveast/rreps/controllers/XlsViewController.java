@@ -1,5 +1,7 @@
 package com.solveast.rreps.controllers;
 
+import com.solveast.rreps.model.DateConverterUtils;
+import com.solveast.rreps.model.DatePack;
 import com.solveast.rreps.model.dao.ReportThreeDao;
 import com.solveast.rreps.model.dao.ReportTwoDao;
 import com.solveast.rreps.model.queries.Query21;
@@ -12,8 +14,7 @@ import com.solveast.rreps.model.service.ReportThreeService;
 import com.solveast.rreps.model.service.ReportTwoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
@@ -38,12 +39,29 @@ public class XlsViewController {
     @Autowired
     private ReportFourService reportFourService;
 
+    /*@RequestMapping("/")
+    public DatePack dateAttr(){
+        return new DatePack();
+    }
 
-    @RequestMapping("/test/jdbc/remote/named1.xls")
-    public ModelAndView xlsReportOne() {
+    @RequestMapping(value = "/test/jdbc/remote/named1.xls", method = RequestMethod.POST)
+    public ModelAndView xlsReportOne1() {
 
         Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
         Timestamp to = Timestamp.valueOf(LocalDateTime.now());
+
+        Map<String, Object> data = reportOneService.getData(from, to);
+
+        return new ModelAndView("excelViewReportOne", "model", data);
+    }
+*/
+
+    @RequestMapping("/test/jdbc/remote/named1.xls")
+    public ModelAndView xlsReportOne(@RequestParam("from")String fromString,
+                                     @RequestParam("to")String toString) {
+
+        Timestamp from = DateConverterUtils.convertStringToTimestamp(fromString);
+        Timestamp to = DateConverterUtils.convertStringToTimestamp(toString);
 
         Map<String, Object> data = reportOneService.getData(from, to);
 
@@ -58,7 +76,7 @@ public class XlsViewController {
 
         Map<String, Object> data = reportTwoService.getData(from, to);
 
-        return new ModelAndView("excelViewReportOne", "model", data);
+        return new ModelAndView("excelViewReportTwo", "model", data);
     }
 
     @RequestMapping("/test/jdbc/remote/named3.xls")

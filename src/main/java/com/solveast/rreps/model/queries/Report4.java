@@ -1,9 +1,13 @@
 package com.solveast.rreps.model.queries;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Created by Андрей on 27.11.2016.
  */
 public class Report4 {
+    private Set<Long> clients = new HashSet<Long>();
     private Integer male_0_4 = 0;
     private Integer female_0_4 = 0;
     private Integer male_5_17 = 0;
@@ -14,7 +18,12 @@ public class Report4 {
     private Integer female_60_ = 0;
     private Integer total = 0;
 
-    public void set(String sex, Integer age) {
+    public void set(Long clientId, String sex, Integer age) {
+        if (clients.contains(clientId))
+            return;
+        else
+            clients.add(clientId);
+
         if (sex.equals("m") && age <= 4)
             male_0_4++;
         else if (sex.equals("f") && age <= 4)
@@ -71,6 +80,10 @@ public class Report4 {
 
     public Integer getTotal() {
         return total;
+    }
+
+    public Set<Long> getClients() {
+        return clients;
     }
 
     @Override

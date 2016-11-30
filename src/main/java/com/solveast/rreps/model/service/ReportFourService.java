@@ -33,27 +33,28 @@ public class ReportFourService {
 
         rawData21.forEach(item -> {
                     if (item.getBirthDate() != null)
-                        report.set(item.getSexCd(), nowYear - item.getBirthDate().getYear());
+                        report.set(item.getClientId(), item.getSexCd(), nowYear - item.getBirthDate().getYear());
                 }
         );
 
         rawData22.forEach(item -> {
                     if (item.getBirthDate() != null)
-                        report.set(item.getSexCd(), nowYear - item.getBirthDate().getYear());
+                        report.set(item.getClientId(), item.getSexCd(), nowYear - item.getBirthDate().getYear());
                 }
         );
 
         rawData23.forEach(item -> {
                     if (item.getBirthDate() != null)
-                        report.set(item.getSexCd(), nowYear - item.getBirthDate().getYear());
+                        report.set(item.getClientId(), item.getSexCd(), nowYear - item.getBirthDate().getYear());
                 }
         );
 
         data.put("rawData21", rawData21);
         data.put("rawData22", rawData22);
         data.put("rawData23", rawData23);
-
         data.put("processedData", report);
+        data.put("from", from);
+        data.put("to", to);
 
         return data;
     }
