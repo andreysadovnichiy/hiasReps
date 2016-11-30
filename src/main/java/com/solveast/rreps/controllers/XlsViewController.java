@@ -1,12 +1,6 @@
 package com.solveast.rreps.controllers;
 
 import com.solveast.rreps.model.DateConverterUtils;
-import com.solveast.rreps.model.DatePack;
-import com.solveast.rreps.model.dao.ReportThreeDao;
-import com.solveast.rreps.model.dao.ReportTwoDao;
-import com.solveast.rreps.model.queries.Query21;
-import com.solveast.rreps.model.queries.Query22;
-import com.solveast.rreps.model.queries.Query23;
 import com.solveast.rreps.model.queries.Query3;
 import com.solveast.rreps.model.service.ReportFourService;
 import com.solveast.rreps.model.service.ReportOneService;
