@@ -25,7 +25,7 @@ public class UserAuthenticationIntegrationTest extends WebSecurityConfigurationA
     public void userAuthenticates() throws Exception {
         final String username = "user";
 
-        mockMvc.perform(post("/authenticate").param("username", username).param("password", "demo"))
+        mockMvc.perform(post("/authenticate").param("username", username).param("password", "user"))
                 .andExpect(redirectedUrl("/"))
                 .andExpect(r -> Assert.assertEquals(((SecurityContext) r.getRequest().getSession().getAttribute(SEC_CONTEXT_ATTR)).getAuthentication().getName(), username));
 

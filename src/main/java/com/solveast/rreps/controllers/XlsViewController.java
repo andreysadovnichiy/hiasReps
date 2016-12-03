@@ -33,23 +33,6 @@ public class XlsViewController {
     @Autowired
     private ReportFourService reportFourService;
 
-    /*@RequestMapping("/")
-    public DatePack dateAttr(){
-        return new DatePack();
-    }
-
-    @RequestMapping(value = "/test/jdbc/remote/named1.xls", method = RequestMethod.POST)
-    public ModelAndView xlsReportOne1() {
-
-        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
-        Timestamp to = Timestamp.valueOf(LocalDateTime.now());
-
-        Map<String, Object> data = reportOneService.getData(from, to);
-
-        return new ModelAndView("excelViewReportOne", "model", data);
-    }
-*/
-
     @RequestMapping("/test/jdbc/remote/named1.xls")
     public ModelAndView xlsReportOne(@RequestParam("from")String fromString,
                                      @RequestParam("to")String toString) {
@@ -63,10 +46,11 @@ public class XlsViewController {
     }
 
     @RequestMapping("/test/jdbc/remote/named2.xls")
-    public ModelAndView xlsReportTwo() {
+    public ModelAndView xlsReportTwo(@RequestParam("from")String fromString,
+                                     @RequestParam("to")String toString) {
 
-        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
-        Timestamp to = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp from = DateConverterUtils.convertStringToTimestamp(fromString);
+        Timestamp to = DateConverterUtils.convertStringToTimestamp(toString);
 
         Map<String, Object> data = reportTwoService.getData(from, to);
 
@@ -74,10 +58,11 @@ public class XlsViewController {
     }
 
     @RequestMapping("/test/jdbc/remote/named3.xls")
-    public ModelAndView xlsReportThree() {
+    public ModelAndView xlsReportThree(@RequestParam("from")String fromString,
+                                       @RequestParam("to")String toString) {
 
-        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
-        Timestamp to = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp from = DateConverterUtils.convertStringToTimestamp(fromString);
+        Timestamp to = DateConverterUtils.convertStringToTimestamp(toString);
 
         List<Query3> data = reportThreeService.getData(from, to);
 
@@ -85,10 +70,11 @@ public class XlsViewController {
     }
 
     @RequestMapping("/test/jdbc/remote/named4.xls")
-    public ModelAndView xlsReportFour() {
+    public ModelAndView xlsReportFour(@RequestParam("from")String fromString,
+                                      @RequestParam("to")String toString) {
 
-        Timestamp from = Timestamp.valueOf(LocalDateTime.now().minusMonths(6));
-        Timestamp to = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp from = DateConverterUtils.convertStringToTimestamp(fromString);
+        Timestamp to = DateConverterUtils.convertStringToTimestamp(toString);
 
         Map<String, Object> data = reportFourService.getData(from, to);
 

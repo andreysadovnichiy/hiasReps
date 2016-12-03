@@ -3,8 +3,9 @@
 <head>
     <title>Welcome to the Spring MVC Quickstart application! Get started quickly by signing up!</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/resources/css/bootstrap.min.css}"/>
-    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}" />
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet" media="screen"
+          th:href="@{/resources/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}"/>
 
     <script src="http://code.jquery.com/jquery-latest.js"></script>
     <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
@@ -28,26 +29,26 @@
 
         <div class="form-group">
             <div class='input-group date' id='fromDate'>
-                <input type='text' class="form-control" />
+                <input type='text' class="form-control"/>
                 <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                     </span>
             </div>
             <div class='input-group date' id='toDate'>
-                <input type='text' class="form-control" />
+                <input type='text' class="form-control"/>
                 <span class="input-group-addon">
                         <span class="glyphicon glyphicon-calendar"></span>
                 </span>
             </div>
-            <div>
-                <button id="btnSendDate">Hi</button>
-            </div>
         </div>
 
-        <h3><a href="/test/jdbc/remote/named1.xls">Download 1 Excel Document</a></h3>
-        <h3><a href="/test/jdbc/remote/named2.xls">Download 2 Excel Document</a></h3>
-        <h3><a href="/test/jdbc/remote/named3.xls">Download 3 Excel Document</a></h3>
-        <h3><a href="/test/jdbc/remote/named4.xls">Download 4 Excel Document</a></h3>
+        <h3><a href="" id="refQuery1">Download 1 Excel Document</a></h3>
+        <h3><a href="" id="refQuery2">Download 2 Excel Document</a></h3>
+        <h3><a href="" id="refQuery3">Download 3 Excel Document</a></h3>
+        <h3><a href="" id="refQuery4">Download 4 Excel Document</a></h3>
+        <h3><a href="" id="refQuery5">Download 5 Excel Document</a></h3>
+        <h3><a href="" id="refQuery6">Download 6 Excel Document</a></h3>
+        <h3><a href="" id="refQuery7">Download 7 Excel Document</a></h3>
     </div>
     <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
 </div>
@@ -55,56 +56,117 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function($){
+        var to;
+        var from;
 
+        var firstCommitFrom;
+        var firstCommitTo;
 
-        $('#btnSendDate').click(function ()
-            {
-                var from = $("#fromDate").find("input").val();
-                var to = $("#toDate").find("input").val();
+        initParams();
 
-                $.ajax({
-                    //headers: {
-                    //    Accept : "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-                    //    "Content-Type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"
-                    //},
-                    type: "get",
-                    url: "/test/jdbc/remote/named1.xls",
-                    data: {from: from, to: to}
-                    //,
-                    //success: function(msg){
-                    //}
-                });
-            });
+        function getUrlPref() {
+            //var protocol = window.location.protocol;
+            //var host = window.location.host;
+            //var path = window.location.pathname;
+            return 'Hello';
+        }
+
+        function initDate() {
+            now = new Date();
+            now.setDate(1);
+            month = now.getMonth();
+
+            if (month >= 0 && month <= 2){
+                from = new Date(now.setMonth(0));
+                now.setDate(31);
+                to = new Date(now.setMonth(2));
+            }
+
+            else if (month >= 3 && month <= 5){
+                from = new Date(now.setMonth(3));
+                now.setDate(30);
+                to = new Date(now.setMonth(5));
+            }
+
+            else if (month >= 6 && month <= 8){
+                from = new Date(now.setMonth(6));
+                now.setDate(30);
+                to = new Date(now.setMonth(8));
+            }
+
+            else if (month >= 9 && month <= 11){
+                from = new Date(now.setMonth(9));
+                now.setDate(31);
+                to = new Date(now.setMonth(11));
+            }
+        }
+
+        function initParams() {
+            firstCommitFrom = true;
+            firstCommitTo = true;
+            initDate();
+            updateUrls();
+        }
+
+        function updateUrls() {
+            refParams = "?from=" + from.getDate() + "+" + (from.getMonth()+1) + "+" + from.getFullYear() + "&to="
+                    + to.getDate() + "+" + (to.getMonth()+1) + "+" + to.getFullYear();
+
+            q1Ref = "/test/jdbc/remote/named1.xls";
+            q2Ref = "/test/jdbc/remote/named2.xls";
+            q3Ref = "/test/jdbc/remote/named3.xls";
+            q4Ref = "/test/jdbc/remote/named4.xls";
+
+            q1Link = q1Ref + refParams;
+            q2Link = q2Ref + refParams;
+            q3Link = q3Ref + refParams;
+            q4Link = q4Ref + refParams;
+
+            $("#refQuery1").attr("href", q1Link);
+            $("#refQuery2").attr("href", q2Link);
+            $("#refQuery3").attr("href", q3Link);
+            $("#refQuery4").attr("href", q4Link);
+        }
+
+        $('#fromDate').on("dp.change",function (e) {
+            if(firstCommitFrom == true)
+                firstCommitFrom=false;
+            else {
+                tmp = new Date(e.date);
+                from.setFullYear(tmp.getFullYear());
+                from.setMonth(tmp.getMonth());
+                from.setDate(tmp.getDate());
+                firstCommitFrom = false;
+                updateUrls();
+            }
+        });
+
+        $('#toDate').on("dp.change",function (e) {
+            if(firstCommitTo == true)
+                firstCommitTo = false;
+            else {
+                tmp = new Date(e.date);
+                to.setFullYear(tmp.getFullYear());
+                to.setMonth(tmp.getMonth());
+                to.setDate(tmp.getDate());
+                firstCommitTo = false;
+                updateUrls();
+            }
+        });
 
 	    $('#fromDate').datetimepicker({
-	        defaultDate: new Date(),
+	        defaultDate: from,
 	        locale: 'ru',
 	        format: 'DD MM YYYY',
+	        maxDate: to
 	    });
 
 	    $('#toDate').datetimepicker({
-	        defaultDate: new Date(),
+	        defaultDate: to,
 	        locale: 'ru',
 	        format: 'DD MM YYYY',
 	    });
-
-
-	    $("#btnTestLocal").click(function(){
-            $.get("/test/jdbc/local", function(data, status){
-                alert("Data: " + data + "\nStatus: " + status);
-            });
-        });
-        $("#btnTestRemote").click(function(){
-            $.get("/test/jdbc/remote", function(data, status){
-                alert("Data: " + data + "\nStatus: " + status);
-            });
-        });
-        $("#btnTestRemote1").click(function(){
-            $.get("/test/jdbc/remote/named", function(data, status){
-                alert("Data: " + data + "\nStatus: " + status);
-            });
-        });
     });
-</script>
 
+</script>
 </html>
