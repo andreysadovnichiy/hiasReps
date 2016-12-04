@@ -94,7 +94,8 @@ public class ReportThreeBuilder extends AbstractXlsxView {
             cell4.setCellStyle(templStyle2);
 
             cell5 = row.createCell(5);
-            cell5.setCellValue(3);
+            if(item.getTotalFamilyMembers() != null)
+                cell5.setCellValue(item.getTotalFamilyMembers());
             cell5.setCellStyle(templStyle2);
 
             cell6 = row.createCell(6);

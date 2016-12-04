@@ -109,13 +109,14 @@
         }
 
         function updateUrls() {
-            refParams = "?from=" + from.getDate() + "+" + (from.getMonth()+1) + "+" + from.getFullYear() + "&to="
-                    + to.getDate() + "+" + (to.getMonth()+1) + "+" + to.getFullYear();
+            refParams = "?from=" + from.getDate() + "+"
+                            + (from.getMonth()+1) + "+" + from.getFullYear() + "&to="
+                             + to.getDate() + "+" + (to.getMonth()+1) + "+" + to.getFullYear();
 
-            q1Ref = "/test/jdbc/remote/named1.xls";
-            q2Ref = "/test/jdbc/remote/named2.xls";
-            q3Ref = "/test/jdbc/remote/named3.xls";
-            q4Ref = "/test/jdbc/remote/named4.xls";
+            q1Ref = "/reports/xls/report-one.xls";
+            q2Ref = "/reports/xls/report-two.xls";
+            q3Ref = "/reports/xls/report-three.xls";
+            q4Ref = "/reports/xls/report-four.xls";
 
             q1Link = q1Ref + refParams;
             q2Link = q2Ref + refParams;

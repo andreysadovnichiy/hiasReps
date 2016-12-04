@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
  */
 public class Query3 {
     private Long clientId;
+    private Integer totalFamilyMembers;
     private String iso3166_3;
     private String name;
     private String familyName;
@@ -22,6 +23,14 @@ public class Query3 {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public Integer getTotalFamilyMembers() {
+        return totalFamilyMembers;
+    }
+
+    public void setTotalFamilyMembers(Integer totalFamilyMembers) {
+        this.totalFamilyMembers = totalFamilyMembers;
     }
 
     public LocalDateTime getUnhcrDate() {
@@ -89,6 +98,7 @@ public class Query3 {
     public String toString() {
         return "Query3{" +
                 "clientId=" + clientId +
+                ", totalFamilyMembers=" + totalFamilyMembers +
                 ", iso3166_3='" + iso3166_3 + '\'' +
                 ", name='" + name + '\'' +
                 ", familyName='" + familyName + '\'' +

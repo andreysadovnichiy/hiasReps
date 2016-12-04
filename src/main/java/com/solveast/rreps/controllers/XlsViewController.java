@@ -33,7 +33,7 @@ public class XlsViewController {
     @Autowired
     private ReportFourService reportFourService;
 
-    @RequestMapping("/test/jdbc/remote/named1.xls")
+    @RequestMapping("/reports/xls/report-one.xls")
     public ModelAndView xlsReportOne(@RequestParam("from")String fromString,
                                      @RequestParam("to")String toString) {
 
@@ -45,7 +45,7 @@ public class XlsViewController {
         return new ModelAndView("excelViewReportOne", "model", data);
     }
 
-    @RequestMapping("/test/jdbc/remote/named2.xls")
+    @RequestMapping("/reports/xls/report-two.xls")
     public ModelAndView xlsReportTwo(@RequestParam("from")String fromString,
                                      @RequestParam("to")String toString) {
 
@@ -57,7 +57,7 @@ public class XlsViewController {
         return new ModelAndView("excelViewReportTwo", "model", data);
     }
 
-    @RequestMapping("/test/jdbc/remote/named3.xls")
+    @RequestMapping("/reports/xls/report-three.xls")
     public ModelAndView xlsReportThree(@RequestParam("from")String fromString,
                                        @RequestParam("to")String toString) {
 
@@ -69,7 +69,7 @@ public class XlsViewController {
         return new ModelAndView("excelViewReportThree", "model", data);
     }
 
-    @RequestMapping("/test/jdbc/remote/named4.xls")
+    @RequestMapping("/reports/xls/report-four.xls")
     public ModelAndView xlsReportFour(@RequestParam("from")String fromString,
                                       @RequestParam("to")String toString) {
 
