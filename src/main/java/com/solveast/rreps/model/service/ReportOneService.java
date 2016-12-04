@@ -2,6 +2,7 @@ package com.solveast.rreps.model.service;
 
 import com.solveast.rreps.model.dao.ReportOneDao;
 import com.solveast.rreps.model.queries.Query1;
+import com.solveast.rreps.model.queries.Query3;
 import com.solveast.rreps.model.queries.Report1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,7 @@ public class ReportOneService {
         Map<String, Object> data = new HashMap<>();
 
         List<Query1> rawData = reportDao.getQuery(from, to);
+        fixUnhcrdate(rawData, from.toLocalDateTime(), to.toLocalDateTime());
         data.put("rawData", rawData);
 
         Map<String, Report1> proccessedData = processData(rawData);
@@ -97,4 +99,19 @@ public class ReportOneService {
         }
         return report1Map;
     }
+
+    private List<Query1> fixUnhcrdate(List<Query1> query, LocalDateTime from, LocalDateTime to) {
+        List<Query1> forDelete = new ArrayList<>();
+
+        for (Query1 item : query) {
+            if (item.getUnhcrDate() != null)
+                if (item.getUnhcrDate().isBefore(from) || item.getUnhcrDate().isAfter(to))
+                    forDelete.add(item);
+        }
+
+        query.removeAll(forDelete);
+        return query;
+    }
+
+
 }
