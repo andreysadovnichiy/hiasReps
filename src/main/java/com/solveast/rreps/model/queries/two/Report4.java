@@ -1,4 +1,4 @@
-package com.solveast.rreps.model.queries;
+package com.solveast.rreps.model.queries.two;
 
 import java.util.HashSet;
 import java.util.Set;

@@ -1,7 +1,10 @@
 package com.solveast.rreps.model.service;
 
 import com.solveast.rreps.model.dao.ReportTwoDao;
-import com.solveast.rreps.model.queries.*;
+import com.solveast.rreps.model.queries.two.Query21;
+import com.solveast.rreps.model.queries.two.Query22;
+import com.solveast.rreps.model.queries.two.Query23;
+import com.solveast.rreps.model.queries.two.Report4;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

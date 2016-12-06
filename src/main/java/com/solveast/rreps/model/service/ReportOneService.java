@@ -1,9 +1,9 @@
 package com.solveast.rreps.model.service;
 
 import com.solveast.rreps.model.dao.ReportOneDao;
-import com.solveast.rreps.model.queries.Query1;
-import com.solveast.rreps.model.queries.Query3;
-import com.solveast.rreps.model.queries.Report1;
+import com.solveast.rreps.model.queries.one.IntroData1;
+import com.solveast.rreps.model.queries.one.Query1;
+import com.solveast.rreps.model.queries.one.Report1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,47 +16,45 @@ import java.util.*;
  */
 
 /*
-
-Необходимо формировать следующие отчеты и показатели:
-1.	Показатель Количество новых клиентов, посетивших офис за отчетный период:
-за основу берем дату создания карточки клиента в системе (clients.t_client:register_time).
-При этом надо проконтролировать дату регистрации клиента (clients.t_registration_form:unhcr_date).
-Если вторая дата меньше первой, то в анализе участвует вторая дата (т.е. карточка клиента была внесена
-в систему задним числом). Т.к. этот показатель связан с количеством клиентов, то за отчетный период
-клиента учитываем только один раз. Для того, чтобы посчитать клиентов, первоначально берем в расчет
-только тех клиентов, которые являются заявителями/апликантами (clients.t_client:applicant=TRUE).
-В количество посетителей также включаем членов семьи апликанта, т.е. тех клиентов, у которых
-clients.t_client:applicant_id = clients.t_client:client_id апликанта, вошедшего в расчет. К этому
-показателю нужно показать отчет:
-
-##	    Nationality	                           Adults	                         Children
-		                                 Males	      Females	           Males	      Females
-
-1    	   Страна
-   (clients.t_client:iso3166_3)	   Число муж(>=18)	Число жен(>=18)	    Число мал(<18)	Число дев(<18)
-
- */
-
+1. запрос аппликант равно true
+2. fixUnhcrdate
+3. birthday to age для аппликанта
+4. получить список членов семей с birthday
+5. birthday to age для членов семей
+*/
 
 @Service
 public class ReportOneService {
     @Autowired
     private ReportOneDao reportDao;
+    @Autowired
+    private FamilyService familyService;
 
     public Map<String, Object> getData(Timestamp from, Timestamp to) {
         Map<String, Object> data = new HashMap<>();
 
         List<Query1> rawData = reportDao.getQuery(from, to);
-        fixUnhcrdate(rawData, from.toLocalDateTime(), to.toLocalDateTime());
-        data.put("rawData", rawData);
+        //фикс внесенных задним числом
+        rawData = fixUnhcrdate(rawData, from.toLocalDateTime(), to.toLocalDateTime());
+        //конвертация запроса во входные данные
+        List<IntroData1> introData = toIntroData1(rawData);
+        //просчет возроста для апликанта и установка статуса more18 в true
+        introData = fixAgeForApplicant(introData);
 
-        Map<String, Report1> proccessedData = processData(rawData);
-        data.put("proccessedData", proccessedData);
 
+        introData = fixFamily(introData);
+
+
+
+        Map<String, Report1> report = processData(rawData);
+
+        data.put("introData", introData);
+        data.put("report", report);
         return data;
     }
 
-    public Map<String, Report1> processData(List<Query1> clients) {
+
+    private Map<String, Report1> processData(List<Query1> clients) {
         int adultYear = 18;
         int nowYear = LocalDateTime.now().getYear();
 
@@ -105,7 +103,7 @@ public class ReportOneService {
 
         for (Query1 item : query) {
             if (item.getUnhcrDate() != null)
-                if (item.getUnhcrDate().isBefore(from) || item.getUnhcrDate().isAfter(to))
+                if (item.getUnhcrDate().isBefore(from))
                     forDelete.add(item);
         }
 
@@ -113,5 +111,48 @@ public class ReportOneService {
         return query;
     }
 
+    private List<IntroData1> toIntroData1(List<Query1> sources) {
+        List<IntroData1> targets = new ArrayList<>();
 
+        for (Query1 item : sources) {
+            IntroData1 target = new IntroData1();
+            target.setClientId(item.getClientId());
+            target.setApplicant(item.getApplicant());
+            target.setBirthDate(item.getBirthDate());
+            target.setSexCd(item.getSexCd());
+            target.setRegisterTime(item.getRegisterTime());
+            target.setUnhcrDate(item.getUnhcrDate());
+            target.setApplicantId(item.getApplicantId());
+            target.setIso3166_3(item.getIso3166_3());
+        }
+
+        return targets;
+    }
+
+    private List<IntroData1> fixAgeForApplicant(List<IntroData1> sources) {
+        int nowYear = LocalDateTime.now().getYear();
+        int age;
+
+        for (IntroData1 item : sources) {
+            LocalDateTime birthDate = item.getBirthDate();
+            if(birthDate == null)
+                item.setAge(100);
+            age = nowYear - birthDate.getYear();
+            item.setAge(age);
+            item.setMore18(true);
+        }
+
+        return sources;
+    }
+
+
+    private List<IntroData1> fixFamily(List<IntroData1> sources) {
+        /*Map<Long, Integer> familyMap = familyService.getFamilyMapWithBirthdays();
+
+        for (Query1 item : rawData)
+            item.setApplicantsNumber(familyMap.get(item.getClientId()));
+
+        return rawData;*/
+        return sources;
+    }
 }

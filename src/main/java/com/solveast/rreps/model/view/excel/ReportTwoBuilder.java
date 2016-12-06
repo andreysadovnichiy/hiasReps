@@ -1,8 +1,8 @@
 package com.solveast.rreps.model.view.excel;
 
-import com.solveast.rreps.model.queries.Query21;
-import com.solveast.rreps.model.queries.Query22;
-import com.solveast.rreps.model.queries.Query23;
+import com.solveast.rreps.model.queries.two.Query21;
+import com.solveast.rreps.model.queries.two.Query22;
+import com.solveast.rreps.model.queries.two.Query23;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;

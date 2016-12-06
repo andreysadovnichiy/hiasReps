@@ -1,7 +1,7 @@
 package com.solveast.rreps.controllers;
 
 import com.solveast.rreps.model.DateConverterUtils;
-import com.solveast.rreps.model.queries.Query3;
+import com.solveast.rreps.model.queries.three.Query3;
 import com.solveast.rreps.model.service.ReportFourService;
 import com.solveast.rreps.model.service.ReportOneService;
 import com.solveast.rreps.model.service.ReportThreeService;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -37,8 +36,8 @@ public class XlsViewController {
     public ModelAndView xlsReportOne(@RequestParam("from")String fromString,
                                      @RequestParam("to")String toString) {
 
-        Timestamp from = DateConverterUtils.convertStringToTimestamp(fromString);
-        Timestamp to = DateConverterUtils.convertStringToTimestamp(toString);
+        Timestamp from = DateConverterUtils.toTimestamp(fromString);
+        Timestamp to = DateConverterUtils.toTimestamp(toString);
 
         Map<String, Object> data = reportOneService.getData(from, to);
 
@@ -49,8 +48,8 @@ public class XlsViewController {
     public ModelAndView xlsReportTwo(@RequestParam("from")String fromString,
                                      @RequestParam("to")String toString) {
 
-        Timestamp from = DateConverterUtils.convertStringToTimestamp(fromString);
-        Timestamp to = DateConverterUtils.convertStringToTimestamp(toString);
+        Timestamp from = DateConverterUtils.toTimestamp(fromString);
+        Timestamp to = DateConverterUtils.toTimestamp(toString);
 
         Map<String, Object> data = reportTwoService.getData(from, to);
 
@@ -61,8 +60,8 @@ public class XlsViewController {
     public ModelAndView xlsReportThree(@RequestParam("from")String fromString,
                                        @RequestParam("to")String toString) {
 
-        Timestamp from = DateConverterUtils.convertStringToTimestamp(fromString);
-        Timestamp to = DateConverterUtils.convertStringToTimestamp(toString);
+        Timestamp from = DateConverterUtils.toTimestamp(fromString);
+        Timestamp to = DateConverterUtils.toTimestamp(toString);
 
         List<Query3> data = reportThreeService.getData(from, to);
 
@@ -73,8 +72,8 @@ public class XlsViewController {
     public ModelAndView xlsReportFour(@RequestParam("from")String fromString,
                                       @RequestParam("to")String toString) {
 
-        Timestamp from = DateConverterUtils.convertStringToTimestamp(fromString);
-        Timestamp to = DateConverterUtils.convertStringToTimestamp(toString);
+        Timestamp from = DateConverterUtils.toTimestamp(fromString);
+        Timestamp to = DateConverterUtils.toTimestamp(toString);
 
         Map<String, Object> data = reportFourService.getData(from, to);
 

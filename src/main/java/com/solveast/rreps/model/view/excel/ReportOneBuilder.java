@@ -1,7 +1,7 @@
 package com.solveast.rreps.model.view.excel;
 
-import com.solveast.rreps.model.queries.Query1;
-import com.solveast.rreps.model.queries.Report1;
+import com.solveast.rreps.model.queries.one.Query1;
+import com.solveast.rreps.model.queries.one.Report1;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
@@ -77,7 +77,7 @@ public class ReportOneBuilder extends AbstractXlsxView {
             cell8.setCellStyle(templStyle8);
 
             cell9 = row.createCell(9);
-            cell9.setCellValue(item.getApplicantId());
+            cell9.setCellValue(item.getApplicantsNumber());
             cell9.setCellStyle(templStyle9);
 
             cell10 = row.createCell(10);

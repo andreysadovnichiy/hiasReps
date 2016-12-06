@@ -1,8 +1,8 @@
 package com.solveast.rreps.model.dao;
 
-import com.solveast.rreps.model.queries.Query21;
-import com.solveast.rreps.model.queries.Query22;
-import com.solveast.rreps.model.queries.Query23;
+import com.solveast.rreps.model.queries.two.Query21;
+import com.solveast.rreps.model.queries.two.Query22;
+import com.solveast.rreps.model.queries.two.Query23;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;

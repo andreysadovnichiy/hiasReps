@@ -1,16 +1,12 @@
 package com.solveast.rreps.model.view.excel;
 
-import com.solveast.rreps.model.queries.Query1;
-import com.solveast.rreps.model.queries.Query3;
-import com.solveast.rreps.model.queries.Report1;
+import com.solveast.rreps.model.queries.three.Query3;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.ZoneId;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

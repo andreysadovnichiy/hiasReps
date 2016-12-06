@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.Locale;
@@ -15,7 +17,7 @@ import java.util.Locale;
  */
 public class DateConverterUtils {
 
-    public static Timestamp convertStringToTimestamp(String str_date) {
+    public static Timestamp toTimestamp(String str_date) {
         try {
             DateFormat formatter;
             formatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
@@ -29,4 +31,17 @@ public class DateConverterUtils {
             return null;
         }
     }
+
+    public static Timestamp toTimestamp(LocalDateTime localDateTime) {
+        if (localDateTime == null)
+            return null;
+        return Timestamp.from(localDateTime.toInstant(ZoneOffset.ofHours(0)));
+    }
+
+    public static LocalDateTime toLocalDateTime(Timestamp timestamp) {
+        if (timestamp == null)
+            return null;
+        return timestamp.toLocalDateTime();
+    }
+
 }

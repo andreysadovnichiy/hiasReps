@@ -1,4 +1,4 @@
-package com.solveast.rreps.model.queries;
+package com.solveast.rreps.model.queries.three;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;

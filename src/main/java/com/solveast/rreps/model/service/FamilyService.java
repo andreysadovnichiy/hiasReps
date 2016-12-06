@@ -1,7 +1,7 @@
 package com.solveast.rreps.model.service;
 
 import com.solveast.rreps.model.dao.FamilyDao;
-import com.solveast.rreps.model.queries.FamilyQuery;
+import com.solveast.rreps.model.queries.family.FamilyQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +17,39 @@ public class FamilyService {
     @Autowired
     private FamilyDao dao;
 
-    public Map<Long, Integer> getFamilyMap() {
-        Map<Long, Integer> familyMap = new HashMap<>();
+    private enum Family {PLAIN, WITH_BIRTHDAYS}
 
-        List<FamilyQuery> family = dao.getFamily();
+    private List<FamilyQuery> get(Family family) {
+        if (family == Family.PLAIN) {
+            List<FamilyQuery> families = dao.getFamily();
+            return families;
+        }
+        if (family == Family.WITH_BIRTHDAYS) {
+            List<FamilyQuery> families = dao.getFamilyWithBirthdays();
+            return families;
+        }
+
+        return null;
+    }
+
+    public Map<Long, FamilyQuery> getFamilyMapWithBirthdays() {
+        List<FamilyQuery> family = get(Family.WITH_BIRTHDAYS);
+        Map<Long, Integer> clientFamilyMembersNumber = getClientTotalFamilyNumber(family);
+
+        Map<Long, FamilyQuery> familyMap = new HashMap<>();
+        for (FamilyQuery item : family) {
+            item.setFamilyMembersNumber(clientFamilyMembersNumber.get(item.getClientId()));
+        }
+
+        return familyMap;
+    }
+
+    public Map<Long, Integer> getFamilyMap() {
+        return getClientTotalFamilyNumber(get(Family.PLAIN));
+    }
+
+    private Map<Long, Integer> getClientTotalFamilyNumber(List<FamilyQuery> family) {
+        Map<Long, Integer> familyMap = new HashMap<>();
 
         for (FamilyQuery item : family) {
             if (item.getClientId() != null && item.getClientId() > 0)
@@ -33,9 +62,6 @@ public class FamilyService {
         Integer totalForClient;
         Integer totalForApplicant;
         for (FamilyQuery item : family) {
-            if(item.getApplicantId() == 205)
-                totalForClient=0;
-
             totalForClient = familyMap.get(item.getClientId());
             familyMap.put(item.getClientId(), totalForClient + 1);
 

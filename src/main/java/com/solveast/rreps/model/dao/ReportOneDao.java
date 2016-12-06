@@ -1,6 +1,6 @@
 package com.solveast.rreps.model.dao;
 
-import com.solveast.rreps.model.queries.Query1;
+import com.solveast.rreps.model.queries.one.Query1;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -27,7 +27,7 @@ public class ReportOneDao {
         namedParameters.put("from", from);
         namedParameters.put("to", to);
 
-        String sql = "SELECT cl.client_id, cl.applicant_id, cl.register_time, rf.unhcr_date," +
+        String sql = "SELECT cl.client_id, cl.register_time, rf.unhcr_date," +
                 " cl.sex_cd, cl.iso3166_3, cl.birth_date, un_relationship_cd, cl.applicant" +
                 " FROM clients.t_client AS cl" +
                 " LEFT JOIN clients.t_registration_form AS rf" +
@@ -40,7 +40,6 @@ public class ReportOneDao {
                     public Query1 mapRow(ResultSet rs, int i) throws SQLException {
                         Query1 item = new Query1();
                         item.setClientId(rs.getLong("client_id"));
-                        item.setApplicantId(rs.getLong("applicant_id"));
                         item.setRegisterTime(rs.getTimestamp("register_time"));
                         item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
                         item.setSexCd(rs.getString("sex_cd"));
