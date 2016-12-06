@@ -1,6 +1,6 @@
 package com.solveast.rreps.model.queries.one;
 
-import com.solveast.rreps.model.DateConverterUtils;
+import com.solveast.rreps.model.DateUtils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -8,10 +8,10 @@ import java.time.LocalDateTime;
 /**
  * Created by Андрей on 06.11.2016.
  */
-public class IntroData1 {
+public class IntroData {
     private Long clientId;
     private Long applicantId;
-    private Integer applicantsNumber;
+    private Integer familyMembersNumber;
     private LocalDateTime registerTime;
     private LocalDateTime unhcrDate;
     private String sexCd;
@@ -30,12 +30,12 @@ public class IntroData1 {
         this.clientId = clientId;
     }
 
-    public Integer getApplicantsNumber() {
-        return applicantsNumber;
+    public Integer getFamilyMembersNumber() {
+        return familyMembersNumber;
     }
 
-    public void setApplicantsNumber(Integer applicantsNumber) {
-        this.applicantsNumber = applicantsNumber;
+    public void setFamilyMembersNumber(Integer familyMembersNumber) {
+        this.familyMembersNumber = familyMembersNumber;
     }
 
     public Long getApplicantId() {
@@ -59,7 +59,7 @@ public class IntroData1 {
     }
 
     public void setRegisterTime(Timestamp registerTime) {
-        this.registerTime = DateConverterUtils.toLocalDateTime(registerTime);
+        this.registerTime = DateUtils.toLocalDateTime(registerTime);
     }
 
     public LocalDateTime getUnhcrDate() {
@@ -67,7 +67,7 @@ public class IntroData1 {
     }
 
     public void setUnhcrDate(Timestamp unhcrDate) {
-        this.registerTime = DateConverterUtils.toLocalDateTime(unhcrDate);
+        this.registerTime = DateUtils.toLocalDateTime(unhcrDate);
     }
 
     public String getSexCd() {
@@ -91,7 +91,7 @@ public class IntroData1 {
     }
 
     public void setBirthDate(Timestamp birthDate) {
-        this.birthDate = DateConverterUtils.toLocalDateTime(birthDate);
+        this.birthDate = DateUtils.toLocalDateTime(birthDate);
     }
 
     public void setBirthDate(LocalDateTime birthDate) {
@@ -132,10 +132,10 @@ public class IntroData1 {
 
     @Override
     public String toString() {
-        return "IntroData1{" +
+        return "IntroData{" +
                 "clientId=" + clientId +
                 ", applicantId=" + applicantId +
-                ", applicantsNumber=" + applicantsNumber +
+                ", familyMembersNumber=" + familyMembersNumber +
                 ", registerTime=" + registerTime +
                 ", unhcrDate=" + unhcrDate +
                 ", sexCd='" + sexCd + '\'' +

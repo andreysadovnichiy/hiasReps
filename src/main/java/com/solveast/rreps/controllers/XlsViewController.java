@@ -1,6 +1,6 @@
 package com.solveast.rreps.controllers;
 
-import com.solveast.rreps.model.DateConverterUtils;
+import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.queries.three.Query3;
 import com.solveast.rreps.model.service.ReportFourService;
 import com.solveast.rreps.model.service.ReportOneService;
@@ -36,8 +36,8 @@ public class XlsViewController {
     public ModelAndView xlsReportOne(@RequestParam("from")String fromString,
                                      @RequestParam("to")String toString) {
 
-        Timestamp from = DateConverterUtils.toTimestamp(fromString);
-        Timestamp to = DateConverterUtils.toTimestamp(toString);
+        Timestamp from = DateUtils.toTimestamp(fromString);
+        Timestamp to = DateUtils.toTimestamp(toString);
 
         Map<String, Object> data = reportOneService.getData(from, to);
 
@@ -48,8 +48,8 @@ public class XlsViewController {
     public ModelAndView xlsReportTwo(@RequestParam("from")String fromString,
                                      @RequestParam("to")String toString) {
 
-        Timestamp from = DateConverterUtils.toTimestamp(fromString);
-        Timestamp to = DateConverterUtils.toTimestamp(toString);
+        Timestamp from = DateUtils.toTimestamp(fromString);
+        Timestamp to = DateUtils.toTimestamp(toString);
 
         Map<String, Object> data = reportTwoService.getData(from, to);
 
@@ -60,8 +60,8 @@ public class XlsViewController {
     public ModelAndView xlsReportThree(@RequestParam("from")String fromString,
                                        @RequestParam("to")String toString) {
 
-        Timestamp from = DateConverterUtils.toTimestamp(fromString);
-        Timestamp to = DateConverterUtils.toTimestamp(toString);
+        Timestamp from = DateUtils.toTimestamp(fromString);
+        Timestamp to = DateUtils.toTimestamp(toString);
 
         List<Query3> data = reportThreeService.getData(from, to);
 
@@ -72,8 +72,8 @@ public class XlsViewController {
     public ModelAndView xlsReportFour(@RequestParam("from")String fromString,
                                       @RequestParam("to")String toString) {
 
-        Timestamp from = DateConverterUtils.toTimestamp(fromString);
-        Timestamp to = DateConverterUtils.toTimestamp(toString);
+        Timestamp from = DateUtils.toTimestamp(fromString);
+        Timestamp to = DateUtils.toTimestamp(toString);
 
         Map<String, Object> data = reportFourService.getData(from, to);
 

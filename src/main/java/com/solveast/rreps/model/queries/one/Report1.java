@@ -4,37 +4,17 @@ package com.solveast.rreps.model.queries.one;
  * Created by Андрей on 20.11.2016.
  */
 public class Report1 {
-    private Integer id;
     private String iso3166_3;
     private Integer male;
     private Integer female;
     private Integer boys;
     private Integer girls;
 
-    public Report1(Integer id, String iso3166_3, Integer male, Integer female, Integer boys, Integer girls) {
-        this.id = id;
-        this.iso3166_3 = iso3166_3;
-        this.male = male;
-        this.female = female;
-        this.boys = boys;
-        this.girls = girls;
-    }
-
     public Report1() {
-        id = 0;
-        iso3166_3 = "";
-        male = 0;
-        female = 0;
-        boys = 0;
-        girls = 0;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+        this.male = 0;
+        this.female = 0;
+        this.boys = 0;
+        this.girls = 0;
     }
 
     public String getIso3166_3() {
@@ -80,7 +60,6 @@ public class Report1 {
     @Override
     public String toString() {
         return "Report1{" +
-                "id=" + id +
                 ", iso3166_3='" + iso3166_3 + '\'' +
                 ", male=" + male +
                 ", female=" + female +

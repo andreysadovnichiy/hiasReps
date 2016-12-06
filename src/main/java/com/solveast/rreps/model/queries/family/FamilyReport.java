@@ -9,7 +9,6 @@ import java.time.LocalDateTime;
 public class FamilyReport {
     private Long clientId;
     private Long applicantId;
-    private Integer familyMembersNumber;
     private String sexCd;
     private LocalDateTime birthDate;
     private Integer age;
@@ -55,14 +54,6 @@ public class FamilyReport {
         this.birthDate = birthDate;
     }
 
-    public Integer getFamilyMembersNumber() {
-        return familyMembersNumber;
-    }
-
-    public void setFamilyMembersNumber(Integer familyMembersNumber) {
-        this.familyMembersNumber = familyMembersNumber;
-    }
-
     public Integer getAge() {
         return age;
     }
@@ -84,7 +75,6 @@ public class FamilyReport {
         return "FamilyReport{" +
                 "clientId=" + clientId +
                 ", applicantId=" + applicantId +
-                ", familyMembersNumber=" + familyMembersNumber +
                 ", sexCd='" + sexCd + '\'' +
                 ", birthDate=" + birthDate +
                 ", age=" + age +

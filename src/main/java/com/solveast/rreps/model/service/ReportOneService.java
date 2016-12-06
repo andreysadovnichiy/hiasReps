@@ -1,7 +1,8 @@
 package com.solveast.rreps.model.service;
 
 import com.solveast.rreps.model.dao.ReportOneDao;
-import com.solveast.rreps.model.queries.one.IntroData1;
+import com.solveast.rreps.model.queries.family.FamilyReport;
+import com.solveast.rreps.model.queries.one.IntroData;
 import com.solveast.rreps.model.queries.one.Query1;
 import com.solveast.rreps.model.queries.one.Report1;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,68 +35,64 @@ public class ReportOneService {
         Map<String, Object> data = new HashMap<>();
 
         List<Query1> rawData = reportDao.getQuery(from, to);
+        Map<Long, List<FamilyReport>> families = familyService.getFamily();
+
         //фикс внесенных задним числом
         rawData = fixUnhcrdate(rawData, from.toLocalDateTime(), to.toLocalDateTime());
         //конвертация запроса во входные данные
-        List<IntroData1> introData = toIntroData1(rawData);
+        List<IntroData> introData = toIntroData1(rawData);
         //просчет возроста для апликанта и установка статуса more18 в true
         introData = fixAgeForApplicant(introData);
+        //Удаляем семьи которые не вошли в отчетный период
+        families = fixFamiliesUpToQueredApplicant(introData, families);
+        //Добавляем количество членов семьи в отчет
+        introData = fixFamily(introData, families);
 
-
-        introData = fixFamily(introData);
-
-
-
-        Map<String, Report1> report = processData(rawData);
+        Map<String, Report1> report = createReport(introData, families);
 
         data.put("introData", introData);
         data.put("report", report);
         return data;
     }
 
+    private Map<String, Report1> createReport(List<IntroData> introData, Map<Long, List<FamilyReport>> families) {
+        Map<String, Report1> reportMap = new HashMap<>();
 
-    private Map<String, Report1> processData(List<Query1> clients) {
-        int adultYear = 18;
-        int nowYear = LocalDateTime.now().getYear();
-
-        Map<String, Report1> report1Map = new HashMap<>();
-
-        for (Query1 client : clients) {
-            String country = client.getIso3166_3();
-            Report1 report = report1Map.get(country);
+        for (IntroData item : introData) {
+            Report1 report = reportMap.get(item.getIso3166_3());
             if (report == null)
                 report = new Report1();
 
-            if (client.getBirthDate() == null) {
-                if (client.getApplicant() == true && client.getSexCd().equals("m"))
-                    report.setMale(report.getMale() + 1);
-                else if (client.getApplicant() == true && client.getSexCd().equals("f"))
-                    report.setFemale(report.getFemale() + 1);
-                else if (client.getApplicant() == false && client.getUn_relationship_cd().equals("CHI") && client.getSexCd().equals("m"))
-                    report.setBoys(report.getBoys() + 1);
-                else if (client.getApplicant() == false && client.getUn_relationship_cd().equals("CHI") && client.getSexCd().equals("f"))
-                    report.setGirls(report.getGirls() + 1);
+            report.setIso3166_3(item.getIso3166_3());
+            if ("m".equals(item.getSexCd()) && item.getMore18())
+                report.setMale(report.getMale() + 1);
+            else if ("f".equals(item.getSexCd()) && item.getMore18())
+                report.setFemale(report.getFemale() + 1);
+            else if ("m".equals(item.getSexCd()) && !item.getMore18())
+                report.setBoys(report.getBoys() + 1);
+            else if ("f".equals(item.getSexCd()) && !item.getMore18())
+                report.setGirls(report.getGirls() + 1);
 
-            } else {
-                int birthDateYear = nowYear - 100;
-                birthDateYear = client.getBirthDate().getYear();
+            //Добавляем семью
+            List<FamilyReport> family = families.get(item.getClientId());
 
-                if (nowYear - birthDateYear < adultYear) {
-                    if (client.getSexCd().equals("m"))
-                        report.setBoys(report.getBoys() + 1);
-                    else
-                        report.setGirls(report.getGirls() + 1);
-                } else {
-                    if (client.getSexCd().equals("m"))
+            if (family != null) {
+                for (FamilyReport entry : family) {
+                    if ("m".equals(entry.getSexCd()) && entry.getMore18())
                         report.setMale(report.getMale() + 1);
-                    else
+                    else if ("f".equals(entry.getSexCd()) && entry.getMore18())
                         report.setFemale(report.getFemale() + 1);
+                    else if ("m".equals(entry.getSexCd()) && !entry.getMore18())
+                        report.setBoys(report.getBoys() + 1);
+                    else if ("f".equals(entry.getSexCd()) && !entry.getMore18())
+                        report.setGirls(report.getGirls() + 1);
                 }
             }
-            report.setIso3166_3(country);
-            report1Map.put(country, report);
+
+            reportMap.put(item.getIso3166_3(), report);
         }
-        return report1Map;
+
+        return reportMap;
     }
 
     private List<Query1> fixUnhcrdate(List<Query1> query, LocalDateTime from, LocalDateTime to) {
@@ -111,11 +108,11 @@ public class ReportOneService {
         return query;
     }
 
-    private List<IntroData1> toIntroData1(List<Query1> sources) {
-        List<IntroData1> targets = new ArrayList<>();
+    private List<IntroData> toIntroData1(List<Query1> sources) {
+        List<IntroData> targets = new ArrayList<>();
 
         for (Query1 item : sources) {
-            IntroData1 target = new IntroData1();
+            IntroData target = new IntroData();
             target.setClientId(item.getClientId());
             target.setApplicant(item.getApplicant());
             target.setBirthDate(item.getBirthDate());
@@ -124,35 +121,53 @@ public class ReportOneService {
             target.setUnhcrDate(item.getUnhcrDate());
             target.setApplicantId(item.getApplicantId());
             target.setIso3166_3(item.getIso3166_3());
+
+            targets.add(target);
         }
 
         return targets;
     }
 
-    private List<IntroData1> fixAgeForApplicant(List<IntroData1> sources) {
+    private List<IntroData> fixAgeForApplicant(List<IntroData> sources) {
         int nowYear = LocalDateTime.now().getYear();
         int age;
 
-        for (IntroData1 item : sources) {
+        for (IntroData item : sources) {
             LocalDateTime birthDate = item.getBirthDate();
-            if(birthDate == null)
+            if (birthDate == null)
                 item.setAge(100);
-            age = nowYear - birthDate.getYear();
-            item.setAge(age);
+            else {
+                age = nowYear - birthDate.getYear();
+                item.setAge(age);
+            }
             item.setMore18(true);
         }
 
         return sources;
     }
 
+    private Map<Long, List<FamilyReport>> fixFamiliesUpToQueredApplicant(List<IntroData> introData, Map<Long, List<FamilyReport>> families) {
+        Map<Long, List<FamilyReport>> target = new HashMap<>();
 
-    private List<IntroData1> fixFamily(List<IntroData1> sources) {
-        /*Map<Long, Integer> familyMap = familyService.getFamilyMapWithBirthdays();
+        for (IntroData item : introData) {
+            List<FamilyReport> family = families.get(item.getClientId());
+            if (family != null && family.size() > 0) {
+                target.put(item.getClientId(), family);
+            }
+        }
 
-        for (Query1 item : rawData)
-            item.setApplicantsNumber(familyMap.get(item.getClientId()));
+        return target;
+    }
 
-        return rawData;*/
+    private List<IntroData> fixFamily(List<IntroData> sources, Map<Long, List<FamilyReport>> families) {
+        for (IntroData item : sources) {
+            List<FamilyReport> family = families.get(item.getClientId());
+            if (family == null)
+                item.setFamilyMembersNumber(1);
+            else
+                item.setFamilyMembersNumber(family.size() + 1);
+        }
+
         return sources;
     }
 }

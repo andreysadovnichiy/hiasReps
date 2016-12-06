@@ -9,9 +9,9 @@ import java.time.LocalDateTime;
 public class FamilyQuery {
     private Long clientId;
     private Long applicantId;
-    private Integer familyMembersNumber;
     private String sexCd;
     private LocalDateTime birthDate;
+    private String unRelationshipCd;
 
     public FamilyQuery() {
     }
@@ -49,12 +49,27 @@ public class FamilyQuery {
             this.birthDate = birthDate.toLocalDateTime();
     }
 
-    public Integer getFamilyMembersNumber() {
-        return familyMembersNumber;
+    public void setBirthDate(LocalDateTime birthDate) {
+        this.birthDate = birthDate;
     }
 
-    public void setFamilyMembersNumber(Integer familyMembersNumber) {
-        this.familyMembersNumber = familyMembersNumber;
+    public String getUnRelationshipCd() {
+        return unRelationshipCd;
+    }
+
+    public void setUnRelationshipCd(String unRelationshipCd) {
+        this.unRelationshipCd = unRelationshipCd;
+    }
+
+    public FamilyReport toFamilyReport() {
+        FamilyReport report = new FamilyReport();
+
+        report.setClientId(clientId);
+        report.setApplicantId(applicantId);
+        report.setSexCd(sexCd);
+        report.setBirthDate(birthDate);
+
+        return report;
     }
 
     @Override
@@ -62,9 +77,9 @@ public class FamilyQuery {
         return "FamilyQuery{" +
                 "clientId=" + clientId +
                 ", applicantId=" + applicantId +
-                ", familyMembersNumber=" + familyMembersNumber +
                 ", sexCd='" + sexCd + '\'' +
                 ", birthDate=" + birthDate +
+                ", unRelationshipCd='" + unRelationshipCd + '\'' +
                 '}';
     }
 }

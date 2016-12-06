@@ -15,7 +15,7 @@ import java.util.Locale;
 /**
  * Created by Андрей on 30.11.2016.
  */
-public class DateConverterUtils {
+public class DateUtils {
 
     public static Timestamp toTimestamp(String str_date) {
         try {
@@ -44,4 +44,14 @@ public class DateConverterUtils {
         return timestamp.toLocalDateTime();
     }
 
+    public static Integer getNowYear() {
+        return LocalDateTime.now().getYear();
+    }
+
+    public static Integer getAge(LocalDateTime dateTime) {
+        if (dateTime != null)
+            return LocalDateTime.now().getYear() - dateTime.getYear();
+        else
+            return 100;
+    }
 }

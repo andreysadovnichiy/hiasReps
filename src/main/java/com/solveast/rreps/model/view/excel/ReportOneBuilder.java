@@ -1,5 +1,6 @@
 package com.solveast.rreps.model.view.excel;
 
+import com.solveast.rreps.model.queries.one.IntroData;
 import com.solveast.rreps.model.queries.one.Query1;
 import com.solveast.rreps.model.queries.one.Report1;
 import org.apache.poi.ss.usermodel.*;
@@ -27,6 +28,69 @@ public class ReportOneBuilder extends AbstractXlsxView {
 
     @Override
     protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
+
+        Map<String, Object> data = (Map<String, Object>) map.get("model");
+        List<IntroData> rawData = (List<IntroData>) data.get("introData");
+        Map<String, Report1> reports = (Map<String, Report1>) data.get("report");
+
+        Sheet sheet = workbook.getSheet("Запрос 1");
+        Row row;
+        int i = 0;
+        int rowShift = 6;
+
+        Cell cell1 = null;
+        Cell cell2 = null;
+        Cell cell3 = null;
+        Cell cell4 = null;
+        Cell cell5 = null;
+        Cell cell6 = null;
+
+        CellStyle templStyle1 = sheet.getRow(rowShift).getCell(1).getCellStyle();
+        CellStyle templStyle2 = sheet.getRow(rowShift).getCell(2).getCellStyle();
+        CellStyle templStyle3 = sheet.getRow(rowShift).getCell(3).getCellStyle();
+        CellStyle templStyle4 = sheet.getRow(rowShift).getCell(4).getCellStyle();
+        CellStyle templStyle5 = sheet.getRow(rowShift).getCell(5).getCellStyle();
+        CellStyle templStyle6 = sheet.getRow(rowShift).getCell(6).getCellStyle();
+
+        for (Map.Entry<String, Report1> item : reports.entrySet()) {
+            Report1 report = item.getValue();
+
+            row = sheet.getRow(rowShift + i);
+            if (row == null) {
+                row = sheet.createRow(rowShift + i);
+            }
+
+            cell1 = row.createCell(1);
+            cell1.setCellValue(i + 1);
+            cell1.setCellStyle(templStyle1);
+
+            cell2 = row.createCell(2);
+            cell2.setCellValue(report.getIso3166_3());
+            cell2.setCellStyle(templStyle2);
+
+            cell3 = row.createCell(3);
+            cell3.setCellValue(report.getMale());
+            cell3.setCellStyle(templStyle3);
+
+            cell4 = row.createCell(4);
+            cell4.setCellValue(report.getFemale());
+            cell4.setCellStyle(templStyle4);
+
+            cell5 = row.createCell(5);
+            cell5.setCellValue(report.getBoys());
+            cell5.setCellStyle(templStyle5);
+
+            cell6 = row.createCell(6);
+            cell6.setCellValue(report.getGirls());
+            cell6.setCellStyle(templStyle6);
+
+            i++;
+        }
+
+
+
+
+   /*
         Map<String, Object> data = (Map<String, Object>) map.get("model");
 
         List<Query1> rawData = (List<Query1>) data.get("rawData");
@@ -77,7 +141,7 @@ public class ReportOneBuilder extends AbstractXlsxView {
             cell8.setCellStyle(templStyle8);
 
             cell9 = row.createCell(9);
-            cell9.setCellValue(item.getApplicantsNumber());
+            cell9.setCellValue(item.getFamilyMembersNumber());
             cell9.setCellStyle(templStyle9);
 
             cell10 = row.createCell(10);
@@ -150,6 +214,6 @@ public class ReportOneBuilder extends AbstractXlsxView {
 //            cell8.setCellStyle(templStyle8);
 
             i++;
-        }
+        }*/
     }
 }

@@ -1,6 +1,6 @@
 package com.solveast.rreps.model.queries.one;
 
-import com.solveast.rreps.model.DateConverterUtils;
+import com.solveast.rreps.model.DateUtils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -40,7 +40,7 @@ public class Query1 {
     }
 
     public void setRegisterTime(Timestamp registerTime) {
-        this.registerTime = DateConverterUtils.toLocalDateTime(registerTime);
+        this.registerTime = DateUtils.toLocalDateTime(registerTime);
     }
 
     public LocalDateTime getUnhcrDate() {
@@ -48,7 +48,7 @@ public class Query1 {
     }
 
     public void setUnhcrDate(Timestamp unhcrDate) {
-        this.registerTime = DateConverterUtils.toLocalDateTime(unhcrDate);
+        this.registerTime = DateUtils.toLocalDateTime(unhcrDate);
     }
 
     public String getSexCd() {
@@ -72,7 +72,7 @@ public class Query1 {
     }
 
     public void setBirthDate(Timestamp birthDate) {
-        this.birthDate = DateConverterUtils.toLocalDateTime(birthDate);
+        this.birthDate = DateUtils.toLocalDateTime(birthDate);
     }
 
     public void setRegisterTime(LocalDateTime registerTime) {
