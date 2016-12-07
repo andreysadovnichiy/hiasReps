@@ -48,7 +48,7 @@ public class Query1 {
     }
 
     public void setUnhcrDate(Timestamp unhcrDate) {
-        this.registerTime = DateUtils.toLocalDateTime(unhcrDate);
+        this.unhcrDate = DateUtils.toLocalDateTime(unhcrDate);
     }
 
     public String getSexCd() {

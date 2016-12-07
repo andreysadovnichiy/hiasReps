@@ -40,6 +40,10 @@ public class ReportOneDao {
                     public Query1 mapRow(ResultSet rs, int i) throws SQLException {
                         Query1 item = new Query1();
                         item.setClientId(rs.getLong("client_id"));
+                        if(item.getClientId() == 640L)
+                        {
+                            System.out.println("kdfjg");
+                        }
                         item.setRegisterTime(rs.getTimestamp("register_time"));
                         item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
                         item.setSexCd(rs.getString("sex_cd"));
