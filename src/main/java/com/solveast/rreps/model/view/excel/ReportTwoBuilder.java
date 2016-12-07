@@ -172,7 +172,7 @@ public class ReportTwoBuilder extends AbstractXlsxView {
             cell.setCellStyle(templStyle2);
 
             cell = row.createCell(initCell + 2);
-            cell.setCellValue(item.getActionStateCd());
+            cell.setCellValue(item.getActionResultId());
             cell.setCellStyle(templStyle3);
 
             if (item.getRealTimeStart() != null) {
