@@ -40,19 +40,16 @@ public class WorkbookFactory {
             e.printStackTrace();
         }
 
-        List<String> sheetNames = new ArrayList<String>(Arrays.asList("Запрос 1", "Запрос 2", "Запрос 3", "Запрос 4", "Запрос 5", "Запрос 6", "Запрос 7"));
+        List<String> sheetNames = new ArrayList<String>(Arrays.asList("Запрос 1", "Запрос 3", "Запрос 2-4", "Запрос 5", "Запрос 6", "Запрос 7"));
         switch (report) {
             case ONE:
                 sheetNames.remove("Запрос 1");
-                break;
-            case TWO:
-                sheetNames.remove("Запрос 2");
                 break;
             case THREE:
                 sheetNames.remove("Запрос 3");
                 break;
             case FOUR:
-                sheetNames.remove("Запрос 4");
+                sheetNames.remove("Запрос 2-4");
                 break;
             case FIVE:
                 sheetNames.remove("Запрос 5");
@@ -81,12 +78,10 @@ public class WorkbookFactory {
         switch (report) {
             case ONE:
                 return workbook.getSheet("Запрос 1");
-            case TWO:
-                return workbook.getSheet("Запрос 2");
             case THREE:
                 return workbook.getSheet("Запрос 3");
             case FOUR:
-                return workbook.getSheet("Запрос 4");
+                return workbook.getSheet("Запрос 2-4");
             case FIVE:
                 return workbook.getSheet("Запрос 5");
             case SIX:

@@ -10,6 +10,7 @@ public class Query22 {
     private Long clientId;
     private String sexCd;
     private LocalDateTime birthDate;
+    private String unRelationshipCd;
     private LocalDateTime registerTime;
 
     public Long getClientId() {
@@ -35,6 +36,22 @@ public class Query22 {
 
     public void setSexCd(String sexCd) {
         this.sexCd = sexCd;
+    }
+
+    public void setBirthDate(LocalDateTime birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public String getUnRelationshipCd() {
+        return unRelationshipCd;
+    }
+
+    public void setUnRelationshipCd(String unRelationshipCd) {
+        this.unRelationshipCd = unRelationshipCd;
+    }
+
+    public void setRegisterTime(LocalDateTime registerTime) {
+        this.registerTime = registerTime;
     }
 
     public LocalDateTime getBirthDate() {

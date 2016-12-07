@@ -29,10 +29,13 @@ public class ReportTwoDao {
         namedParameters.put("from", from);
         namedParameters.put("to", to);
 
-        String sql = "SELECT ta.client_id, ta.action_type, ta.action_state_cd, " +
+        String sql = "SELECT ta.client_id, ta.action_type, ta.action_result_id," +
+                " cl.un_relationship_cd, cl.sex_cd, cl.birth_date," +
                 " ta.real_time_start, ta.real_time_stop, ta.scheduled_time_start, ta.scheduled_time_stop" +
                 " FROM tasks.t_action AS ta" +
-                " WHERE (ta.action_type = 'CLA' AND ta.action_state_cd = 'CLS')" +
+                " LEFT JOIN clients.t_client AS cl" +
+                " ON cl.client_id = ta.client_id" +
+                " WHERE (ta.action_type = 'CLA' AND ta.action_result_id IN (2, 5, 10, 19, 20))" +
                 " AND " +
                 " ((ta.real_time_start BETWEEN :from AND :to)" +
                 " OR (ta.real_time_stop BETWEEN :from AND :to)" +
@@ -46,7 +49,10 @@ public class ReportTwoDao {
                         Query21 item = new Query21();
                         item.setClientId(rs.getLong("client_id"));
                         item.setActionType(rs.getString("action_type"));
-                        item.setActionStateCd(rs.getString("action_state_cd"));
+                        item.setActionResultId(rs.getInt("action_result_id"));
+                        item.setSexCd(rs.getString("sex_cd"));
+                        item.setBirthDate(rs.getTimestamp("birth_date"));
+                        item.setUnRelationshipCd(rs.getString("un_relationship_cd"));
                         item.setRealTimeStart(rs.getTimestamp("real_time_start"));
                         item.setRealTimeStop(rs.getTimestamp("real_time_stop"));
                         item.setScheduledTimeStart(rs.getTimestamp("scheduled_time_start"));
@@ -64,7 +70,7 @@ public class ReportTwoDao {
         namedParameters.put("from", from);
         namedParameters.put("to", to);
 
-        String sql = "SELECT cl.client_id, cl.sex_cd, cl.birth_date, cl.register_time" +
+        String sql = "SELECT cl.client_id, cl.un_relationship_cd, cl.sex_cd, cl.birth_date, cl.register_time" +
                 " FROM clients.t_client AS cl" +
                 " WHERE (cl.register_time BETWEEN :from AND :to)";
 
@@ -77,6 +83,7 @@ public class ReportTwoDao {
                         item.setRegisterTime(rs.getTimestamp("register_time"));
                         item.setBirthDate(rs.getTimestamp("birth_date"));
                         item.setSexCd(rs.getString("sex_cd"));
+                        item.setUnRelationshipCd(rs.getString("un_relationship_cd"));
                         return item;
                     }
                 });
@@ -90,7 +97,7 @@ public class ReportTwoDao {
         namedParameters.put("from", from);
         namedParameters.put("to", to);
 
-        String sql = "SELECT fr.client_id, cl.sex_cd, cl.birth_date, fr.register_time" +
+        String sql = "SELECT fr.client_id, cl.sex_cd, cl.un_relationship_cd, cl.birth_date, fr.register_time" +
                 " FROM clients.t_registration_form AS fr" +
                 " LEFT JOIN clients.t_client AS cl ON cl.client_id = fr.client_id" +
                 " WHERE (fr.register_time BETWEEN :from AND :to)";
@@ -104,6 +111,7 @@ public class ReportTwoDao {
                         item.setRegisterTime(rs.getTimestamp("register_time"));
                         item.setBirthDate(rs.getTimestamp("birth_date"));
                         item.setSexCd(rs.getString("sex_cd"));
+                        item.setUnRelationshipCd(rs.getString("un_relationship_cd"));
                         return item;
                     }
                 });

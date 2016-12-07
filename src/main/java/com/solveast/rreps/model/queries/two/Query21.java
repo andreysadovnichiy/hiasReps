@@ -10,8 +10,9 @@ public class Query21 {
     private Long clientId;
     private String sexCd;
     private LocalDateTime birthDate;
+    private String unRelationshipCd;
     private String actionType;
-    private String actionStateCd;
+    private Integer actionResultId;
     private LocalDateTime realTimeStart;
     private LocalDateTime realTimeStop;
     private LocalDateTime scheduledTimeStart;
@@ -33,12 +34,12 @@ public class Query21 {
         this.actionType = actionType;
     }
 
-    public String getActionStateCd() {
-        return actionStateCd;
+    public Integer getActionResultId() {
+        return actionResultId;
     }
 
-    public void setActionStateCd(String actionStateCd) {
-        this.actionStateCd = actionStateCd;
+    public void setActionResultId(Integer actionResultId) {
+        this.actionResultId = actionResultId;
     }
 
     public LocalDateTime getRealTimeStart() {
@@ -60,6 +61,14 @@ public class Query21 {
     public void setBirthDate(Timestamp birthDate) {
         if (birthDate != null)
             this.birthDate = birthDate.toLocalDateTime();
+    }
+
+    public String getUnRelationshipCd() {
+        return unRelationshipCd;
+    }
+
+    public void setUnRelationshipCd(String unRelationshipCd) {
+        this.unRelationshipCd = unRelationshipCd;
     }
 
     public void setRealTimeStart(Timestamp realTimeStart) {
@@ -94,14 +103,35 @@ public class Query21 {
             this.scheduledTimeStop = scheduledTimeStop.toLocalDateTime();
     }
 
+    public void setBirthDate(LocalDateTime birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setRealTimeStart(LocalDateTime realTimeStart) {
+        this.realTimeStart = realTimeStart;
+    }
+
+    public void setRealTimeStop(LocalDateTime realTimeStop) {
+        this.realTimeStop = realTimeStop;
+    }
+
+    public void setScheduledTimeStart(LocalDateTime scheduledTimeStart) {
+        this.scheduledTimeStart = scheduledTimeStart;
+    }
+
+    public void setScheduledTimeStop(LocalDateTime scheduledTimeStop) {
+        this.scheduledTimeStop = scheduledTimeStop;
+    }
+
     @Override
     public String toString() {
         return "Query21{" +
                 "clientId=" + clientId +
                 ", sexCd='" + sexCd + '\'' +
                 ", birthDate=" + birthDate +
+                ", unRelationshipCd='" + unRelationshipCd + '\'' +
                 ", actionType='" + actionType + '\'' +
-                ", actionStateCd='" + actionStateCd + '\'' +
+                ", actionResultId=" + actionResultId +
                 ", realTimeStart=" + realTimeStart +
                 ", realTimeStop=" + realTimeStop +
                 ", scheduledTimeStart=" + scheduledTimeStart +

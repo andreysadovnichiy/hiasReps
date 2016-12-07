@@ -4,6 +4,7 @@ import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.dao.FamilyDao;
 import com.solveast.rreps.model.queries.family.FamilyQuery;
 import com.solveast.rreps.model.queries.family.FamilyReport;
+import com.solveast.rreps.model.queries.two.FamilyReport2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +58,22 @@ public class FamilyService {
         }
 
         return target;
+    }
+
+    public List<FamilyReport2> getFamilyForReport2() {
+        List<FamilyReport2> familyReport = new ArrayList<>();
+        List<FamilyQuery> family = dao.getFamily();
+
+        for (FamilyQuery item : family) {
+            FamilyReport2 report = new FamilyReport2();
+            report.setClientId(item.getClientId());
+            report.setApplicantId(item.getApplicantId());
+            report.setSexCd(item.getSexCd());
+            report.setAge(item.getBirthDate());
+            familyReport.add(report);
+        }
+
+        return familyReport;
     }
 
     public Map<Long, Integer> getFamilyMap() {

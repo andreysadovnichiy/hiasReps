@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class Query23 {
     private Long clientId;
     private String sexCd;
+    private String unRelationshipCd;
     private LocalDateTime birthDate;
     private LocalDateTime registerTime;
 
@@ -36,6 +37,22 @@ public class Query23 {
     public void setBirthDate(Timestamp birthDate) {
         if (birthDate != null)
             this.birthDate = birthDate.toLocalDateTime();
+    }
+
+    public String getUnRelationshipCd() {
+        return unRelationshipCd;
+    }
+
+    public void setUnRelationshipCd(String unRelationshipCd) {
+        this.unRelationshipCd = unRelationshipCd;
+    }
+
+    public void setBirthDate(LocalDateTime birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setRegisterTime(LocalDateTime registerTime) {
+        this.registerTime = registerTime;
     }
 
     public String getSexCd() {

@@ -10,6 +10,7 @@ import org.springframework.web.servlet.view.document.AbstractXlsxView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.sql.Timestamp;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +42,11 @@ public class ReportFourBuilder extends AbstractXlsxView {
         List<Query22> rawData22 = (List<Query22>) data.get("rawData22");
         List<Query23> rawData23 = (List<Query23>) data.get("rawData23");
 
+        Integer unknownBirthDayTotal = (Integer) data.get("unknownBirthDayTotal");
+        Integer total = (Integer) data.get("total");
+        Timestamp from = (Timestamp) data.get("from");
+        Timestamp to = (Timestamp) data.get("to");
+
         Sheet sheet = wbFactory.getSheet(report);
 
         int indexRow_0_4 = 8;
@@ -56,12 +62,23 @@ public class ReportFourBuilder extends AbstractXlsxView {
         fillReportTable(sheet, indexRow_5_17, indexCellMaleValue, report4.getMale_5_17(), indexCellFemaleValue, report4.getFemale_5_17(), indexCellTotal, report4.getTotal());
         fillReportTable(sheet, indexRow_18_59, indexCellMaleValue, report4.getMale_18_59(), indexCellFemaleValue, report4.getFemale_18_59(), indexCellTotal, report4.getTotal());
         fillReportTable(sheet, indexRow_60_, indexCellMaleValue, report4.getMale_60_(), indexCellFemaleValue, report4.getFemale_60_(), indexCellTotal, report4.getTotal());
+        fillReportTableTotal(sheet,report4);
 
         fillQuery21Table(sheet, rawData21);
         fillQuery22Table(sheet, rawData22);
         fillQuery23Table(sheet, rawData23);
 
+        Row row = null;
+        row = sheet.getRow(14);
+        if (row == null)
+            sheet.createRow(14);
+        Cell cell = row.getCell(3);
+        cell.setCellValue(total);
+
+        cell = row.getCell(6);
+        cell.setCellValue(unknownBirthDayTotal);
     }
+
 
     private void fillQuery22Table(Sheet sheet, List<Query22> rawData22) {
         int initRow = 16;
@@ -76,7 +93,6 @@ public class ReportFourBuilder extends AbstractXlsxView {
         Cell cell;
         Date date;
         int i = 0;
-
         for (Query22 item : rawData22) {
 
             row = sheet.getRow(initRow + i);
@@ -192,7 +208,7 @@ public class ReportFourBuilder extends AbstractXlsxView {
             cell.setCellStyle(templStyle2);
 
             cell = row.createCell(initCell + 2);
-            cell.setCellValue(item.getActionStateCd());
+            cell.setCellValue(item.getActionResultId());
             cell.setCellStyle(templStyle3);
 
             if (item.getBirthDate() != null) {
@@ -236,6 +252,27 @@ public class ReportFourBuilder extends AbstractXlsxView {
             i++;
         }
     }
+
+    private void fillReportTableTotal(Sheet sheet, Report4 report4) {
+
+        int totalMale = report4.getMale_0_4() + report4.getMale_5_17() + report4.getMale_18_59() + report4.getMale_60_();
+        int totalFemale = report4.getFemale_0_4() + report4.getFemale_5_17() + report4.getFemale_18_59() + report4.getFemale_60_();
+
+        float percentMale = (float) totalMale / (totalFemale+totalMale);
+        float percentFemale = (float) totalFemale / (totalFemale+totalMale);
+
+        Row row = sheet.getRow(12);
+        row.getCell(3).setCellValue(totalMale);
+        row.getCell(4).setCellValue(percentMale);
+
+        row.getCell(5).setCellValue(totalFemale);
+        row.getCell(6).setCellValue(percentFemale);
+
+        row.getCell(7).setCellValue(totalMale+totalFemale);
+        row.getCell(8).setCellValue(1);
+    }
+
+
 
     private void fillReportTable(Sheet sheet, int indexRow,
                                  int indexCellMale, int maleValue,

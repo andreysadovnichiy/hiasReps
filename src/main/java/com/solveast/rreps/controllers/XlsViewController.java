@@ -44,6 +44,7 @@ public class XlsViewController {
         return new ModelAndView("excelViewReportOne", "model", data);
     }
 
+/*
     @RequestMapping("/reports/xls/report-two.xls")
     public ModelAndView xlsReportTwo(@RequestParam("from")String fromString,
                                      @RequestParam("to")String toString) {
@@ -55,6 +56,7 @@ public class XlsViewController {
 
         return new ModelAndView("excelViewReportTwo", "model", data);
     }
+*/
 
     @RequestMapping("/reports/xls/report-three.xls")
     public ModelAndView xlsReportThree(@RequestParam("from")String fromString,

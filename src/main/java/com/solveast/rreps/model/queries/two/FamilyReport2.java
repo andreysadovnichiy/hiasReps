@@ -1,21 +1,19 @@
-package com.solveast.rreps.model.queries.family;
+package com.solveast.rreps.model.queries.two;
+
+import com.solveast.rreps.model.DateUtils;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
- * Created by Андрей on 04.12.2016.
+ * Created by Андрей on 07.12.2016.
  */
-public class FamilyReport {
+public class FamilyReport2 {
     private Long clientId;
     private Long applicantId;
     private String sexCd;
     private LocalDateTime birthDate;
     private Integer age;
-    private Boolean more18;
-
-    public FamilyReport() {
-    }
 
     public Long getClientId() {
         return clientId;
@@ -45,12 +43,8 @@ public class FamilyReport {
         return birthDate;
     }
 
-    public void setBirthDate(Timestamp birthDate) {
-        if (birthDate != null)
-            this.birthDate = birthDate.toLocalDateTime();
-    }
-
     public void setBirthDate(LocalDateTime birthDate) {
+        setAge(birthDate);
         this.birthDate = birthDate;
     }
 
@@ -62,12 +56,13 @@ public class FamilyReport {
         this.age = age;
     }
 
-    public Boolean getMore18() {
-        return more18;
+    public void setAge(Timestamp age) {
+        if (age != null)
+            this.age = DateUtils.getAge(age.toLocalDateTime());
     }
 
-    public void setMore18(Boolean more18) {
-        this.more18 = more18;
+    public void setAge(LocalDateTime age) {
+        this.age = DateUtils.getAge(age);
     }
 
     @Override
@@ -78,7 +73,8 @@ public class FamilyReport {
                 ", sexCd='" + sexCd + '\'' +
                 ", birthDate=" + birthDate +
                 ", age=" + age +
-                ", more18=" + more18 +
                 '}';
     }
 }
+
+
