@@ -2,10 +2,7 @@ package com.solveast.rreps.controllers;
 
 import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.queries.three.Query3;
-import com.solveast.rreps.model.service.ReportFourService;
-import com.solveast.rreps.model.service.ReportOneService;
-import com.solveast.rreps.model.service.ReportThreeService;
-import com.solveast.rreps.model.service.ReportTwoService;
+import com.solveast.rreps.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +29,21 @@ public class XlsViewController {
     @Autowired
     private ReportFourService reportFourService;
 
+    @Autowired
+    private ROneService rOneService;
+
+    @RequestMapping("/reports/xls/report-one.xls")
+    public ModelAndView xlsReportOne(@RequestParam("from")String fromString,
+                                     @RequestParam("to")String toString) {
+
+        Timestamp from = DateUtils.toTimestamp(fromString);
+        Timestamp to = DateUtils.toTimestamp(toString);
+
+        Map<String, Object> data = rOneService.getReport(from, to);
+
+        return new ModelAndView("excelViewROne", "model", data);
+    }
+/*
     @RequestMapping("/reports/xls/report-one.xls")
     public ModelAndView xlsReportOne(@RequestParam("from")String fromString,
                                      @RequestParam("to")String toString) {
@@ -42,19 +54,6 @@ public class XlsViewController {
         Map<String, Object> data = reportOneService.getData(from, to);
 
         return new ModelAndView("excelViewReportOne", "model", data);
-    }
-
-/*
-    @RequestMapping("/reports/xls/report-two.xls")
-    public ModelAndView xlsReportTwo(@RequestParam("from")String fromString,
-                                     @RequestParam("to")String toString) {
-
-        Timestamp from = DateUtils.toTimestamp(fromString);
-        Timestamp to = DateUtils.toTimestamp(toString);
-
-        Map<String, Object> data = reportTwoService.getData(from, to);
-
-        return new ModelAndView("excelViewReportTwo", "model", data);
     }
 */
 

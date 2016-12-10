@@ -1,63 +1,14 @@
 package com.solveast.rreps.model.queries.one;
 
-import com.solveast.rreps.model.DateUtils;
-
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import com.solveast.rreps.model.queries.base.BaseQuery;
+import com.solveast.rreps.model.queries.family.Person;
 
 /**
  * Created by Андрей on 06.11.2016.
  */
-public class Query1 {
-    private Long clientId;
-    private Long applicantId;
-    private LocalDateTime registerTime;
-    private LocalDateTime unhcrDate;
-    private String sexCd;
+public class Query1 extends BaseQuery {
     private String iso3166_3;
-    private LocalDateTime birthDate;
-    private String un_relationship_cd;
     private Boolean applicant;
-
-    public Long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
-    }
-
-    public Long getApplicantId() {
-        return applicantId;
-    }
-
-    public void setApplicantId(Long applicantId) {
-        this.applicantId = applicantId;
-    }
-
-    public LocalDateTime getRegisterTime() {
-        return registerTime;
-    }
-
-    public void setRegisterTime(Timestamp registerTime) {
-        this.registerTime = DateUtils.toLocalDateTime(registerTime);
-    }
-
-    public LocalDateTime getUnhcrDate() {
-        return unhcrDate;
-    }
-
-    public void setUnhcrDate(Timestamp unhcrDate) {
-        this.unhcrDate = DateUtils.toLocalDateTime(unhcrDate);
-    }
-
-    public String getSexCd() {
-        return sexCd;
-    }
-
-    public void setSexCd(String sexCd) {
-        this.sexCd = sexCd;
-    }
 
     public String getIso3166_3() {
         return iso3166_3;
@@ -65,22 +16,6 @@ public class Query1 {
 
     public void setIso3166_3(String iso3166_3) {
         this.iso3166_3 = iso3166_3;
-    }
-
-    public LocalDateTime getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(Timestamp birthDate) {
-        this.birthDate = DateUtils.toLocalDateTime(birthDate);
-    }
-
-    public void setRegisterTime(LocalDateTime registerTime) {
-        this.registerTime = registerTime;
-    }
-
-    public void setUnhcrDate(LocalDateTime unhcrDate) {
-        this.unhcrDate = unhcrDate;
     }
 
     public Boolean getApplicant() {
@@ -91,25 +26,23 @@ public class Query1 {
         this.applicant = applicant;
     }
 
-    public String getUn_relationship_cd() {
-        return un_relationship_cd;
-    }
+    public Person toPerson() {
+        Person person = new Person();
 
-    public void setUn_relationship_cd(String un_relationship_cd) {
-        this.un_relationship_cd = un_relationship_cd;
+        person.setClientId(getClientId());
+        person.setApplicantId(getApplicantId());
+        person.setRegisterTime(getRegisterTime());
+        person.setUnhcrDate(getUnhcrDate());
+        person.setSexCd(getSexCd());
+        person.setBirthDate(getBirthDate());
+        person.setUnRelationshipCd(getUnRelationshipCd());
+        return person;
     }
 
     @Override
     public String toString() {
         return "Query1{" +
-                "clientId=" + clientId +
-                ", applicantId=" + applicantId +
-                ", registerTime=" + registerTime +
-                ", unhcrDate=" + unhcrDate +
-                ", sexCd='" + sexCd + '\'' +
                 ", iso3166_3='" + iso3166_3 + '\'' +
-                ", birthDate=" + birthDate +
-                ", un_relationship_cd='" + un_relationship_cd + '\'' +
                 ", applicant=" + applicant +
                 '}';
     }

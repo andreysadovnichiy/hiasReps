@@ -1,7 +1,6 @@
 package com.solveast.rreps.model.view.excel;
 
 import com.solveast.rreps.model.queries.one.IntroData;
-import com.solveast.rreps.model.queries.one.Query1;
 import com.solveast.rreps.model.queries.one.Report1;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;

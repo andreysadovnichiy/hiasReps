@@ -28,11 +28,31 @@ public class ReportOneDao {
         namedParameters.put("to", to);
 
         String sql = "SELECT cl.client_id, cl.register_time, rf.unhcr_date," +
-                " cl.sex_cd, cl.iso3166_3, cl.birth_date, un_relationship_cd, cl.applicant" +
+                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.un_relationship_cd, cl.applicant" +
                 " FROM clients.t_client AS cl" +
                 " LEFT JOIN clients.t_registration_form AS rf" +
                 " ON cl.client_id = rf.client_id" +
-                " WHERE (cl.register_time BETWEEN :from AND :to) AND applicant = TRUE";
+                " LEFT JOIN clients.t_registration_state AS rs" + //fix deleted
+                " ON cl.client_id = rs.client_id" + //fix deleted
+                " WHERE (cl.register_time BETWEEN :from AND :to) " +
+                " AND applicant = TRUE AND rs.file_status_id > 0";
+
+        String sql1 = "SELECT cl.client_id, cl.register_time, --rf.unhcr_date," +
+                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.un_relationship_cd, cl.applicant" +
+                " FROM clients.t_client AS cl" +
+                " LEFT JOIN clients.t_registration_form AS rf" +
+                " ON cl.client_id = rf.client_id" +
+//                " LEFT JOIN clients.t_registration_state AS rs" + //fix deleted
+//                " ON cl.client_id = rs.client_id" + //fix deleted
+                " WHERE (cl.register_time BETWEEN :from AND :to) " +
+                " AND applicant = TRUE";
+
+        String sql2 = "SELECT cl.client_id, cl.register_time," +
+                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.un_relationship_cd, cl.applicant" +
+                " FROM clients.t_client AS cl" +
+                " WHERE (cl.register_time BETWEEN :from AND :to) " +
+                " AND applicant = TRUE";
+
 
         List<Query1> query =
                 (List<Query1>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query1>() {
@@ -40,16 +60,12 @@ public class ReportOneDao {
                     public Query1 mapRow(ResultSet rs, int i) throws SQLException {
                         Query1 item = new Query1();
                         item.setClientId(rs.getLong("client_id"));
-                        if(item.getClientId() == 640L)
-                        {
-                            System.out.println("kdfjg");
-                        }
                         item.setRegisterTime(rs.getTimestamp("register_time"));
                         item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
                         item.setSexCd(rs.getString("sex_cd"));
                         item.setIso3166_3(rs.getString("iso3166_3"));
                         item.setBirthDate(rs.getTimestamp("birth_date"));
-                        item.setUn_relationship_cd(rs.getString("un_relationship_cd"));
+                        item.setUnRelationshipCd(rs.getString("un_relationship_cd"));
                         item.setApplicant(rs.getBoolean("applicant"));
                         return item;
                     }

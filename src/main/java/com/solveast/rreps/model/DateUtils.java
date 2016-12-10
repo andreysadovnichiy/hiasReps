@@ -54,4 +54,11 @@ public class DateUtils {
         else
             return 100;
     }
+
+    public static Integer getAge(Timestamp dateTime) {
+        if (dateTime != null)
+            return getAge(dateTime.toLocalDateTime());
+        else
+            return 100;
+    }
 }

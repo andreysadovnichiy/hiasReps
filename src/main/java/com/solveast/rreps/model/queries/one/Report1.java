@@ -57,6 +57,22 @@ public class Report1 {
         this.girls = girls;
     }
 
+    public void addMale(){
+        male++;
+    }
+
+    public void addFemale(){
+        female++;
+    }
+
+    public void addBoy(){
+        boys++;
+    }
+
+    public void addGirl(){
+        girls++;
+    }
+
     @Override
     public String toString() {
         return "Report1{" +
