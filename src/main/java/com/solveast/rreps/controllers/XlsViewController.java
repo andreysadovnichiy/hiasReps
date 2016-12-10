@@ -2,6 +2,7 @@ package com.solveast.rreps.controllers;
 
 import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.queries.three.Query3;
+import com.solveast.rreps.model.queries.three.Report3;
 import com.solveast.rreps.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -31,10 +32,12 @@ public class XlsViewController {
 
     @Autowired
     private ROneService rOneService;
+    @Autowired
+    private RThreeService rTreeService;
 
     @RequestMapping("/reports/xls/report-one.xls")
-    public ModelAndView xlsReportOne(@RequestParam("from")String fromString,
-                                     @RequestParam("to")String toString) {
+    public ModelAndView xlsReportOne(@RequestParam("from") String fromString,
+                                     @RequestParam("to") String toString) {
 
         Timestamp from = DateUtils.toTimestamp(fromString);
         Timestamp to = DateUtils.toTimestamp(toString);
@@ -58,20 +61,21 @@ public class XlsViewController {
 */
 
     @RequestMapping("/reports/xls/report-three.xls")
-    public ModelAndView xlsReportThree(@RequestParam("from")String fromString,
-                                       @RequestParam("to")String toString) {
+    public ModelAndView xlsReportThree(@RequestParam("from") String fromString,
+                                       @RequestParam("to") String toString) {
 
         Timestamp from = DateUtils.toTimestamp(fromString);
         Timestamp to = DateUtils.toTimestamp(toString);
 
-        List<Query3> data = reportThreeService.getData(from, to);
+//        List<Query3> data = reportThreeService.getData(from, to);
+        List<Report3> data = rTreeService.getData(from, to);
 
         return new ModelAndView("excelViewReportThree", "model", data);
     }
 
     @RequestMapping("/reports/xls/report-four.xls")
-    public ModelAndView xlsReportFour(@RequestParam("from")String fromString,
-                                      @RequestParam("to")String toString) {
+    public ModelAndView xlsReportFour(@RequestParam("from") String fromString,
+                                      @RequestParam("to") String toString) {
 
         Timestamp from = DateUtils.toTimestamp(fromString);
         Timestamp to = DateUtils.toTimestamp(toString);

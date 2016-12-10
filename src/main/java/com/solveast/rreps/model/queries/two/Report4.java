@@ -88,7 +88,7 @@ public class Report4 {
 
     @Override
     public String toString() {
-        return "Report4{" +
+        return "Report3{" +
                 "male_0_4=" + male_0_4 +
                 ", female_0_4=" + female_0_4 +
                 ", male_5_17=" + male_5_17 +

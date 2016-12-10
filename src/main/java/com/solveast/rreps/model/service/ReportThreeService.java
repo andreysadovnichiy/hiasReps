@@ -21,15 +21,15 @@ public class ReportThreeService {
     @Autowired
     private FamilyService familyService;
 
-
     public List<Query3> getData(Timestamp from, Timestamp to) {
+
         List<Query3> query = reportDao.getQuery3(from, to);
-        Map<Long, Integer> familyMap = familyService.getFamilyMap();
+//        Map<Long, Integer> familyMap = familyService.getFamilyMap();
 
         List<Query3> forDelete = new ArrayList<>();
 
         for (Query3 item : query) {
-            item.setTotalFamilyMembers(familyMap.get(item.getClientId()));
+//            item.setTotalFamilyMembers(familyMap.get(item.getClientId()));
             if(item.getUnhcrNum() == null) {
                 forDelete.add(item);
             }

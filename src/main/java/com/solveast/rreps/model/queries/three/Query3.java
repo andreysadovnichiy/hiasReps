@@ -1,50 +1,20 @@
 package com.solveast.rreps.model.queries.three;
 
+import com.solveast.rreps.model.queries.base.BaseQuery;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 /**
  * Created by Андрей on 27.11.2016.
  */
-public class Query3 {
-    private Long clientId;
-    private Integer totalFamilyMembers;
+public class Query3 extends BaseQuery {
     private String iso3166_3;
     private String name;
     private String familyName;
     private String unhcrNum;
-    private LocalDateTime unhcrDate;
     private Long fileStatusId;
     private String fileStatusName;
-
-    public Long getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(Long clientId) {
-        this.clientId = clientId;
-    }
-
-    public Integer getTotalFamilyMembers() {
-        return totalFamilyMembers;
-    }
-
-    public void setTotalFamilyMembers(Integer totalFamilyMembers) {
-        this.totalFamilyMembers = totalFamilyMembers;
-    }
-
-    public LocalDateTime getUnhcrDate() {
-        return unhcrDate;
-    }
-
-    public void setUnhcrDate(Timestamp unhcrDate) {
-        if (unhcrDate != null)
-            this.unhcrDate = unhcrDate.toLocalDateTime();
-    }
-
-    public void setUnhcrDate(LocalDateTime unhcrDate) {
-        this.unhcrDate = unhcrDate;
-    }
 
     public String getIso3166_3() {
         return iso3166_3;
@@ -94,16 +64,25 @@ public class Query3 {
         this.fileStatusName = fileStatusName;
     }
 
+    public Report3 toReport3() {
+        Report3 report = new Report3();
+
+        report.setClientId(super.getClientId());
+        report.setIso3166_3(getIso3166_3());
+        report.setUnhcrNum(getUnhcrNum());
+        report.setFio(getName() + " " + getFamilyName());
+        report.setFamilyMembers(1);
+        report.setFileStatusName(getFileStatusId() + ": " + getFileStatusName());
+        return report;
+    }
+
     @Override
     public String toString() {
         return "Query3{" +
-                "clientId=" + clientId +
-                ", totalFamilyMembers=" + totalFamilyMembers +
                 ", iso3166_3='" + iso3166_3 + '\'' +
                 ", name='" + name + '\'' +
                 ", familyName='" + familyName + '\'' +
                 ", unhcrNum='" + unhcrNum + '\'' +
-                ", unhcrDate=" + unhcrDate +
                 ", fileStatusId=" + fileStatusId +
                 ", fileStatusName='" + fileStatusName + '\'' +
                 '}';

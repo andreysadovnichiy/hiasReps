@@ -35,7 +35,7 @@ public class ReportThreeDao {
                 " LEFT JOIN clients.t_registration_state AS rs ON rf.client_id = rs.client_id" +
                 " WHERE (rf.unhcr_num IS NOT NULL OR rf.unhcr_date IS NOT NULL) " +
                 " AND cln.language_cd = 'en' AND rs.file_status_id != 1" +
-                " ORDER BY cl.client_id";
+                " ORDER BY rf.unhcr_date";
 
         List<Query3> query =
                 (List<Query3>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query3>() {
