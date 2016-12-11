@@ -99,7 +99,7 @@ public class Person {
     }
 
     public Boolean isLessThen18() {
-        if (DateUtils.getAge(birthDate) <= 18)
+        if (DateUtils.getAge(birthDate) < 18)
             return true;
         if ("CHI".equals(unRelationshipCd)) {
             return true;

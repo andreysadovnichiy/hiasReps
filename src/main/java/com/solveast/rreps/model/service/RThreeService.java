@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -38,6 +40,13 @@ public class RThreeService {
             }
             report.add(rep);
         }
+
+        Collections.sort(report, new Comparator<Report3>() {
+            @Override
+            public int compare(Report3 o1, Report3 o2) {
+                return o1.getIso3166_3().compareTo(o2.getIso3166_3());
+            }
+        });
 
         return report;
     }
