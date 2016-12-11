@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Андрей on 10.12.2016.
@@ -28,7 +25,7 @@ public class ROneService {
     private FamilyDao familyDao;
 
     private Map<String, Object> familyBaseQuery;
-    private Map<String, Report1> report = new HashMap<>();
+    private Map<String, Report1> report;
 
 
     public Map<String, Object> getReport(Timestamp from, Timestamp to) {
@@ -37,6 +34,8 @@ public class ROneService {
         List<Query1> query = reportOneDao.getQuery(from, to);
         List<BaseQuery> familyBaseQuery = familyDao.getFamilyBaseQuery();
         List<Intro> intros = new ArrayList<>();
+//        report = new HashMap<>();
+        report = new TreeMap<>();
 
         Person person;
         Intro intro;
@@ -56,6 +55,8 @@ public class ROneService {
                 fillReport(familyItem, item.getIso3166_3());
             }
         }
+
+
 
         toView.put("intro", intros);
         toView.put("report", report);
