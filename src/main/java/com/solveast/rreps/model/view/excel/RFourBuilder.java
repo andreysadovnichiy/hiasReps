@@ -91,9 +91,9 @@ public class RFourBuilder extends AbstractXlsxView {
         row = sheet.getRow(14);
         if (row == null)
             sheet.createRow(14);
+
         cell = row.getCell(3);
         cell.setCellValue(total);
-
         cell = row.getCell(6);
         cell.setCellValue(unknownBirthDayTotal);
     }

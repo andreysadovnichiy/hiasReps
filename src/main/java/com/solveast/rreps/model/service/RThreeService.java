@@ -2,9 +2,7 @@ package com.solveast.rreps.model.service;
 
 import com.solveast.rreps.model.dao.FamilyDao;
 import com.solveast.rreps.model.dao.ReportThreeDao;
-import com.solveast.rreps.model.dao.ReportTwoDao;
 import com.solveast.rreps.model.queries.family.FamilyQuery;
-import com.solveast.rreps.model.queries.one.Report1;
 import com.solveast.rreps.model.queries.three.Query3;
 import com.solveast.rreps.model.queries.three.Report3;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +33,7 @@ public class RThreeService {
         for (Query3 item : query) {
             Report3 rep = item.toReport3();
             for (FamilyQuery familyItem : family) {
-                if (item.getClientId() == familyItem.getApplicantId())
+                if ((long) item.getClientId() == (long) familyItem.getApplicantId())
                     rep.incFamilyMember();
             }
             report.add(rep);

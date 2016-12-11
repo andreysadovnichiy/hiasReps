@@ -17,10 +17,6 @@ import java.util.*;
 /**
  * Created by Андрей on 25.11.2016.
  */
-
-/*
-
-*/
 @Service
 public class ReportTwoService {
     @Autowired
@@ -28,7 +24,7 @@ public class ReportTwoService {
     @Autowired
     private FamilyDao familyDao;
 
-    private Map<Long, Person> clients = new HashMap<>();
+    private Map<Long, Person> clients;
 
     public Map<String, Object> getData(Timestamp from, Timestamp to) {
         Map<String, Object> data = new HashMap<>();
@@ -40,8 +36,7 @@ public class ReportTwoService {
         List<BaseQuery> familyBaseQuery = familyDao.getFamilyBaseQuery();
 
         Set<Long> unableToProcess = new HashSet<>();
-
-        clients.clear();
+        clients = new HashMap<>();
 
         for (Query21 item : rawData21) {
             if (item.getClientId() != null && item.getBirthDate() != null && item.getSexCd() != null)

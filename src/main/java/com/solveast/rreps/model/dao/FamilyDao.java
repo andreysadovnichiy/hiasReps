@@ -26,7 +26,8 @@ public class FamilyDao {
         Map namedParameters = new HashMap();
 
         String sql = "SELECT cl.client_id, cl.applicant_id, cl.sex_cd, cl.birth_date, cl.un_relationship_cd" +
-                " FROM clients.t_client AS cl";
+                " FROM clients.t_client AS cl" +
+                " WHERE cl.applicant_id > 0";
 
         List<FamilyQuery> query =
                 (List<FamilyQuery>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<FamilyQuery>() {
@@ -53,7 +54,8 @@ public class FamilyDao {
                 " cl.sex_cd, cl.birth_date, cl.un_relationship_cd" +
                 " FROM clients.t_client AS cl" +
                 " LEFT JOIN clients.t_registration_form AS rf" +
-                " ON cl.client_id = rf.client_id";
+                " ON cl.client_id = rf.client_id" +
+                " WHERE cl.applicant_id > 0";
 
         List<BaseQuery> query =
                 (List<BaseQuery>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<BaseQuery>() {

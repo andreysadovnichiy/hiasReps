@@ -57,7 +57,6 @@ public class ROneService {
         }
 
 
-
         toView.put("intro", intros);
         toView.put("report", report);
         return toView;
@@ -93,7 +92,7 @@ public class ROneService {
         List<Person> family = new ArrayList<>();
 
         for (BaseQuery item : familyBaseQuery) {
-            if (item.getApplicantId() == clientId) {
+            if ((long) item.getApplicantId() == (long) clientId) {
                 family.add(item.toPerson());
             }
         }
