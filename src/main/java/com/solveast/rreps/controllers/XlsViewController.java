@@ -44,19 +44,6 @@ public class XlsViewController {
 
         return new ModelAndView("excelViewROne", "model", data);
     }
-/*
-    @RequestMapping("/reports/xls/report-one.xls")
-    public ModelAndView xlsReportOne(@RequestParam("from")String fromString,
-                                     @RequestParam("to")String toString) {
-
-        Timestamp from = DateUtils.toTimestamp(fromString);
-        Timestamp to = DateUtils.toTimestamp(toString);
-
-        Map<String, Object> data = reportOneService.getData(from, to);
-
-        return new ModelAndView("excelViewReportOne", "model", data);
-    }
-*/
 
     @RequestMapping("/reports/xls/report-three.xls")
     public ModelAndView xlsReportThree(@RequestParam("from") String fromString,
@@ -65,7 +52,6 @@ public class XlsViewController {
         Timestamp from = DateUtils.toTimestamp(fromString);
         Timestamp to = DateUtils.toTimestamp(toString);
 
-//        List<Query3> data = reportThreeService.getData(from, to);
         List<Report3> data = rTreeService.getData(from, to);
 
         return new ModelAndView("excelViewReportThree", "model", data);
@@ -78,7 +64,6 @@ public class XlsViewController {
         Timestamp from = DateUtils.toTimestamp(fromString);
         Timestamp to = DateUtils.toTimestamp(toString);
 
-//        Map<String, Object> data = reportFourService.getData(from, to);
         Map<String, Object> data = reportTwoService.getData(from, to);
 
         return new ModelAndView("excelViewRFour", "model", data);
