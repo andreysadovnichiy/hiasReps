@@ -27,8 +27,6 @@ public class XlsViewController {
     private ReportTwoService reportTwoService;
     @Autowired
     private ReportThreeService reportThreeService;
-    @Autowired
-    private ReportFourService reportFourService;
 
     @Autowired
     private ROneService rOneService;
