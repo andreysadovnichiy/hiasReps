@@ -80,8 +80,9 @@ public class XlsViewController {
         Timestamp from = DateUtils.toTimestamp(fromString);
         Timestamp to = DateUtils.toTimestamp(toString);
 
-        Map<String, Object> data = reportFourService.getData(from, to);
+//        Map<String, Object> data = reportFourService.getData(from, to);
+        Map<String, Object> data = reportTwoService.getData(from, to);
 
-        return new ModelAndView("excelViewReportFour", "model", data);
+        return new ModelAndView("excelViewRFour", "model", data);
     }
 }

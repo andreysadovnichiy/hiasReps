@@ -1,5 +1,7 @@
 package com.solveast.rreps.model.queries.two;
 
+import com.solveast.rreps.model.queries.family.Person;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -10,7 +12,6 @@ public class Query21 {
     private Long clientId;
     private String sexCd;
     private LocalDateTime birthDate;
-    private String unRelationshipCd;
     private String actionType;
     private Integer actionResultId;
     private LocalDateTime realTimeStart;
@@ -61,14 +62,6 @@ public class Query21 {
     public void setBirthDate(Timestamp birthDate) {
         if (birthDate != null)
             this.birthDate = birthDate.toLocalDateTime();
-    }
-
-    public String getUnRelationshipCd() {
-        return unRelationshipCd;
-    }
-
-    public void setUnRelationshipCd(String unRelationshipCd) {
-        this.unRelationshipCd = unRelationshipCd;
     }
 
     public void setRealTimeStart(Timestamp realTimeStart) {
@@ -123,13 +116,21 @@ public class Query21 {
         this.scheduledTimeStop = scheduledTimeStop;
     }
 
+    public Person toPerson(){
+        Person person = new Person();
+
+        person.setClientId(getClientId());
+        person.setSexCd(getSexCd());
+        person.setBirthDate(getBirthDate());
+        return person;
+    }
+
     @Override
     public String toString() {
         return "Query21{" +
                 "clientId=" + clientId +
                 ", sexCd='" + sexCd + '\'' +
                 ", birthDate=" + birthDate +
-                ", unRelationshipCd='" + unRelationshipCd + '\'' +
                 ", actionType='" + actionType + '\'' +
                 ", actionResultId=" + actionResultId +
                 ", realTimeStart=" + realTimeStart +

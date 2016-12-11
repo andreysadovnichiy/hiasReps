@@ -1,5 +1,7 @@
 package com.solveast.rreps.model.queries.two;
 
+import com.solveast.rreps.model.queries.family.Person;
+
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
@@ -61,6 +63,15 @@ public class Query23 {
 
     public void setSexCd(String sexCd) {
         this.sexCd = sexCd;
+    }
+
+    public Person toPerson(){
+        Person person = new Person();
+
+        person.setClientId(getClientId());
+        person.setSexCd(getSexCd());
+        person.setBirthDate(getBirthDate());
+        return person;
     }
 
     @Override
