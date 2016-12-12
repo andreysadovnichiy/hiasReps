@@ -31,8 +31,14 @@ public class ReportThreeBuilder extends AbstractXlsxView {
 
     @Override
     protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
-        List<Report3> data = (List<Report3>) map.get("model");
+        Map<String, Object> model = (Map<String, Object>) map.get("model");
+
+        List<Report3> data = (List<Report3>) model.get("report");
+        String title = (String) model.get("title");
+
+
         Sheet sheet = wbFactory.getSheet(report);
+        fillTitle(title, sheet);
 
         Row row;
         Cell cell;
@@ -76,4 +82,11 @@ public class ReportThreeBuilder extends AbstractXlsxView {
             i++;
         }
     }
+
+    private void fillTitle(String title, Sheet sheet) {
+        Row row = sheet.getRow(2);
+        Cell rowCellMaleValue = row.getCell(1);
+        rowCellMaleValue.setCellValue(title);
+    }
+
 }

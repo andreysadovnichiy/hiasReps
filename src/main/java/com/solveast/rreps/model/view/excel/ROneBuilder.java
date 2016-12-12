@@ -33,8 +33,11 @@ public class ROneBuilder extends AbstractXlsxView {
         Map<String, Object> data = (Map<String, Object>) map.get("model");
         List<Intro> intros = (List<Intro>) data.get("intro");
         Map<String, Report1> reports = (Map<String, Report1>) data.get("report");
+        String title = (String) data.get("title");
 
         Sheet sheet = workbook.getSheet("Запрос 1");
+        fillTitle(title, sheet);
+
         Row row;
         Cell cell;
         int rowShift = 6;
@@ -101,6 +104,13 @@ public class ROneBuilder extends AbstractXlsxView {
             }
         }
     }
+
+    private void fillTitle(String title, Sheet sheet) {
+        Row row = sheet.getRow(1);
+        Cell rowCellMaleValue = row.getCell(1);
+        rowCellMaleValue.setCellValue(title);
+    }
+
 
     private void fillPersonRow(Person person, int familyMembers, String iso3166_3, Sheet sheet, int line) {
         CellStyle templStyle1 = sheet.getRow(3).getCell(8).getCellStyle();

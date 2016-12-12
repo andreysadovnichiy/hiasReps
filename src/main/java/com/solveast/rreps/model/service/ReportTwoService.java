@@ -1,5 +1,6 @@
 package com.solveast.rreps.model.service;
 
+import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.dao.FamilyDao;
 import com.solveast.rreps.model.dao.ReportTwoDao;
 import com.solveast.rreps.model.queries.base.BaseQuery;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -27,13 +29,22 @@ public class ReportTwoService {
     private Map<Long, Person> clients;
 
     public Map<String, Object> getData(Timestamp from, Timestamp to) {
+        String title = "Table 2: Population group in ";
         Map<String, Object> data = new HashMap<>();
 
         List<Query21> rawData21 = reportDao.getQuery21(from, to);
         List<Query22> rawData22 = reportDao.getQuery22(from, to);
         List<Query23> rawData23 = reportDao.getQuery23(from, to);
+        List<Query23> forDeleteRawData23 = new ArrayList<>();
 
         List<BaseQuery> familyBaseQuery = familyDao.getFamilyBaseQuery();
+
+        LocalDateTime fromLTD = from.toLocalDateTime();
+        for (Query23 item : rawData23) {
+            if(fromLTD.isAfter(item.getUnhcrDate()))
+                forDeleteRawData23.add(item);
+        }
+        rawData23.removeAll(forDeleteRawData23);
 
         Set<Long> unableToProcess = new HashSet<>();
         clients = new HashMap<>();
@@ -75,8 +86,7 @@ public class ReportTwoService {
         data.put("rawData23", rawData23);
 
         data.put("report", report);
-        data.put("from", from);
-        data.put("to", to);
+        data.put("title", DateUtils.getTitle(title,from,to));
 
         return data;
     }

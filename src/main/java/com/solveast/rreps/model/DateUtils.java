@@ -61,4 +61,55 @@ public class DateUtils {
         else
             return 100;
     }
+
+    public static String getTitle(String source, Timestamp from, Timestamp to) {
+        StringBuilder builder = new StringBuilder();
+
+        if (from != null && to != null) {
+            builder
+                    .append(source)
+                    .append(" ")
+                    .append(getMonth(from.toLocalDateTime().getMonthValue()))
+                    .append(" ")
+                    .append(from.toLocalDateTime().getYear());
+
+            if (from.toLocalDateTime().getMonthValue() != to.toLocalDateTime().getMonthValue())
+                builder
+                        .append(" - ")
+                        .append(getMonth(to.toLocalDateTime().getMonthValue()))
+                        .append(" ")
+                        .append(from.toLocalDateTime().getYear());
+        }
+        return builder.toString();
+    }
+
+    private static String getMonth(int month) {
+        switch (month) {
+            case 1:
+                return "Jan.";
+            case 2:
+                return "Feb.";
+            case 3:
+                return "Mar.";
+            case 4:
+                return "Apr.";
+            case 5:
+                return "May.";
+            case 6:
+                return "Jun.";
+            case 7:
+                return "Jul.";
+            case 8:
+                return "Aug.";
+            case 9:
+                return "Sep.";
+            case 10:
+                return "Oct.";
+            case 11:
+                return "Nov.";
+            case 12:
+                return "Dec.";
+        }
+        return "";
+    }
 }

@@ -14,6 +14,8 @@ public class Query23 {
     private String unRelationshipCd;
     private LocalDateTime birthDate;
     private LocalDateTime registerTime;
+    private LocalDateTime unhcrDate;
+
 
     public Long getClientId() {
         return clientId;
@@ -41,6 +43,19 @@ public class Query23 {
             this.birthDate = birthDate.toLocalDateTime();
     }
 
+    public LocalDateTime getUnhcrDate() {
+        return unhcrDate;
+    }
+
+    public void setUnhcrDate(LocalDateTime unhcrDate) {
+        this.unhcrDate = unhcrDate;
+    }
+
+    public void setUnhcrDate(Timestamp unhcrDate) {
+        if (unhcrDate != null)
+            this.unhcrDate = unhcrDate.toLocalDateTime();
+    }
+
     public String getUnRelationshipCd() {
         return unRelationshipCd;
     }
@@ -65,7 +80,7 @@ public class Query23 {
         this.sexCd = sexCd;
     }
 
-    public Person toPerson(){
+    public Person toPerson() {
         Person person = new Person();
 
         person.setClientId(getClientId());
@@ -79,8 +94,10 @@ public class Query23 {
         return "Query23{" +
                 "clientId=" + clientId +
                 ", sexCd='" + sexCd + '\'' +
+                ", unRelationshipCd='" + unRelationshipCd + '\'' +
                 ", birthDate=" + birthDate +
                 ", registerTime=" + registerTime +
+                ", unhcrDate=" + unhcrDate +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.solveast.rreps.model.service;
 
+import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.dao.FamilyDao;
 import com.solveast.rreps.model.dao.ReportOneDao;
 import com.solveast.rreps.model.queries.base.BaseQuery;
@@ -29,6 +30,7 @@ public class ROneService {
 
 
     public Map<String, Object> getReport(Timestamp from, Timestamp to) {
+        String title = "Здесь должно быть название отчета за";
         Map<String, Object> toView = new HashMap<>();
 
         List<Query1> query = reportOneDao.getQuery(from, to);
@@ -59,6 +61,7 @@ public class ROneService {
 
         toView.put("intro", intros);
         toView.put("report", report);
+        toView.put("title", DateUtils.getTitle(title, from, to));
         return toView;
     }
 
@@ -75,13 +78,13 @@ public class ROneService {
 
         if (item.getBirthDate() != null) {
             lessThen18 = item.isLessThen18();
-            if ("m".equals(sex) && lessThen18)
+            if ("m" .equals(sex) && lessThen18)
                 rep.addBoy();
-            else if ("f".equals(sex) && lessThen18)
+            else if ("f" .equals(sex) && lessThen18)
                 rep.addGirl();
-            else if ("m".equals(sex) && !lessThen18)
+            else if ("m" .equals(sex) && !lessThen18)
                 rep.addMale();
-            else if ("f".equals(sex) && !lessThen18)
+            else if ("f" .equals(sex) && !lessThen18)
                 rep.addFemale();
 
             report.put(iso3166_3, rep);

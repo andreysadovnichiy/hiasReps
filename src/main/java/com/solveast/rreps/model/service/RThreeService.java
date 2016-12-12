@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Андрей on 10.12.2016.
@@ -24,7 +21,10 @@ public class RThreeService {
     @Autowired
     private FamilyDao familyDao;
 
-    public List<Report3> getData(Timestamp from, Timestamp to) {
+    public Map<String, Object> getData(Timestamp from, Timestamp to) {
+        Map<String, Object> data = new HashMap<>();
+        String title = "Table 1: Cases de-activated by the R2P in";
+
         List<Query3> query = reportDao.getQuery3(from, to);
         List<FamilyQuery> family = familyDao.getFamily();
 
@@ -46,6 +46,8 @@ public class RThreeService {
             }
         });
 
-        return report;
+        data.put("report", report);
+        data.put("title", title);
+        return data;
     }
 }

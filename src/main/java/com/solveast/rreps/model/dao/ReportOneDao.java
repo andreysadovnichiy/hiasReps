@@ -37,22 +37,6 @@ public class ReportOneDao {
                 " WHERE (cl.register_time BETWEEN :from AND :to) " +
                 " AND applicant = TRUE AND rs.file_status_id > 0";
 
-        String sql1 = "SELECT cl.client_id, cl.register_time, --rf.unhcr_date," +
-                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.un_relationship_cd, cl.applicant" +
-                " FROM clients.t_client AS cl" +
-                " LEFT JOIN clients.t_registration_form AS rf" +
-                " ON cl.client_id = rf.client_id" +
-//                " LEFT JOIN clients.t_registration_state AS rs" + //fix deleted
-//                " ON cl.client_id = rs.client_id" + //fix deleted
-                " WHERE (cl.register_time BETWEEN :from AND :to) " +
-                " AND applicant = TRUE";
-
-        String sql2 = "SELECT cl.client_id, cl.register_time," +
-                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.un_relationship_cd, cl.applicant" +
-                " FROM clients.t_client AS cl" +
-                " WHERE (cl.register_time BETWEEN :from AND :to) " +
-                " AND applicant = TRUE";
-
 
         List<Query1> query =
                 (List<Query1>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query1>() {

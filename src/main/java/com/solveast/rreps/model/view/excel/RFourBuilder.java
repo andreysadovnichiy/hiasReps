@@ -41,6 +41,7 @@ public class RFourBuilder extends AbstractXlsxView {
         List<Query22> rawData22 = (List<Query22>) data.get("rawData22");
         List<Query23> rawData23 = (List<Query23>) data.get("rawData23");
         Report4 report4 = (Report4) data.get("report");
+        String title = (String) data.get("title");
 
         Integer unknownBirthDayTotal = report4.getTotalUnableToProccess();
         Integer total = report4.getTotal();
@@ -48,6 +49,8 @@ public class RFourBuilder extends AbstractXlsxView {
         Timestamp to = (Timestamp) data.get("to");
 
         Sheet sheet = wbFactory.getSheet(report);
+
+        fillTitle(title, sheet);
 
         int indexRow_0_4 = 8;
         int indexRow_5_17 = 9;
@@ -62,9 +65,9 @@ public class RFourBuilder extends AbstractXlsxView {
         Cell cell;
 
         fillReportTable(sheet.getRow(indexRow_0_4),
-                    indexCellMale, report4.getMale_0_4(),
-                    indexCellFemale, report4.getFemale_0_4(),
-                    indexCellTotal, report4.getTotal());
+                indexCellMale, report4.getMale_0_4(),
+                indexCellFemale, report4.getFemale_0_4(),
+                indexCellTotal, report4.getTotal());
 
         fillReportTable(sheet.getRow(indexRow_5_17),
                 indexCellMale, report4.getMale_5_17(),
@@ -82,7 +85,7 @@ public class RFourBuilder extends AbstractXlsxView {
                 indexCellTotal, report4.getTotal());
 
 
-        fillReportTableTotal(sheet,report4);
+        fillReportTableTotal(sheet, report4);
 
         fillQuery21Table(sheet, rawData21);
         fillQuery22Table(sheet, rawData22);
@@ -98,6 +101,11 @@ public class RFourBuilder extends AbstractXlsxView {
         cell.setCellValue(unknownBirthDayTotal);
     }
 
+    private void fillTitle(String title, Sheet sheet) {
+        Row row = sheet.getRow(3);
+        Cell rowCellMaleValue = row.getCell(2);
+        rowCellMaleValue.setCellValue(title);
+    }
 
     private void fillQuery22Table(Sheet sheet, List<Query22> rawData22) {
         int initRow = 16;
@@ -153,6 +161,7 @@ public class RFourBuilder extends AbstractXlsxView {
         CellStyle templStyle2 = sheet.getRow(initRow).getCell(initCell + 1).getCellStyle();
         CellStyle templStyle3 = sheet.getRow(initRow).getCell(initCell + 2).getCellStyle();
         CellStyle templStyle4 = sheet.getRow(initRow).getCell(initCell + 3).getCellStyle();
+        CellStyle templStyle5 = sheet.getRow(initRow).getCell(initCell + 4).getCellStyle();
 
         Row row;
         Cell cell;
@@ -185,6 +194,13 @@ public class RFourBuilder extends AbstractXlsxView {
                 cell = row.createCell(initCell + 3);
                 cell.setCellStyle(templStyle4);
                 date = Date.from(item.getRegisterTime().atZone(ZoneId.systemDefault()).toInstant());
+                cell.setCellValue(date);
+            }
+
+            if (item.getUnhcrDate() != null) {
+                cell = row.createCell(initCell + 4);
+                cell.setCellStyle(templStyle5);
+                date = Date.from(item.getUnhcrDate().atZone(ZoneId.systemDefault()).toInstant());
                 cell.setCellValue(date);
             }
 
@@ -277,8 +293,8 @@ public class RFourBuilder extends AbstractXlsxView {
         int totalMale = report4.getMale_0_4() + report4.getMale_5_17() + report4.getMale_18_59() + report4.getMale_60_();
         int totalFemale = report4.getFemale_0_4() + report4.getFemale_5_17() + report4.getFemale_18_59() + report4.getFemale_60_();
 
-        float percentMale = (float) totalMale / (totalFemale+totalMale);
-        float percentFemale = (float) totalFemale / (totalFemale+totalMale);
+        float percentMale = (float) totalMale / (totalFemale + totalMale);
+        float percentFemale = (float) totalFemale / (totalFemale + totalMale);
 
         Row row = sheet.getRow(12);
         row.getCell(3).setCellValue(totalMale);
@@ -287,10 +303,9 @@ public class RFourBuilder extends AbstractXlsxView {
         row.getCell(5).setCellValue(totalFemale);
         row.getCell(6).setCellValue(percentFemale);
 
-        row.getCell(7).setCellValue(totalMale+totalFemale);
+        row.getCell(7).setCellValue(totalMale + totalFemale);
         row.getCell(8).setCellValue(1);
     }
-
 
 
     private void fillReportTable(Row row,

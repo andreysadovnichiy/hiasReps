@@ -52,7 +52,7 @@ public class XlsViewController {
         Timestamp from = DateUtils.toTimestamp(fromString);
         Timestamp to = DateUtils.toTimestamp(toString);
 
-        List<Report3> data = rTreeService.getData(from, to);
+        Map<String, Object> data = rTreeService.getData(from, to);
 
         return new ModelAndView("excelViewReportThree", "model", data);
     }

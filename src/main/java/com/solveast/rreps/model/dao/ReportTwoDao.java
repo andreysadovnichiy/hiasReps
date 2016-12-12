@@ -96,10 +96,14 @@ public class ReportTwoDao {
         namedParameters.put("from", from);
         namedParameters.put("to", to);
 
-        String sql = "SELECT fr.client_id, cl.sex_cd, cl.un_relationship_cd, cl.birth_date, fr.register_time" +
+        String sql = "SELECT " +
+                " fr.client_id, cl.sex_cd, cl.un_relationship_cd, cl.birth_date, fr.unhcr_date, fr.register_time" +
                 " FROM clients.t_registration_form AS fr" +
                 " LEFT JOIN clients.t_client AS cl ON cl.client_id = fr.client_id" +
-                " WHERE (fr.register_time BETWEEN :from AND :to)";
+                " LEFT JOIN clients.t_registration_state AS rs" + //fix deleted
+                " ON cl.client_id = rs.client_id" + //fix deleted
+                " WHERE (fr.register_time BETWEEN :from AND :to) " +
+                " AND rs.file_status_id > 0"; //fix deleted
 
         List<Query23> query =
                 (List<Query23>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query23>() {
@@ -108,6 +112,7 @@ public class ReportTwoDao {
                         Query23 item = new Query23();
                         item.setClientId(rs.getLong("client_id"));
                         item.setRegisterTime(rs.getTimestamp("register_time"));
+                        item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
                         item.setBirthDate(rs.getTimestamp("birth_date"));
                         item.setSexCd(rs.getString("sex_cd"));
                         item.setUnRelationshipCd(rs.getString("un_relationship_cd"));
