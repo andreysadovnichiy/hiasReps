@@ -72,6 +72,14 @@ public class FamilyQuery {
         return report;
     }
 
+    public Person toPerson() {
+        Person person = new Person();
+
+        person.setClientId(getClientId());
+
+        return person;
+    }
+
     @Override
     public String toString() {
         return "FamilyQuery{" +
@@ -82,4 +90,5 @@ public class FamilyQuery {
                 ", unRelationshipCd='" + unRelationshipCd + '\'' +
                 '}';
     }
+
 }

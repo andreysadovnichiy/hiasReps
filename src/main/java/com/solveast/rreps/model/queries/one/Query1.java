@@ -34,14 +34,20 @@ public class Query1 extends BaseQuery {
         person.setRegisterTime(getRegisterTime());
         person.setUnhcrDate(getUnhcrDate());
         person.setSexCd(getSexCd());
+        person.setIso3166_3(getIso3166_3());
         person.setBirthDate(getBirthDate());
         person.setUnRelationshipCd(getUnRelationshipCd());
+        person.setFileStatusId(getFileStatusId());
         return person;
     }
 
     @Override
     public String toString() {
         return "Query1{" +
+                ", getClientId='" + getClientId() + '\'' +
+                ", getFileStatusId='" + getFileStatusId() + '\'' +
+                ", getUnhcrDate='" + getUnhcrDate() + '\'' +
+                ", getBirthDate='" + getBirthDate() + '\'' +
                 ", iso3166_3='" + iso3166_3 + '\'' +
                 ", applicant=" + applicant +
                 '}';

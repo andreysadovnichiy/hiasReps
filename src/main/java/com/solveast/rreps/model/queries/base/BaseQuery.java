@@ -17,6 +17,7 @@ public class BaseQuery {
     private String sexCd;
     private LocalDateTime birthDate;
     private String unRelationshipCd;
+    private Integer fileStatusId;
     private Integer age;
 
     public Long getClientId() {
@@ -97,6 +98,14 @@ public class BaseQuery {
         return false;
     }
 
+    public Integer getFileStatusId() {
+        return fileStatusId;
+    }
+
+    public void setFileStatusId(Integer fileStatusId) {
+        this.fileStatusId = fileStatusId;
+    }
+
     public Person toPerson() {
         Person person = new Person();
 
@@ -107,6 +116,7 @@ public class BaseQuery {
         person.setSexCd(getSexCd());
         person.setBirthDate(getBirthDate());
         person.setUnRelationshipCd(getUnRelationshipCd());
+        person.setFileStatusId(getFileStatusId());
         return person;
     }
 
@@ -115,12 +125,12 @@ public class BaseQuery {
         return "BaseQuery{" +
                 "clientId=" + clientId +
                 ", applicantId=" + applicantId +
+                ", fileStatusId=" + fileStatusId +
                 ", registerTime=" + registerTime +
                 ", unhcrDate=" + unhcrDate +
                 ", sexCd='" + sexCd + '\'' +
                 ", birthDate=" + birthDate +
                 ", unRelationshipCd='" + unRelationshipCd + '\'' +
-                ", age=" + age +
                 '}';
     }
 }

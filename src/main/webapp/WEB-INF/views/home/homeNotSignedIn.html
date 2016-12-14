@@ -121,19 +121,25 @@
                              + to.getDate() + "+" + (to.getMonth()+1) + "+" + to.getFullYear();
 
             q1Ref = "/reports/xls/report-one.xls";
-            q2Ref = "/reports/xls/report-two.xls";
             q3Ref = "/reports/xls/report-three.xls";
             q4Ref = "/reports/xls/report-four.xls";
+            q5Ref = "/reports/xls/report-five.xls";
+            q6Ref = "/reports/xls/report-six.xls";
+            q7Ref = "/reports/xls/report-seven.xls";
 
             q1Link = q1Ref + refParams;
-            q2Link = q2Ref + refParams;
             q3Link = q3Ref + refParams;
             q4Link = q4Ref + refParams;
+            q5Link = q5Ref + refParams;
+            q6Link = q6Ref + refParams;
+            q7Link = q7Ref + refParams;
 
             $("#refQuery1").attr("href", q1Link);
-            $("#refQuery2").attr("href", q2Link);
             $("#refQuery3").attr("href", q3Link);
             $("#refQuery4").attr("href", q4Link);
+            $("#refQuery5").attr("href", q5Link);
+            $("#refQuery6").attr("href", q6Link);
+            $("#refQuery7").attr("href", q7Link);
         }
 
         $('#fromDate').on("dp.change",function (e) {

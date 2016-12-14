@@ -28,14 +28,16 @@ public class ReportOneDao {
         namedParameters.put("to", to);
 
         String sql = "SELECT cl.client_id, cl.register_time, rf.unhcr_date," +
-                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.un_relationship_cd, cl.applicant" +
+                " cl.sex_cd, cl.iso3166_3, cl.birth_date, cl.un_relationship_cd, " +
+                " rs.file_status_id, cl.applicant" +
                 " FROM clients.t_client AS cl" +
                 " LEFT JOIN clients.t_registration_form AS rf" +
                 " ON cl.client_id = rf.client_id" +
                 " LEFT JOIN clients.t_registration_state AS rs" + //fix deleted
                 " ON cl.client_id = rs.client_id" + //fix deleted
                 " WHERE (cl.register_time BETWEEN :from AND :to) " +
-                " AND applicant = TRUE AND rs.file_status_id > 0";
+                " AND applicant = TRUE" +
+                " AND (rs.file_status_id > 0 OR (rs.file_status_id IS NULL AND cl.register_time IS NOT NULL))";
 
 
         List<Query1> query =
@@ -50,6 +52,10 @@ public class ReportOneDao {
                         item.setIso3166_3(rs.getString("iso3166_3"));
                         item.setBirthDate(rs.getTimestamp("birth_date"));
                         item.setUnRelationshipCd(rs.getString("un_relationship_cd"));
+                        item.setFileStatusId(rs.getInt("file_status_id"));
+                        if (rs.wasNull()) {
+                            item.setFileStatusId(null);
+                        }
                         item.setApplicant(rs.getBoolean("applicant"));
                         return item;
                     }

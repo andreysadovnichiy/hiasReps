@@ -1,9 +1,11 @@
 package com.solveast.rreps.model.view.excel;
 
+import com.solveast.rreps.model.queries.family.Family;
 import com.solveast.rreps.model.queries.family.Person;
 import com.solveast.rreps.model.queries.one.Intro;
 import com.solveast.rreps.model.queries.one.IntroData;
 import com.solveast.rreps.model.queries.one.Report1;
+import com.solveast.rreps.model.queries.one.ReportAdapter;
 import org.apache.poi.ss.usermodel.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
@@ -31,8 +33,10 @@ public class ROneBuilder extends AbstractXlsxView {
     @Override
     protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         Map<String, Object> data = (Map<String, Object>) map.get("model");
-        List<Intro> intros = (List<Intro>) data.get("intro");
-        Map<String, Report1> reports = (Map<String, Report1>) data.get("report");
+        List<Family> families = (List<Family>) data.get("inputData");
+        ReportAdapter reportAdapter = (ReportAdapter) data.get("report");
+        Map<String, Report1> reports = reportAdapter.getReportMap();
+
         String title = (String) data.get("title");
 
         Sheet sheet = workbook.getSheet("Запрос 1");
@@ -87,19 +91,16 @@ public class ROneBuilder extends AbstractXlsxView {
 
         rowShift = 3;
 
-
-        List<CellStyle> cellStyles = Arrays.asList();
-
         Date date;
         i = 0;
         int line = rowShift + i;
-        for (Intro item : intros) {
 
-            fillPersonRow(item.getClient(), item.getTotalFamilyMembers(), item.getIso3166_3(), sheet, line);
+        for (Family family : families) {
+            fillPersonRow(family.getClient(), family.getFamilyPersonNumber(), sheet, line);
             line = rowShift + ++i;
 
-            for (Person persona : item.getFamily()) {
-                fillPersonRow(persona, 0, item.getIso3166_3(), sheet, line);
+            for (Person persona : family.getFamily()) {
+                fillPersonRow(persona, 0, sheet, line);
                 line = rowShift + ++i;
             }
         }
@@ -112,7 +113,7 @@ public class ROneBuilder extends AbstractXlsxView {
     }
 
 
-    private void fillPersonRow(Person person, int familyMembers, String iso3166_3, Sheet sheet, int line) {
+    private void fillPersonRow(Person person, int familyMembers, Sheet sheet, int line) {
         CellStyle templStyle1 = sheet.getRow(3).getCell(8).getCellStyle();
         CellStyle templStyle2 = sheet.getRow(3).getCell(9).getCellStyle();
         CellStyle templStyle3 = sheet.getRow(3).getCell(10).getCellStyle();
@@ -148,7 +149,7 @@ public class ROneBuilder extends AbstractXlsxView {
         cell.setCellValue(familyMembers);
         cell.setCellStyle(templStyle3);
 
-        if (person != null) {
+        if (person.getRegisterTime() != null) {
             cell = row.createCell(11);
             cell.setCellStyle(templStyle4);
             date = Date.from(person.getRegisterTime().atZone(ZoneId.systemDefault()).toInstant());
@@ -162,13 +163,17 @@ public class ROneBuilder extends AbstractXlsxView {
             cell.setCellValue(date);
         }
 
-        cell = row.createCell(13);
-        cell.setCellValue(person.getSexCd());
-        cell.setCellStyle(templStyle6);
+        if(person.getSexCd() != null) {
+            cell = row.createCell(13);
+            cell.setCellValue(person.getSexCd());
+            cell.setCellStyle(templStyle6);
+        }
 
-        cell = row.createCell(14);
-        cell.setCellValue(iso3166_3);
-        cell.setCellStyle(templStyle7);
+        if(person.getIso3166_3() != null) {
+            cell = row.createCell(14);
+            cell.setCellValue(person.getIso3166_3());
+            cell.setCellStyle(templStyle7);
+        }
 
         cell = row.createCell(15);
         cell.setCellValue(person.getUnRelationshipCd());
@@ -184,6 +189,5 @@ public class ROneBuilder extends AbstractXlsxView {
         cell = row.createCell(17);
         cell.setCellValue(person.getAge());
         cell.setCellStyle(templStyle10);
-
     }
 }

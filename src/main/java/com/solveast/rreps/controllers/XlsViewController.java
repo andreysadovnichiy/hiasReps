@@ -1,8 +1,6 @@
 package com.solveast.rreps.controllers;
 
 import com.solveast.rreps.model.DateUtils;
-import com.solveast.rreps.model.queries.three.Query3;
-import com.solveast.rreps.model.queries.three.Report3;
 import com.solveast.rreps.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,12 +18,14 @@ public class XlsViewController {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Autowired
-    private ReportOneService reportOneService;
+//    @Autowired
+//    private ReportOneService reportOneService;
     @Autowired
     private ReportTwoService reportTwoService;
+//    @Autowired
+//    private ReportThreeService reportThreeService;
     @Autowired
-    private ReportThreeService reportThreeService;
+    private RFiveService rFiveService;
 
     @Autowired
     private ROneService rOneService;
@@ -67,5 +66,17 @@ public class XlsViewController {
         Map<String, Object> data = reportTwoService.getData(from, to);
 
         return new ModelAndView("excelViewRFour", "model", data);
+    }
+
+    @RequestMapping("/reports/xls/report-five.xls")
+    public ModelAndView xlsReportFive(@RequestParam("from") String fromString,
+                                      @RequestParam("to") String toString) {
+
+        Timestamp from = DateUtils.toTimestamp(fromString);
+        Timestamp to = DateUtils.toTimestamp(toString);
+
+        Map<String, Object> data = rFiveService.getData(from, to);
+
+        return new ModelAndView("excelViewRFive", "model", data);
     }
 }

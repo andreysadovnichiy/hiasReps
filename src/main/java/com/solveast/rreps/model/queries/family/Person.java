@@ -16,6 +16,8 @@ public class Person {
     private String sexCd;
     private LocalDateTime birthDate;
     private String unRelationshipCd;
+    private String iso3166_3;
+    private Integer fileStatusId;
     private Integer age;
     private Boolean applicant;
 
@@ -94,6 +96,22 @@ public class Person {
         this.unRelationshipCd = unRelationshipCd;
     }
 
+    public String getIso3166_3() {
+        return iso3166_3;
+    }
+
+    public void setIso3166_3(String iso3166_3) {
+        this.iso3166_3 = iso3166_3;
+    }
+
+    public Integer getFileStatusId() {
+        return fileStatusId;
+    }
+
+    public void setFileStatusId(Integer fileStatusId) {
+        this.fileStatusId = fileStatusId;
+    }
+
     public Integer getAge() {
         return DateUtils.getAge(birthDate);
     }
@@ -105,5 +123,22 @@ public class Person {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Person{" +
+                "clientId=" + clientId +
+                ", applicantId=" + applicantId +
+                ", registerTime=" + registerTime +
+                ", unhcrDate=" + unhcrDate +
+                ", sexCd='" + sexCd + '\'' +
+                ", birthDate=" + birthDate +
+                ", unRelationshipCd='" + unRelationshipCd + '\'' +
+                ", iso3166_3='" + iso3166_3 + '\'' +
+                ", fileStatusId=" + fileStatusId +
+                ", age=" + age +
+                ", applicant=" + applicant +
+                '}';
     }
 }
