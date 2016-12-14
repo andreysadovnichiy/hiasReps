@@ -50,7 +50,7 @@ public class ReportThreeDao {
                         item.setFamilyName(rs.getString("family_name"));
                         item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
                         item.setUnhcrNum(rs.getString("unhcr_num"));
-                        item.setFileStatusId(rs.getLong("file_status_id"));
+                        item.setFileStatusId(rs.getInt("file_status_id"));
                         item.setFileStatusName(rs.getString("file_status_name"));
                         return item;
                     }

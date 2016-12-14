@@ -41,7 +41,7 @@ public class ReportTwoService {
 
         LocalDateTime fromLTD = from.toLocalDateTime();
         for (Query23 item : rawData23) {
-            if(fromLTD.isAfter(item.getUnhcrDate()))
+            if(item.getUnhcrDate()!= null && fromLTD.isAfter(item.getUnhcrDate()))
                 forDeleteRawData23.add(item);
         }
         rawData23.removeAll(forDeleteRawData23);

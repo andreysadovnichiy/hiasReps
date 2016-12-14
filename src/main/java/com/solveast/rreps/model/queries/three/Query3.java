@@ -13,7 +13,6 @@ public class Query3 extends BaseQuery {
     private String name;
     private String familyName;
     private String unhcrNum;
-    private Long fileStatusId;
     private String fileStatusName;
 
     public String getIso3166_3() {
@@ -48,14 +47,6 @@ public class Query3 extends BaseQuery {
         this.unhcrNum = unhcrNum;
     }
 
-    public Long getFileStatusId() {
-        return fileStatusId;
-    }
-
-    public void setFileStatusId(Long fileStatusId) {
-        this.fileStatusId = fileStatusId;
-    }
-
     public String getFileStatusName() {
         return fileStatusName;
     }
@@ -83,7 +74,6 @@ public class Query3 extends BaseQuery {
                 ", name='" + name + '\'' +
                 ", familyName='" + familyName + '\'' +
                 ", unhcrNum='" + unhcrNum + '\'' +
-                ", fileStatusId=" + fileStatusId +
                 ", fileStatusName='" + fileStatusName + '\'' +
                 '}';
     }
