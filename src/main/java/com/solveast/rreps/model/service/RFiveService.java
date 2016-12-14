@@ -32,7 +32,7 @@ public class RFiveService {
 
         List<Query5> query = reportDao.getQuery(from, to);
 //        List<BaseQuery> familyBaseQuery = familyDao.getFamilyBaseQuery();
-        List<FamilyQuery> familyQuery = familyDao.getFamily();
+        List<BaseQuery> familyQuery = familyDao.getFamilyBaseQuery();
 
         Map<String, Report5> reportMap = new TreeMap<>();
         List<Person> personsApplicant = new ArrayList<>();
