@@ -59,47 +59,4 @@ public class FamilyService {
 
         return target;
     }
-
-    public List<FamilyReport2> getFamilyForReport2() {
-        List<FamilyReport2> familyReport = new ArrayList<>();
-        List<FamilyQuery> family = dao.getFamily();
-
-        for (FamilyQuery item : family) {
-            FamilyReport2 report = new FamilyReport2();
-            report.setClientId(item.getClientId());
-            report.setApplicantId(item.getApplicantId());
-            report.setSexCd(item.getSexCd());
-            report.setAge(item.getBirthDate());
-            familyReport.add(report);
-        }
-
-        return familyReport;
-    }
-
-    public Map<Long, Integer> getFamilyMap() {
-        Map<Long, Integer> familyMap = new HashMap<>();
-
-        List<FamilyQuery> family = dao.getFamily();
-
-        for (FamilyQuery item : family) {
-            if (item.getClientId() != null && item.getClientId() > 0)
-                familyMap.put(item.getClientId(), 0);
-
-            if (item.getApplicantId() != null && item.getApplicantId() > 0)
-                familyMap.put(item.getApplicantId(), 0);
-        }
-
-        Integer totalForClient;
-        Integer totalForApplicant;
-        for (FamilyQuery item : family) {
-            totalForClient = familyMap.get(item.getClientId());
-            familyMap.put(item.getClientId(), totalForClient + 1);
-
-            totalForApplicant = familyMap.get(item.getApplicantId());
-            if (totalForApplicant != null && totalForApplicant > 0)
-                familyMap.put(item.getApplicantId(), totalForApplicant + 1);
-        }
-
-        return familyMap;
-    }
 }

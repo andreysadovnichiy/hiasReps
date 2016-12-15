@@ -1,5 +1,6 @@
 package com.solveast.rreps.model.dao;
 
+import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.queries.three.Query3;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,11 +23,11 @@ public class ReportThreeDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Query3> getQuery3(Timestamp from, Timestamp to) {
+    public List<Query3> getQuery3(LocalDateTime from, LocalDateTime to) {
 
         Map namedParameters = new HashMap();
-        namedParameters.put("from", from);
-        namedParameters.put("to", to);
+        namedParameters.put("from", DateUtils.toTimestamp(from));
+        namedParameters.put("to", DateUtils.toTimestamp(to));
 
         String sql = "SELECT cl.client_id, cl.iso3166_3, cln.name, cln.family_name," +
                 " rf.unhcr_num, rf.unhcr_date, rs.file_status_id, fsn.name AS file_status_name" +

@@ -20,11 +20,7 @@ public class FamilyUtils {
                 }
             }
 
-            Family newFamily = new Family();
-            newFamily.setClient(person);
-            newFamily.setFamily(familyMembers);
-
-            families.add(newFamily);
+            families.add(new Family(person, familyMembers));
         }
         return families;
     }

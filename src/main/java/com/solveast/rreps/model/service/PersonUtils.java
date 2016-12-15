@@ -11,10 +11,10 @@ import java.util.List;
  */
 public class PersonUtils {
 
-    public static boolean isUnhcrDateAfterFrom(Person person, LocalDateTime from) {
+    public static boolean isUnhcrDateBeforeFrom(Person person, LocalDateTime from) {
         if (person.getUnhcrDate() == null)
-            return true;
-        if (person.getUnhcrDate().isAfter(from))
+            return false;
+        if (person.getUnhcrDate().isBefore(from))
             return true;
         return false;
     }
@@ -26,12 +26,11 @@ public class PersonUtils {
     public static boolean isSexCdExists(Person person) {
         return !(person.getSexCd() == null);
     }
-/*
-    public static boolean isCanGetMoreOrLessThen18(Person person) {
-        if (person.getBirthDate() != null)
+
+    public static boolean isCanGetAgeOrLessThen18(Person person){
+        if (person.getBirthDate() != null || person.getUnRelationshipCd() != null) {
             return true;
-        if (person.getUnRelationshipCd() == "CHI")
-            return true;
+        }
         return false;
-    }*/
+    }
 }

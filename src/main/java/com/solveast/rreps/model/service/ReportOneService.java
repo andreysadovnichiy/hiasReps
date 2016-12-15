@@ -31,14 +31,14 @@ public class ReportOneService {
     @Autowired
     private FamilyService familyService;
 
-    public Map<String, Object> getData(Timestamp from, Timestamp to) {
+    public Map<String, Object> getData(LocalDateTime from, LocalDateTime to) {
         Map<String, Object> data = new HashMap<>();
 
         List<Query1> rawData = reportDao.getQuery(from, to);
         Map<Long, List<FamilyReport>> families = familyService.getFamily();
 
         //фикс внесенных задним числом
-        rawData = fixUnhcrdate(rawData, from.toLocalDateTime(), to.toLocalDateTime());
+        rawData = fixUnhcrdate(rawData, from, to);
         //конвертация запроса во входные данные
         List<IntroData> introData = toIntroData1(rawData);
         //просчет возроста для апликанта и установка статуса more18 в true

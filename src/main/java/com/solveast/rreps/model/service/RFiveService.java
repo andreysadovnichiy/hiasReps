@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -26,7 +27,7 @@ public class RFiveService {
     @Autowired
     private FamilyDao familyDao;
 
-    public Map<String, Object> getData(Timestamp from, Timestamp to) {
+    public Map<String, Object> getData(LocalDateTime from, LocalDateTime to) {
         String title = "Table 3: New asylum seekers registered by the R2P in";
         Map<String, Object> data = new HashMap<>();
 

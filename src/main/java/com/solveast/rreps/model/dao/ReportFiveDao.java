@@ -1,5 +1,6 @@
 package com.solveast.rreps.model.dao;
 
+import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.queries.five.Query5;
 import com.solveast.rreps.model.queries.two.Query21;
 import com.solveast.rreps.model.queries.two.Query22;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +26,11 @@ public class ReportFiveDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Query5> getQuery(Timestamp from, Timestamp to) {
+    public List<Query5> getQuery(LocalDateTime from, LocalDateTime to) {
 
         Map namedParameters = new HashMap();
-        namedParameters.put("from", from);
-        namedParameters.put("to", to);
+        namedParameters.put("from", DateUtils.toTimestamp(from));
+        namedParameters.put("to", DateUtils.toTimestamp(to));
 
         String sql = "SELECT " +
                 " cl.client_id, cl.applicant_id, cl.iso3166_3, cl.sex_cd, cl.birth_date,  " +

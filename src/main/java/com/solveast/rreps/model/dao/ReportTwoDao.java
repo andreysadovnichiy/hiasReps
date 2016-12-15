@@ -1,5 +1,6 @@
 package com.solveast.rreps.model.dao;
 
+import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.queries.two.Query21;
 import com.solveast.rreps.model.queries.two.Query22;
 import com.solveast.rreps.model.queries.two.Query23;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,11 +25,11 @@ public class ReportTwoDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public List<Query21> getQuery21(Timestamp from, Timestamp to) {
+    public List<Query21> getQuery21(LocalDateTime from, LocalDateTime to) {
 
         Map namedParameters = new HashMap();
-        namedParameters.put("from", from);
-        namedParameters.put("to", to);
+        namedParameters.put("from", DateUtils.toTimestamp(from));
+        namedParameters.put("to", DateUtils.toTimestamp(to));
 
         String sql = "SELECT " +
                 " tc.client_id, cl.birth_date, cl.sex_cd, ta.action_id, ta.action_type, ta.action_result_id, " +
@@ -63,11 +65,11 @@ public class ReportTwoDao {
         return query;
     }
 
-    public List<Query22> getQuery22(Timestamp from, Timestamp to) {
+    public List<Query22> getQuery22(LocalDateTime from, LocalDateTime to) {
 
         Map namedParameters = new HashMap();
-        namedParameters.put("from", from);
-        namedParameters.put("to", to);
+        namedParameters.put("from", DateUtils.toTimestamp(from));
+        namedParameters.put("to", DateUtils.toTimestamp(to));
 
         String sql = "SELECT cl.client_id, cl.un_relationship_cd, cl.sex_cd, cl.birth_date, cl.register_time" +
                 " FROM clients.t_client AS cl" +
@@ -90,11 +92,11 @@ public class ReportTwoDao {
         return query;
     }
 
-    public List<Query23> getQuery23(Timestamp from, Timestamp to) {
+    public List<Query23> getQuery23(LocalDateTime from, LocalDateTime to) {
 
         Map namedParameters = new HashMap();
-        namedParameters.put("from", from);
-        namedParameters.put("to", to);
+        namedParameters.put("from", DateUtils.toTimestamp(from));
+        namedParameters.put("to", DateUtils.toTimestamp(to));
 
         String sql = "SELECT " +
                 " fr.client_id, cl.sex_cd, cl.un_relationship_cd, cl.birth_date, fr.unhcr_date, fr.register_time" +

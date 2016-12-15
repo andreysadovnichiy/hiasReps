@@ -32,6 +32,21 @@ public class DateUtils {
         }
     }
 
+    public static LocalDateTime toLocalDateTime(String str) {
+        try {
+            DateFormat formatter;
+            formatter = new SimpleDateFormat("dd MM yyyy", Locale.getDefault());
+
+            Date date = formatter.parse(str);
+            Timestamp timeStampDate = new Timestamp(date.getTime());
+
+            return toLocalDateTime(timeStampDate);
+        } catch (Exception e) {
+            System.out.println("Exception :" + e);
+            return null;
+        }
+    }
+
     public static Timestamp toTimestamp(LocalDateTime localDateTime) {
         if (localDateTime == null)
             return null;
@@ -52,7 +67,7 @@ public class DateUtils {
         if (dateTime != null)
             return LocalDateTime.now().getYear() - dateTime.getYear();
         else
-            return 100;
+            return 999;
     }
 
     public static Integer getAge(Timestamp dateTime) {
@@ -62,23 +77,23 @@ public class DateUtils {
             return 100;
     }
 
-    public static String getTitle(String source, Timestamp from, Timestamp to) {
+    public static String getTitle(String source, LocalDateTime from, LocalDateTime to) {
         StringBuilder builder = new StringBuilder();
 
         if (from != null && to != null) {
             builder
                     .append(source)
                     .append(" ")
-                    .append(getMonth(from.toLocalDateTime().getMonthValue()))
+                    .append(getMonth(from.getMonthValue()))
                     .append(" ")
-                    .append(from.toLocalDateTime().getYear());
+                    .append(from.getYear());
 
-            if (from.toLocalDateTime().getMonthValue() != to.toLocalDateTime().getMonthValue())
+            if (from.getMonthValue() != to.getMonthValue())
                 builder
                         .append(" - ")
-                        .append(getMonth(to.toLocalDateTime().getMonthValue()))
+                        .append(getMonth(to.getMonthValue()))
                         .append(" ")
-                        .append(from.toLocalDateTime().getYear());
+                        .append(from.getYear());
         }
         return builder.toString();
     }

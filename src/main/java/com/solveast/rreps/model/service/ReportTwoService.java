@@ -28,7 +28,7 @@ public class ReportTwoService {
 
     private Map<Long, Person> clients;
 
-    public Map<String, Object> getData(Timestamp from, Timestamp to) {
+    public Map<String, Object> getData(LocalDateTime from, LocalDateTime to) {
         String title = "Table 2: Population group in ";
         Map<String, Object> data = new HashMap<>();
 
@@ -39,9 +39,8 @@ public class ReportTwoService {
 
         List<BaseQuery> familyBaseQuery = familyDao.getFamilyBaseQuery();
 
-        LocalDateTime fromLTD = from.toLocalDateTime();
         for (Query23 item : rawData23) {
-            if(item.getUnhcrDate()!= null && fromLTD.isAfter(item.getUnhcrDate()))
+            if(item.getUnhcrDate()!= null && from.isAfter(item.getUnhcrDate()))
                 forDeleteRawData23.add(item);
         }
         rawData23.removeAll(forDeleteRawData23);

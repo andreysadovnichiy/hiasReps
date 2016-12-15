@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ public class ReportThreeService {
     @Autowired
     private FamilyService familyService;
 
-    public List<Query3> getData(Timestamp from, Timestamp to) {
+    public List<Query3> getData(LocalDateTime from, LocalDateTime to) {
 
         List<Query3> query = reportDao.getQuery3(from, to);
 //        Map<Long, Integer> familyMap = familyService.getFamilyMap();

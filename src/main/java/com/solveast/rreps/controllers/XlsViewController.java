@@ -17,65 +17,48 @@ import java.util.Map;
 public class XlsViewController {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
-//    @Autowired
-//    private ReportOneService reportOneService;
-    @Autowired
-    private ReportTwoService reportTwoService;
-//    @Autowired
-//    private ReportThreeService reportThreeService;
-    @Autowired
-    private RFiveService rFiveService;
-
     @Autowired
     private ROneService rOneService;
     @Autowired
+    private ReportTwoService reportTwoService;
+    @Autowired
     private RThreeService rTreeService;
+    @Autowired
+    private RFiveService rFiveService;
 
-    @RequestMapping("/reports/xls/report-one.xls")
-    public ModelAndView xlsReportOne(@RequestParam("from") String fromString,
-                                     @RequestParam("to") String toString) {
 
-        Timestamp from = DateUtils.toTimestamp(fromString);
-        Timestamp to = DateUtils.toTimestamp(toString);
+    @RequestMapping("/reports/xls/report-1.xls")
+    public ModelAndView xlsReportOne(@RequestParam("from") String from,
+                                     @RequestParam("to") String to) {
 
-        Map<String, Object> data = rOneService.getReport(from, to);
+        Map<String, Object> data = rOneService.getReport(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewROne", "model", data);
     }
 
-    @RequestMapping("/reports/xls/report-three.xls")
-    public ModelAndView xlsReportThree(@RequestParam("from") String fromString,
-                                       @RequestParam("to") String toString) {
+    @RequestMapping("/reports/xls/report-3.xls")
+    public ModelAndView xlsReportThree(@RequestParam("from") String from,
+                                       @RequestParam("to") String to) {
 
-        Timestamp from = DateUtils.toTimestamp(fromString);
-        Timestamp to = DateUtils.toTimestamp(toString);
-
-        Map<String, Object> data = rTreeService.getData(from, to);
+        Map<String, Object> data = rTreeService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewReportThree", "model", data);
     }
 
-    @RequestMapping("/reports/xls/report-four.xls")
-    public ModelAndView xlsReportFour(@RequestParam("from") String fromString,
-                                      @RequestParam("to") String toString) {
+    @RequestMapping("/reports/xls/report-2-4.xls")
+    public ModelAndView xlsReportFour(@RequestParam("from") String from,
+                                      @RequestParam("to") String to) {
 
-        Timestamp from = DateUtils.toTimestamp(fromString);
-        Timestamp to = DateUtils.toTimestamp(toString);
-
-        Map<String, Object> data = reportTwoService.getData(from, to);
+        Map<String, Object> data = reportTwoService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewRFour", "model", data);
     }
 
-    @RequestMapping("/reports/xls/report-five.xls")
-    public ModelAndView xlsReportFive(@RequestParam("from") String fromString,
-                                      @RequestParam("to") String toString) {
+    @RequestMapping("/reports/xls/report-5.xls")
+    public ModelAndView xlsReportFive(@RequestParam("from") String from,
+                                      @RequestParam("to") String to) {
 
-        Timestamp from = DateUtils.toTimestamp(fromString);
-        Timestamp to = DateUtils.toTimestamp(toString);
-
-        Map<String, Object> data = rFiveService.getData(from, to);
+        Map<String, Object> data = rFiveService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewRFive", "model", data);
     }
