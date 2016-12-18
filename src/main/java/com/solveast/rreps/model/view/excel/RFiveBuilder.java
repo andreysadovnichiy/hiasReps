@@ -1,6 +1,8 @@
 package com.solveast.rreps.model.view.excel;
 
+import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.queries.family.Family;
+import com.solveast.rreps.model.queries.family.Person;
 import com.solveast.rreps.model.queries.five.Query5;
 import com.solveast.rreps.model.queries.five.Report5;
 import com.solveast.rreps.model.queries.five.ReportFiveAdapter;
@@ -43,6 +45,7 @@ public class RFiveBuilder extends AbstractXlsxView {
     protected void buildExcelDocument(Map<String, Object> map, Workbook workbook, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws Exception {
         Map<String, Object> data = (Map<String, Object>) map.get("model");
         List<Query5> rawData = (List<Query5>) data.get("rawData");
+        List<Family> rawDataFamilies = (List<Family>) data.get("rawDataFamilies");
         Integer total = (Integer) data.get("total");
         Integer unknown = (Integer) data.get("unknown");
         ReportFiveAdapter report = (ReportFiveAdapter) data.get("report");
@@ -59,7 +62,8 @@ public class RFiveBuilder extends AbstractXlsxView {
 
         CellStyle cellStyle = sheet.getRow(rowShift).getCell(1).getCellStyle();
         CellStyle cellProcentStyle = sheet.getRow(rowShift).getCell(17).getCellStyle();
-        
+        CellStyle cellDateStyle = sheet.getRow(3).getCell(21).getCellStyle();
+
         for (Map.Entry<String, Report5> item : reportMap.entrySet()) {
             line = rowShift + i;
             row = sheet.getRow(line);
@@ -132,12 +136,128 @@ public class RFiveBuilder extends AbstractXlsxView {
             cell.setCellStyle(cellStyle);
 
             cell = row.createCell(17);
-            cell.setCellValue((float)item.getValue().getTotalByIso() / total);
+            cell.setCellValue((float) item.getValue().getTotalByIso() / total);
             cell.setCellStyle(cellProcentStyle);
 
             i++;
         }
 
+        fillTotal(line + 2, unknown, total, sheet);
+
+        rowShift = 3;
+        i = 0;
+        Date date;
+        for (Query5 item : rawData) {
+            line = rowShift + i;
+            row = sheet.getRow(line);
+            if (row == null) {
+                row = sheet.createRow(line);
+            }
+
+            cell = row.createCell(19);
+            cell.setCellValue(item.getClientId());
+            cell.setCellStyle(cellStyle);
+
+            cell = row.createCell(20);
+            cell.setCellValue(item.getApplicantId());
+            cell.setCellStyle(cellStyle);
+
+            if (item.getBirthDate() != null) {
+                cell = row.createCell(21);
+                cell.setCellStyle(cellDateStyle);
+                date = Date.from(item.getBirthDate().atZone(ZoneId.systemDefault()).toInstant());
+                cell.setCellValue(date);
+            }
+
+            cell = row.createCell(22);
+            cell.setCellValue(DateUtils.getAge(item.getBirthDate()));
+            cell.setCellStyle(cellStyle);
+
+            cell = row.createCell(23);
+            cell.setCellValue(item.getIso3166_3());
+            cell.setCellStyle(cellStyle);
+
+            cell = row.createCell(24);
+            cell.setCellValue(item.getSexCd());
+            cell.setCellStyle(cellStyle);
+
+            if (item.getRealTimeStart() != null) {
+                cell = row.createCell(25);
+                cell.setCellStyle(cellDateStyle);
+                date = Date.from(item.getRealTimeStart().atZone(ZoneId.systemDefault()).toInstant());
+                cell.setCellValue(date);
+            }
+
+            if (item.getRealTimeStop() != null) {
+                cell = row.createCell(26);
+                cell.setCellStyle(cellDateStyle);
+                date = Date.from(item.getRealTimeStop().atZone(ZoneId.systemDefault()).toInstant());
+                cell.setCellValue(date);
+            }
+
+            if (item.getScheduledTimeStart() != null) {
+                cell = row.createCell(27);
+                cell.setCellStyle(cellDateStyle);
+                date = Date.from(item.getScheduledTimeStart().atZone(ZoneId.systemDefault()).toInstant());
+                cell.setCellValue(date);
+            }
+
+            if (item.getScheduledTimeStop() != null) {
+                cell = row.createCell(28);
+                cell.setCellStyle(cellDateStyle);
+                date = Date.from(item.getScheduledTimeStop().atZone(ZoneId.systemDefault()).toInstant());
+                cell.setCellValue(date);
+            }
+
+            i++;
+        }
+
+        rowShift = 3;
+        i = 0;
+        line = rowShift + i;
+        for (Family item : rawDataFamilies) {
+            fillPerson(item.getClient(), line, sheet);
+            line = rowShift + ++i;
+
+            for (Person person : item.getFamily()) {
+                fillPerson(person, line, sheet);
+                line = rowShift + ++i;
+            }
+        }
+    }
+
+    private void fillPerson(Person item, int line, Sheet sheet) {
+        Row row = sheet.getRow(line);
+        if (row == null) {
+            row = sheet.createRow(line);
+        }
+
+        CellStyle cellStyle = sheet.getRow(6).getCell(1).getCellStyle();
+        CellStyle cellDateStyle = sheet.getRow(3).getCell(21).getCellStyle();
+
+        Cell cell = row.createCell(30);
+        cell.setCellValue(item.getClientId());
+        cell.setCellStyle(cellStyle);
+
+        cell = row.createCell(31);
+        cell.setCellValue(item.getApplicantId());
+        cell.setCellStyle(cellStyle);
+
+        Date date;
+        if (item.getBirthDate() != null) {
+            cell = row.createCell(32);
+            cell.setCellStyle(cellDateStyle);
+            date = Date.from(item.getBirthDate().atZone(ZoneId.systemDefault()).toInstant());
+            cell.setCellValue(date);
+        }
+
+        cell = row.createCell(33);
+        cell.setCellValue(DateUtils.getAge(item.getBirthDate()));
+        cell.setCellStyle(cellStyle);
+
+        cell = row.createCell(34);
+        cell.setCellValue(item.getSexCd());
+        cell.setCellStyle(cellStyle);
     }
 
     private void fillTitle(String title, Sheet sheet) {
@@ -146,4 +266,23 @@ public class RFiveBuilder extends AbstractXlsxView {
         rowCellMaleValue.setCellValue(title);
     }
 
+    private void fillTotal(int line, int unknown, int total, Sheet sheet) {
+        Row row = sheet.getRow(line);
+        if (row == null)
+            row = sheet.createRow(line);
+
+        Cell cell = row.createCell(11);
+        cell.setCellValue("Total:");
+        cell = row.createCell(12);
+        cell.setCellValue(total);
+
+        row = sheet.getRow(line + 1);
+        if (row == null)
+            row = sheet.createRow(line + 1);
+
+        cell = row.createCell(11);
+        cell.setCellValue("Unknown:");
+        cell = row.createCell(12);
+        cell.setCellValue(unknown);
+    }
 }

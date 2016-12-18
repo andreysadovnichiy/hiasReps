@@ -35,7 +35,7 @@ public class RFiveService {
         List<Query5> query = reportDao.getQuery(from, to);
         List<BaseQuery> familyQuery = familyDao.getFamilyBaseQuery();
         ReportFiveAdapter reportAdapter = new ReportFiveAdapter();
-        List<Person> personApplicant = new ArrayList<>();
+        Set<Person> personApplicant = new HashSet<>();
 
         for (Query5 item : query) {
             personApplicant.add(item.toPerson());
@@ -52,6 +52,7 @@ public class RFiveService {
         data.put("total", reportAdapter.getTotalClientsWithFamilyNumber());
         data.put("unknown", reportAdapter.getUnableToProccess());
         data.put("rawData", query);
+        data.put("rawDataFamilies", families);
         return data;
     }
 }

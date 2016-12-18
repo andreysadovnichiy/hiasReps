@@ -3,13 +3,14 @@ package com.solveast.rreps.model.queries.family;
 import com.solveast.rreps.model.queries.base.BaseQuery;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by Андрей on 12.12.2016.
  */
 public class FamilyUtils {
-    public static List<Family> getFamilies(List<Person> clients, List<BaseQuery> familyQueries) {
+    public static List<Family> getFamilies(Collection<Person> clients, List<BaseQuery> familyQueries) {
         List<Family> families = new ArrayList<>();
 
         for (Person person : clients) {
