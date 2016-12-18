@@ -10,6 +10,7 @@ import com.solveast.rreps.model.queries.family.FamilyUtils;
 import com.solveast.rreps.model.queries.family.Person;
 import com.solveast.rreps.model.queries.five.Query5;
 import com.solveast.rreps.model.queries.five.Report5;
+import com.solveast.rreps.model.queries.five.ReportFiveAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,36 +33,24 @@ public class RFiveService {
         Map<String, Object> data = new HashMap<>();
 
         List<Query5> query = reportDao.getQuery(from, to);
-//        List<BaseQuery> familyBaseQuery = familyDao.getFamilyBaseQuery();
         List<BaseQuery> familyQuery = familyDao.getFamilyBaseQuery();
-
-        Map<String, Report5> reportMap = new TreeMap<>();
-        List<Person> personsApplicant = new ArrayList<>();
-        Set<Long> unableToProcess = new HashSet<>();
+        ReportFiveAdapter reportAdapter = new ReportFiveAdapter();
+        List<Person> personApplicant = new ArrayList<>();
 
         for (Query5 item : query) {
-            Report5 rep = reportMap.get(item.getIso3166_3());
-            if (rep == null)
-                rep = new Report5();
-            Person person = item.toPerson();
-            rep.setPerson(person, 100);
-            reportMap.put(item.getIso3166_3(), rep);
-            personsApplicant.add(person);
+            personApplicant.add(item.toPerson());
         }
 
-        List<Family> families = FamilyUtils.getFamilies(personsApplicant, familyQuery);
+        List<Family> families = FamilyUtils.getFamilies(personApplicant, familyQuery);
 
         for (Family item : families) {
-            String iso3166_3 = item.getClient().getIso3166_3();
-            Report5 rep = reportMap.get(iso3166_3);
-            if (rep == null)
-                continue;
-            rep.setFamily(item);
+            reportAdapter.set(item);
         }
 
-
         data.put("title", DateUtils.getTitle(title, from, to));
-        data.put("report", reportMap);
+        data.put("report", reportAdapter);
+        data.put("total", reportAdapter.getTotalClientsWithFamilyNumber());
+        data.put("unknown", reportAdapter.getUnableToProccess());
         data.put("rawData", query);
         return data;
     }

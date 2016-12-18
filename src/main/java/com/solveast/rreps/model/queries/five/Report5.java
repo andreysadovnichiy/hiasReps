@@ -23,7 +23,6 @@ public class Report5 {
     private Integer female_13_17;
     private Integer inds;
     private Integer cases;
-    private Float persent;
 
     public Report5() {
         mUAC = 0;
@@ -42,26 +41,41 @@ public class Report5 {
         cases = 0;
     }
 
-    public void setPerson(Person person, int total) {
-        if (person.getBirthDate() != null && person.getSexCd() != null) {
-            int age = DateUtils.getAge(person.getBirthDate());
-            boolean applicant = person.getApplicantId() == null;
-
-            iso3166_3 = person.getIso3166_3();
-
-            if (applicant && age < 18 && "m".equals(person.getSexCd())) {
-                mUAC = mUAC + 1;
-            }
-            else if (applicant && age < 18 && "f".equals(person.getSexCd())) {
-                fUAC = fUAC + 1;
-            }
-
-
-        }
+    public void incMUAC() {
+        mUAC = mUAC + 1;
     }
 
-    public void setFamily(Family family) {
+    public void incFUAC() {
+        fUAC = fUAC + 1;
+    }
 
+    public int getTotalByIso(){
+        return male_0_4 + female_0_4 + male_5_12 + female_5_12 + male_13_17 + female_13_17 +
+                male_18_59 + female_18_59 + male_60_ + female_60_;
+    }
+
+    public void incInds(int familyNumber) {
+        inds = inds + familyNumber;
+    }
+
+    public void incCases() {
+        cases = cases + 1;
+    }
+
+    public void incAge(Person person) {
+        String sex = person.getSexCd();
+        int age = DateUtils.getAge(person.getBirthDate());
+
+        if ("m".equals(sex) && age <= 4) male_0_4 = male_0_4 + 1;
+        else if ("f".equals(sex) && age <= 4) female_0_4 = female_0_4 + 1;
+        else if ("m".equals(sex) && age >= 5 && age <= 12) male_5_12 = male_5_12 + 1;
+        else if ("f".equals(sex) && age >= 5 && age <= 12) female_5_12 = female_5_12 + 1;
+        else if ("m".equals(sex) && age >= 13 && age <= 17) male_13_17 = male_13_17 + 1;
+        else if ("f".equals(sex) && age >= 13 && age <= 17) female_13_17 = female_13_17 + 1;
+        else if ("m".equals(sex) && age >= 18 && age <= 59) male_18_59 = male_18_59 + 1;
+        else if ("f".equals(sex) && age >= 18 && age <= 59) female_18_59 = female_18_59 + 1;
+        else if ("m".equals(sex) && age >= 60) male_60_ = male_60_ + 1;
+        else if ("f".equals(sex) && age >= 60) female_60_ = female_60_ + 1;
     }
 
     public String getIso3166_3() {
@@ -184,14 +198,6 @@ public class Report5 {
         this.cases = cases;
     }
 
-    public Float getPersent() {
-        return persent;
-    }
-
-    public void setPersent(Float persent) {
-        this.persent = persent;
-    }
-
     @Override
     public String toString() {
         return "Report5{" +
@@ -210,7 +216,6 @@ public class Report5 {
                 ", female_13_17=" + female_13_17 +
                 ", inds=" + inds +
                 ", cases=" + cases +
-                ", persent=" + persent +
                 '}';
     }
 }

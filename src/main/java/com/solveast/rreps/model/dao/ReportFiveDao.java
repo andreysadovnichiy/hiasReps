@@ -38,8 +38,11 @@ public class ReportFiveDao {
                 " FROM tasks.t_action AS ta" +
                 " LEFT JOIN tasks.t_action_client AS tc ON ta.action_id = tc.action_id" +
                 " LEFT JOIN clients.t_client AS cl ON tc.client_id = cl.client_id" +
-                " WHERE (ta.service_id = 10 AND ta.action_state_cd = 'CLS')" +
-                " AND " +
+                " LEFT JOIN clients.t_registration_state AS rs ON cl.client_id = rs.client_id " + //--fix deleted
+                " WHERE " +
+//                " (rs.file_status_id > 0) AND" + //--fix deleted
+                " (rs.file_status_id > 0 OR rs.file_status_id IS NULL) AND" + //--fix deleted
+                " (ta.service_id = 10 AND ta.action_state_cd = 'CLS') AND " +
                 " ((ta.real_time_start BETWEEN :from AND :to)" +
                 " OR (ta.real_time_stop BETWEEN :from AND :to)" +
                 " OR (ta.scheduled_time_start BETWEEN :from AND :to)" +

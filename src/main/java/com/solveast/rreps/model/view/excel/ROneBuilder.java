@@ -24,6 +24,7 @@ import java.util.Map;
 @Service
 public class ROneBuilder extends AbstractXlsxView {
     private final String excelFilePath = "patterns.xls";
+    private final ForReport reportPattern = ForReport.ONE;
 
     @Override
     protected Workbook createWorkbook(Map<String, Object> model, HttpServletRequest request) {
@@ -38,6 +39,8 @@ public class ROneBuilder extends AbstractXlsxView {
         Map<String, Report1> reports = reportAdapter.getReportMap();
 
         String title = (String) data.get("title");
+        Integer unknown = (Integer) data.get("unknown");
+        Integer total = (Integer) data.get("total");
 
         Sheet sheet = workbook.getSheet("Запрос 1");
         fillTitle(title, sheet);
@@ -46,6 +49,7 @@ public class ROneBuilder extends AbstractXlsxView {
         Cell cell;
         int rowShift = 6;
         int i = 0;
+        int line = rowShift + i;
 
         CellStyle templStyle1 = sheet.getRow(rowShift).getCell(1).getCellStyle();
         CellStyle templStyle2 = sheet.getRow(rowShift).getCell(2).getCellStyle();
@@ -56,10 +60,11 @@ public class ROneBuilder extends AbstractXlsxView {
 
         for (Map.Entry<String, Report1> item : reports.entrySet()) {
             Report1 report = item.getValue();
+            line = rowShift + i;
 
-            row = sheet.getRow(rowShift + i);
+            row = sheet.getRow(line);
             if (row == null) {
-                row = sheet.createRow(rowShift + i);
+                row = sheet.createRow(line);
             }
 
             cell = row.createCell(1);
@@ -88,12 +93,12 @@ public class ROneBuilder extends AbstractXlsxView {
 
             i++;
         }
-
-        rowShift = 3;
+        fillTotal(line + 2, unknown, total, sheet);
 
         Date date;
+        rowShift = 3;
         i = 0;
-        int line = rowShift + i;
+        line = rowShift + i;
 
         for (Family family : families) {
             fillPersonRow(family.getClient(), family.getFamilyPersonNumber(), sheet, line);
@@ -112,6 +117,21 @@ public class ROneBuilder extends AbstractXlsxView {
         rowCellMaleValue.setCellValue(title);
     }
 
+    private void fillTotal(int line, int unproc, int total, Sheet sheet) {
+        Row row = sheet.getRow(line);
+        if (row == null)
+            row = sheet.createRow(line);
+
+        Cell cell = row.createCell(3);
+        cell.setCellValue("Total:");
+        cell = row.createCell(5);
+        cell.setCellValue("Unproc!:");
+
+        cell = row.createCell(4);
+        cell.setCellValue(total);
+        cell = row.createCell(6);
+        cell.setCellValue(unproc);
+    }
 
     private void fillPersonRow(Person person, int familyMembers, Sheet sheet, int line) {
         CellStyle templStyle1 = sheet.getRow(3).getCell(8).getCellStyle();
@@ -163,13 +183,13 @@ public class ROneBuilder extends AbstractXlsxView {
             cell.setCellValue(date);
         }
 
-        if(person.getSexCd() != null) {
+        if (person.getSexCd() != null) {
             cell = row.createCell(13);
             cell.setCellValue(person.getSexCd());
             cell.setCellStyle(templStyle6);
         }
 
-        if(person.getIso3166_3() != null) {
+        if (person.getIso3166_3() != null) {
             cell = row.createCell(14);
             cell.setCellValue(person.getIso3166_3());
             cell.setCellStyle(templStyle7);

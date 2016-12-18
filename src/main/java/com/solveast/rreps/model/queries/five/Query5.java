@@ -22,6 +22,11 @@ public class Query5 extends BaseQuery {
     public Person toPerson(){
         Person person = new Person();
 
+        person.setClientId(getClientId());
+        person.setApplicantId(getApplicantId());
+        person.setBirthDate(getBirthDate());
+        person.setIso3166_3(getIso3166_3());
+        person.setSexCd(getSexCd());
         return person;
     }
 
