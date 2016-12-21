@@ -1,5 +1,6 @@
 package com.solveast.rreps.model;
 
+import com.solveast.rreps.model.queries.family.Person;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Timestamp;
@@ -73,6 +74,13 @@ public class DateUtils {
     public static Integer getAge(Timestamp dateTime) {
         if (dateTime != null)
             return getAge(dateTime.toLocalDateTime());
+        else
+            return 100;
+    }
+
+    public static Integer getAge(Person person) {
+        if (person != null && person.getBirthDate() != null)
+            return getAge(person.getBirthDate());
         else
             return 100;
     }

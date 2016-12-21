@@ -38,7 +38,7 @@ public class Person {
     }
 
     public Boolean getApplicant() {
-        if(applicantId == null || applicantId == 0)
+        if (applicantId == null || applicantId == 0)
             return true;
         else
             return false;

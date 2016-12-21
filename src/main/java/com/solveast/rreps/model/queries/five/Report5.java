@@ -50,8 +50,7 @@ public class Report5 {
     }
 
     public int getTotalByIso(){
-        return male_0_4 + female_0_4 + male_5_12 + female_5_12 + male_13_17 + female_13_17 +
-                male_18_59 + female_18_59 + male_60_ + female_60_;
+        return getInds();
     }
 
     public void incInds(int familyNumber) {

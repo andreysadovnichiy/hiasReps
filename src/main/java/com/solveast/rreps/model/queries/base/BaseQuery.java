@@ -81,6 +81,12 @@ public class BaseQuery {
         this.birthDate = DateUtils.toLocalDateTime(birthDate);
     }
 
+    public Integer getAge() {
+        if (birthDate != null)
+            return age;
+        else
+            return 100;
+    }
 
     public String getUnRelationshipCd() {
         return unRelationshipCd;

@@ -25,6 +25,8 @@ public class XlsViewController {
     private RThreeService rTreeService;
     @Autowired
     private RFiveService rFiveService;
+    @Autowired
+    private RSixService rSixService;
 
 
     @RequestMapping("/reports/xls/report-1.xls")
@@ -61,5 +63,14 @@ public class XlsViewController {
         Map<String, Object> data = rFiveService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewRFive", "model", data);
+    }
+
+    @RequestMapping("/reports/xls/report-6.xls")
+    public ModelAndView xlsReportSix(@RequestParam("from") String from,
+                                     @RequestParam("to") String to) {
+
+        Map<String, Object> data = rSixService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
+
+        return new ModelAndView("excelViewRSix", "model", data);
     }
 }
