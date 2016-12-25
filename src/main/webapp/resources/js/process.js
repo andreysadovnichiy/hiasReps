@@ -35,14 +35,14 @@ jQuery(document).ready(function($){
                 now.setDate(31);
                 to = new Date(now.setMonth(11));
             }
-            $("#fromDate").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
-            $("#toDate").mask("99.99.9999", {placeholder: "дд.мм.гггг" });
+            $("#fromDate").mask("99.99.99", {placeholder: "дд.мм.гг" });
+            $("#toDate").mask("99.99.99", {placeholder: "дд.мм.гг" });
             $("#fromDate").val(dateToString(from));
             $("#toDate").val(dateToString(to));
         }
 
         function dateToString(date) {
-            return date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear();
+            return date.getDate()+'.'+(date.getMonth()+1)+'.'+(date.getFullYear()-2000);
         }
 
         function stringToDate(str) {
@@ -51,17 +51,17 @@ jQuery(document).ready(function($){
 
            dayStr = str[0]+str[1];
            monthStr = str[3]+str[4];
-           yearStr = str[6]+str[7]+str[8]+str[9];
+           yearStr = str[6]+str[7];
 
            var day = parseInt(dayStr);
            var month = parseInt(monthStr)-1;
-           var year = parseInt(yearStr);
+           var year = parseInt(yearStr)+2000;
 
            var lastDayOfMonth = getDaysInMonth(month+1, year);
 
            if(day < 1 || day > lastDayOfMonth)
                return null;
-           else if(month < 1 || month > 11)
+           else if(month < 0 || month > 11)
                return null;
            else if(year < 2000 || year > nowYear)
                return null;
