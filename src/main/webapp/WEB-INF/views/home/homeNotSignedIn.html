@@ -7,49 +7,31 @@
           th:href="@{/resources/css/bootstrap.min.css}"/>
     <link href="../../../resources/css/core.css" rel="stylesheet" media="screen" th:href="@{/resources/css/core.css}"/>
 
-    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
     <script src="../../../resources/js/jquery.js" th:src="@{/resources/js/jquery.js}"></script>
-
-    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment-with-locales.js"></script>
-    <script src="//cdn.rawgit.com/Eonasdan/bootstrap-datetimepicker/e8bddc60e73c1ec2475f827be36e1957af72e2ea/src/js/bootstrap-datetimepicker.js"></script>
-
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/resources/js/bootstrap.min.js}"></script>
+    <script src="../../../resources/js/jquery.maskedinput.min.js" th:src="@{/resources/js/jquery.maskedinput.min.js}"></script>
+    <script src="../../../resources/js/process.js" th:src="@{/resources/js/process.js}"></script>
 </head>
 <body>
 <div th:replace="fragments/header :: header">Header</div>
 <div class="container">
     <div class="text-center">
-        <h1>Test</h1>
+        <h1>Заглавие</h1>
         <p class="lead">
-            Welcome to the Spring MVC Quickstart application!
-            Get started quickly by signing up.
-        </p>
-        <p>
-            <a href="/signup" th:href="@{/signup}" class="btn btn-success btn-lg">Sign up</a>
+            Пояснительный текст
         </p>
 
-        <div class="form-group">
-            <div class='input-group date' id='fromDate'>
-                <input type='text' class="form-control"/>
-                <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-2">
+                <input id='fromDate' type='text' class="form-control"/>
             </div>
-            <div class='input-group date' id='toDate'>
-                <input type='text' class="form-control"/>
-                <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                </span>
+            <div class="col-md-2">
+                <input id='toDate' type='text' class="form-control"/>
             </div>
+            <div class="col-md-4"></div>
         </div>
-<!--
 
-        <button id="qw1" class="btn btn-info">Установить 1 квартал 2016</button>
-        <button id="qw2" class="btn btn-info">Установить 2 квартал 2016</button>
-        <button id="qw3" class="btn btn-info">Установить 3 квартал 2016</button>
-        <button id="qw4" class="btn btn-info">Установить 4 квартал 2016</button>
-        <button id="qwJuly" class="btn btn-info">Установить за июль 2016</button>
-
--->
         <h3><a href="" id="refQuery1">Download 1 Excel Document</a></h3>
         <h3><a href="" id="refQuery3">Download 3 Excel Document</a></h3>
         <h3><a href="" id="refQuery4">Download 2-4 Excel Document</a></h3>
@@ -60,134 +42,4 @@
     <div th:replace="fragments/footer :: footer">&copy; 2013 The Static Templates</div>
 </div>
 </body>
-
-<script type="text/javascript">
-	jQuery(document).ready(function($){
-        var to;
-        var from;
-
-        var firstCommitFrom;
-        var firstCommitTo;
-
-        initParams();
-
-        function getUrlPref() {
-            //var protocol = window.location.protocol;
-            //var host = window.location.host;
-            //var path = window.location.pathname;
-            return 'Hello';
-        }
-
-        function initDate() {
-            now = new Date();
-            now.setDate(1);
-            month = now.getMonth();
-
-            if (month >= 0 && month <= 2){
-                from = new Date(now.setMonth(0));
-                now.setDate(31);
-                to = new Date(now.setMonth(2));
-            }
-
-            else if (month >= 3 && month <= 5){
-                from = new Date(now.setMonth(3));
-                now.setDate(30);
-                to = new Date(now.setMonth(5));
-            }
-
-            else if (month >= 6 && month <= 8){
-                from = new Date(now.setMonth(6));
-                now.setDate(30);
-                to = new Date(now.setMonth(8));
-            }
-
-            else if (month >= 9 && month <= 11){
-                from = new Date(now.setMonth(9));
-                now.setDate(31);
-                to = new Date(now.setMonth(11));
-            }
-        }
-
-        function initParams() {
-            firstCommitFrom = true;
-            firstCommitTo = true;
-            initDate();
-            updateUrls();
-        }
-
-        function updateUrls() {
-            refParams = "?from=" + from.getDate() + "+"
-                            + (from.getMonth()+1) + "+" + from.getFullYear() + "&to="
-                             + to.getDate() + "+" + (to.getMonth()+1) + "+" + to.getFullYear();
-
-            q1Ref = "/reports/xls/report-1.xls";
-            q3Ref = "/reports/xls/report-3.xls";
-            q4Ref = "/reports/xls/report-2-4.xls";
-            q5Ref = "/reports/xls/report-5.xls";
-            q6Ref = "/reports/xls/report-6.xls";
-            q7Ref = "/reports/xls/report-7.xls";
-
-            q1Link = q1Ref + refParams;
-            q3Link = q3Ref + refParams;
-            q4Link = q4Ref + refParams;
-            q5Link = q5Ref + refParams;
-            q6Link = q6Ref + refParams;
-            q7Link = q7Ref + refParams;
-
-            $("#refQuery1").attr("href", q1Link);
-            $("#refQuery3").attr("href", q3Link);
-            $("#refQuery4").attr("href", q4Link);
-            $("#refQuery5").attr("href", q5Link);
-            $("#refQuery6").attr("href", q6Link);
-            $("#refQuery7").attr("href", q7Link);
-        }
-
-        $('#fromDate').on("dp.change",function (e) {
-            if(firstCommitFrom == true)
-                firstCommitFrom=false;
-            else {
-                tmp = new Date(e.date);
-                from.setFullYear(tmp.getFullYear());
-                from.setMonth(tmp.getMonth());
-                from.setDate(tmp.getDate());
-                firstCommitFrom = false;
-                updateUrls();
-            }
-        });
-
-        $('#toDate').on("dp.change",function (e) {
-            if(firstCommitTo == true)
-                firstCommitTo = false;
-            else {
-                tmp = new Date(e.date);
-                to.setFullYear(tmp.getFullYear());
-                to.setMonth(tmp.getMonth());
-                to.setDate(tmp.getDate());
-                firstCommitTo = false;
-                updateUrls();
-            }
-        });
-
-	    $('#fromDate').datetimepicker({
-	        defaultDate: from,
-	        locale: 'ru',
-	        format: 'DD MM YYYY',
-	        maxDate: to
-	    });
-
-	    $('#toDate').datetimepicker({
-	        defaultDate: to,
-	        locale: 'ru',
-	        format: 'DD MM YYYY',
-	    });
-/*
-	    $('#qw1').click(function(){
-	        to.setFullYear(2016);
-            to.setMonth(11);
-            to.setDate(11);
-	    });
-*/
-    });
-
-</script>
 </html>

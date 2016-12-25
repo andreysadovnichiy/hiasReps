@@ -16,8 +16,6 @@ import java.util.Map;
 @RestController
 public class XlsViewController {
     @Autowired
-    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    @Autowired
     private ROneService rOneService;
     @Autowired
     private ReportTwoService reportTwoService;
@@ -27,6 +25,8 @@ public class XlsViewController {
     private RFiveService rFiveService;
     @Autowired
     private RSixService rSixService;
+    @Autowired
+    private RSevenService rSevenService;
 
 
     @RequestMapping("/reports/xls/report-1.xls")
@@ -72,5 +72,14 @@ public class XlsViewController {
         Map<String, Object> data = rSixService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewRSix", "model", data);
+    }
+
+    @RequestMapping("/reports/xls/report-7.xls")
+    public ModelAndView xlsReportSeven(@RequestParam("from") String from,
+                                     @RequestParam("to") String to) {
+
+        Map<String, Object> data = rSevenService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
+
+        return new ModelAndView("excelViewRSeven", "model", data);
     }
 }

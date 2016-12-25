@@ -10,7 +10,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -47,6 +49,26 @@ public class DateUtils {
             return null;
         }
     }
+
+    public static LocalDateTime toLocalDateTimeMultiFormat(String str) {
+        List<String> patterns = Arrays.asList("yyyy-MM-dd", "dd-MM-yyyy", "dd.MM.yyyy");
+        for (String item : patterns) {
+            try {
+                DateFormat formatter;
+                formatter = new SimpleDateFormat(item, Locale.getDefault());
+
+                Date date = formatter.parse(str);
+                Timestamp timeStampDate = new Timestamp(date.getTime());
+
+                LocalDateTime dateOutput = toLocalDateTime(timeStampDate);
+                if (dateOutput.getYear() > 1980)
+                    return dateOutput;
+            } catch (Exception e) {
+            }
+        }
+        return null;
+    }
+
 
     public static Timestamp toTimestamp(LocalDateTime localDateTime) {
         if (localDateTime == null)
