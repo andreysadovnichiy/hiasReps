@@ -25,7 +25,7 @@ public class ReportSevenDao {
 
         String sql = "SELECT " +
                 " cl.client_id, ccsn.court_case_state_id, ccsn.name, ls.ladget_date, ls.decision_date, cs.ms_rejection_cd, ls.instance_cd, ls.court_decision_cd," +
-                " cl.iso3166_3, cl.sex_cd" +
+                " cl.iso3166_3, cl.sex_cd, pc.name as pcname" +
                 " FROM lawsuits.t_court_case_lawsuit as ls" +
                 " LEFT JOIN lawsuits.t_court_case AS cs ON ls.court_case_id = cs.court_case_id" +
                 " LEFT JOIN lawsuits.r_court_case_state_name AS ccsn ON cs.court_case_state_id = ccsn.court_case_state_id"+
@@ -33,8 +33,9 @@ public class ReportSevenDao {
                 " LEFT JOIN clients.t_client AS cl ON cc.client_id = cl.client_id" +
                 " LEFT JOIN clients.t_registration_state AS rs " + //--fix deleted
                 " ON cl.client_id = rs.client_id " + //--fix deleted
+                " LEFT JOIN portal.t_country_name AS pc " +
+                " ON pc.iso3166_3 = cl.iso3166_3 " +
                 " WHERE (rs.file_status_id > 0 OR rs.file_status_id IS NULL)";
-
 
         List<Query7> query =
                 (List<Query7>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query7>() {
@@ -43,7 +44,7 @@ public class ReportSevenDao {
                         Query7 item = new Query7();
                         item.setClientId(rs.getLong("client_id"));
                         item.setSexCd(rs.getString("sex_cd"));
-                        item.setIso3166_3(rs.getString("iso3166_3"));
+                        item.setIso3166_3(rs.getString("pcname"));
                         item.setDecisionDate(rs.getString("decision_date"));
                         item.setLadgetDate(rs.getString("ladget_date"));
                         item.setCourtDecisionCd(rs.getString("court_decision_cd"));
