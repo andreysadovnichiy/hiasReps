@@ -39,7 +39,7 @@ public class ReportThreeDao {
                 " WHERE (rf.unhcr_num IS NOT NULL OR rf.unhcr_date IS NOT NULL) " +
                 " AND cln.language_cd = 'en' AND fsn.language_cd = 'en'" +
                 " AND cl.applicant = true" +
-                " AND rs.file_status_id > 1";
+                " AND (rs.file_status_id > 1 OR rs.file_status_id IS NULL)";
 
         List<Query3> query =
                 (List<Query3>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query3>() {

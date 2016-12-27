@@ -1,6 +1,7 @@
 package com.solveast.rreps.model.queries.three;
 
 import com.solveast.rreps.model.queries.base.BaseQuery;
+import com.solveast.rreps.model.queries.family.Person;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -14,6 +15,16 @@ public class Query3 extends BaseQuery {
     private String familyName;
     private String unhcrNum;
     private String fileStatusName;
+
+    public Person toPerson() {
+        Person person = new Person();
+
+        person.setClientId(getClientId());
+        person.setApplicantId(getApplicantId());
+        person.setSexCd(getSexCd());
+        person.setIso3166_3(getIso3166_3());
+        return person;
+    }
 
     public String getIso3166_3() {
         return iso3166_3;

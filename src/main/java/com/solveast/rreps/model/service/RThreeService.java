@@ -2,7 +2,11 @@ package com.solveast.rreps.model.service;
 
 import com.solveast.rreps.model.dao.FamilyDao;
 import com.solveast.rreps.model.dao.ReportThreeDao;
+import com.solveast.rreps.model.queries.base.BaseQuery;
+import com.solveast.rreps.model.queries.family.Family;
 import com.solveast.rreps.model.queries.family.FamilyQuery;
+import com.solveast.rreps.model.queries.family.FamilyUtils;
+import com.solveast.rreps.model.queries.family.Person;
 import com.solveast.rreps.model.queries.three.Query3;
 import com.solveast.rreps.model.queries.three.Report3;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +51,16 @@ public class RThreeService {
             }
         });
 
+        List<BaseQuery> familyBaseQuery = familyDao.getFamilyBaseQuery();
+        List<Person> persons = new ArrayList<>();
+        for (Query3 item : query)
+            persons.add(item.toPerson());
+
+        List<Family> families = FamilyUtils.getFamilies(persons, familyBaseQuery);
+
         data.put("report", report);
+        data.put("families", families);
+        data.put("rawData", query);
         data.put("title", title);
         return data;
     }
