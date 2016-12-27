@@ -71,7 +71,16 @@ public class ReportTwoDao {
         namedParameters.put("from", DateUtils.toTimestamp(from));
         namedParameters.put("to", DateUtils.toTimestamp(to));
 
-        String sql = "SELECT cl.client_id, cl.un_relationship_cd, cl.sex_cd, cl.birth_date, cl.register_time" +
+        //Select for register_time with unhcr_date fix
+        String sql = "SELECT cl.client_id, cl.un_relationship_cd, cl.sex_cd, cl.birth_date, cl.register_time, rf.unhcr_date" +
+                " FROM clients.t_client AS cl" +
+                " LEFT JOIN clients.t_registration_form AS rf ON cl.client_id = rf.client_id" +
+                " LEFT JOIN clients.t_registration_state AS rs ON cl.client_id = rs.client_id" + //fix deleted
+                " WHERE " +
+                " (rs.file_status_id > 0 OR rs.file_status_id IS NULL) AND" + //fix deleted
+                " ((cl.register_time BETWEEN :from AND :to) AND (rf.unhcr_date IS NULL OR rf.unhcr_date BETWEEN :from AND :to))";
+
+        String sqlTmp = "SELECT cl.client_id, cl.un_relationship_cd, cl.sex_cd, cl.birth_date, cl.register_time" +
                 " FROM clients.t_client AS cl" +
                 " WHERE (cl.register_time BETWEEN :from AND :to)";
 
@@ -82,6 +91,7 @@ public class ReportTwoDao {
                         Query22 item = new Query22();
                         item.setClientId(rs.getLong("client_id"));
                         item.setRegisterTime(rs.getTimestamp("register_time"));
+                        item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
                         item.setBirthDate(rs.getTimestamp("birth_date"));
                         item.setSexCd(rs.getString("sex_cd"));
                         item.setUnRelationshipCd(rs.getString("un_relationship_cd"));
@@ -98,7 +108,17 @@ public class ReportTwoDao {
         namedParameters.put("from", DateUtils.toTimestamp(from));
         namedParameters.put("to", DateUtils.toTimestamp(to));
 
+        //Select for fr.unhcr_date
         String sql = "SELECT " +
+                " fr.client_id, cl.sex_cd, cl.un_relationship_cd, cl.birth_date, fr.unhcr_date, fr.register_time" +
+                " FROM clients.t_registration_form AS fr" +
+                " LEFT JOIN clients.t_client AS cl ON cl.client_id = fr.client_id" +
+                " LEFT JOIN clients.t_registration_state AS rs ON cl.client_id = rs.client_id" + //fix deleted
+                " WHERE " +
+                " (rs.file_status_id > 0 OR rs.file_status_id IS NULL) AND" + //fix deleted
+                " (fr.unhcr_date BETWEEN :from AND :to) ";
+
+        String sqlTmp = "SELECT " +
                 " fr.client_id, cl.sex_cd, cl.un_relationship_cd, cl.birth_date, fr.unhcr_date, fr.register_time" +
                 " FROM clients.t_registration_form AS fr" +
                 " LEFT JOIN clients.t_client AS cl ON cl.client_id = fr.client_id" +

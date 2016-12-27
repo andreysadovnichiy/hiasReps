@@ -148,6 +148,12 @@ public class RFourBuilder extends AbstractXlsxView {
                 date = Date.from(item.getRegisterTime().atZone(ZoneId.systemDefault()).toInstant());
                 cell.setCellValue(date);
             }
+            if (item.getUnhcrDate() != null) {
+                cell = row.createCell(initCell + 4);
+                cell.setCellStyle(templStyle4);
+                date = Date.from(item.getUnhcrDate().atZone(ZoneId.systemDefault()).toInstant());
+                cell.setCellValue(date);
+            }
 
             i++;
         }
@@ -155,7 +161,7 @@ public class RFourBuilder extends AbstractXlsxView {
 
     private void fillQuery23Table(Sheet sheet, List<Query23> rawData23) {
         int initRow = 16;
-        int initCell = 25;
+        int initCell = 26;
 
         CellStyle templStyle1 = sheet.getRow(initRow).getCell(initCell).getCellStyle();
         CellStyle templStyle2 = sheet.getRow(initRow).getCell(initCell + 1).getCellStyle();

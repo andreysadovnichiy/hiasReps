@@ -1,5 +1,6 @@
 package com.solveast.rreps.model.queries.two;
 
+import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.queries.family.Person;
 
 import java.sql.Timestamp;
@@ -14,6 +15,7 @@ public class Query22 {
     private LocalDateTime birthDate;
     private String unRelationshipCd;
     private LocalDateTime registerTime;
+    private LocalDateTime unhcrDate;
 
     public Long getClientId() {
         return clientId;
@@ -30,6 +32,18 @@ public class Query22 {
     public void setRegisterTime(Timestamp registerTime) {
         if (registerTime != null)
             this.registerTime = registerTime.toLocalDateTime();
+    }
+
+    public LocalDateTime getUnhcrDate() {
+        return unhcrDate;
+    }
+
+    public void setUnhcrDate(LocalDateTime unhcrDate) {
+        this.unhcrDate = unhcrDate;
+    }
+
+    public void setUnhcrDate(Timestamp unhcr_date) {
+        this.unhcrDate = DateUtils.toLocalDateTime(unhcr_date);
     }
 
     public String getSexCd() {
@@ -80,7 +94,9 @@ public class Query22 {
                 "clientId=" + clientId +
                 ", sexCd='" + sexCd + '\'' +
                 ", birthDate=" + birthDate +
+                ", unRelationshipCd='" + unRelationshipCd + '\'' +
                 ", registerTime=" + registerTime +
+                ", unhcrDate=" + unhcrDate +
                 '}';
     }
 }
