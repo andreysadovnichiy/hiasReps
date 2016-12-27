@@ -36,6 +36,9 @@ public class RThreeService {
         List<Report3> report = new ArrayList<>();
 
         for (Query3 item : query) {
+            if (item.getFileStatusId() == null)
+                continue;
+
             Report3 rep = item.toReport3();
             for (FamilyQuery familyItem : family) {
                 if ((long) item.getClientId() == (long) familyItem.getApplicantId())
