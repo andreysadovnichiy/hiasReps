@@ -1,5 +1,8 @@
 package com.solveast.rreps.model.queries.seven;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Андрей on 22.12.2016.
  */
@@ -29,12 +32,20 @@ public class Report7 {
     private int statusClosedPosFin;
     private int statusClosedExhausted;
 
+    private List<Long> clientIds = new ArrayList<>();
+
     public void set(Query7 item) {
+        boolean isClentFirstTimeToProcess = !clientIds.contains(item.getClientId());
+        if (isClentFirstTimeToProcess)
+            clientIds.add(item.getClientId());
+
         setIso3166_3(item.getIso3166_3());
-        if ("m".equals(item.getSexCd())) {
-            activeM = activeM + 1;
-        } else if ("f".equals(item.getSexCd())) {
-            activeF = activeF + 1;
+
+        if (isClentFirstTimeToProcess) {
+            if ("m".equals(item.getSexCd()))
+                activeM = activeM + 1;
+            else if ("f".equals(item.getSexCd()))
+                activeF = activeF + 1;
         }
 
         switch (item.getMsRejectionCd()) {
@@ -137,6 +148,7 @@ public class Report7 {
     public int getActiveF() {
         return activeF;
     }
+
     public void setActiveF(int activeF) {
         this.activeF = activeF;
     }

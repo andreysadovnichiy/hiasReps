@@ -227,7 +227,7 @@ public class RSevenBuilder extends AbstractXlsxView {
         rowShift = 3;
         i = 0;
         Date date;
-        CellStyle cellDateStyle = sheet.getRow(3).getCell(33).getCellStyle();
+        CellStyle cellDateStyle = sheet.getRow(3).getCell(35).getCellStyle();
         for (Query7 item : rawData) {
             line = rowShift + i;
             row = sheet.getRow(line);
@@ -243,37 +243,49 @@ public class RSevenBuilder extends AbstractXlsxView {
 
             cell = row.createCell(31);
             cell.setCellStyle(cellStyle);
-            if (item.getCourtCaseStateId() > 0) {
-                cell.setCellValue(item.getCourtCaseStateId());
+            if (item.getCourtCaseLawsuitId() > 0) {
+                cell.setCellValue(item.getCourtCaseLawsuitId());
             }
 
             cell = row.createCell(32);
             cell.setCellStyle(cellStyle);
-            cell.setCellValue(item.getCourtCaseStateName());
+            if (item.getCourtCaseId() > 0) {
+                cell.setCellValue(item.getCourtCaseId());
+            }
 
             cell = row.createCell(33);
+            cell.setCellStyle(cellStyle);
+            if (item.getCourtCaseStateId() > 0) {
+                cell.setCellValue(item.getCourtCaseStateId());
+            }
+
+            cell = row.createCell(34);
+            cell.setCellStyle(cellStyle);
+            cell.setCellValue(item.getCourtCaseStateName());
+
+            cell = row.createCell(35);
             cell.setCellStyle(cellDateStyle);
             if (item.getLadgetDate() != null) {
                 date = Date.from(item.getLadgetDate().atZone(ZoneId.systemDefault()).toInstant());
                 cell.setCellValue(date);
             }
 
-            cell = row.createCell(34);
+            cell = row.createCell(36);
             cell.setCellStyle(cellDateStyle);
             if (item.getDecisionDate() != null) {
                 date = Date.from(item.getDecisionDate().atZone(ZoneId.systemDefault()).toInstant());
                 cell.setCellValue(date);
             }
 
-            cell = row.createCell(35);
+            cell = row.createCell(37);
             cell.setCellStyle(cellStyle);
             cell.setCellValue(item.getMsRejectionCd());
 
-            cell = row.createCell(36);
+            cell = row.createCell(38);
             cell.setCellStyle(cellStyle);
             cell.setCellValue(item.getIso3166_3());
 
-            cell = row.createCell(37);
+            cell = row.createCell(39);
             cell.setCellStyle(cellStyle);
             cell.setCellValue(item.getSexCd());
 

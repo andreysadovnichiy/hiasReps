@@ -10,9 +10,11 @@ import java.time.LocalDateTime;
  */
 public class Query7 {
     private Long clientId;
+    private Long courtCaseId;
+    private Long courtCaseLawsuitId;
     private String iso3166_3;
-    private String sexCd;
 
+    private String sexCd;
     private LocalDateTime ladgetDate;
     private LocalDateTime decisionDate;
     private String msRejectionCd;
@@ -27,6 +29,22 @@ public class Query7 {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public Long getCourtCaseId() {
+        return courtCaseId;
+    }
+
+    public void setCourtCaseId(Long courtCaseId) {
+        this.courtCaseId = courtCaseId;
+    }
+
+    public Long getCourtCaseLawsuitId() {
+        return courtCaseLawsuitId;
+    }
+
+    public void setCourtCaseLawsuitId(Long courtCaseLawsuitId) {
+        this.courtCaseLawsuitId = courtCaseLawsuitId;
     }
 
     public String getIso3166_3() {
