@@ -32,7 +32,7 @@ public class ReportFiveDao {
         namedParameters.put("from", DateUtils.toTimestamp(from));
         namedParameters.put("to", DateUtils.toTimestamp(to));
 
-        String sql = "SELECT " +
+        String sqlOld = "SELECT " +
                 " cl.client_id, cl.applicant_id, cl.iso3166_3, cl.sex_cd, cl.birth_date,  " +
                 " ta.real_time_start, ta.real_time_stop, ta.scheduled_time_start, ta.scheduled_time_stop" +
                 " FROM tasks.t_action AS ta" +
@@ -40,13 +40,21 @@ public class ReportFiveDao {
                 " LEFT JOIN clients.t_client AS cl ON tc.client_id = cl.client_id" +
                 " LEFT JOIN clients.t_registration_state AS rs ON cl.client_id = rs.client_id " + //--fix deleted
                 " WHERE " +
-//                " (rs.file_status_id > 0) AND" + //--fix deleted
                 " (rs.file_status_id > 0 OR rs.file_status_id IS NULL) AND" + //--fix deleted
                 " (ta.service_id = 10 AND ta.action_state_cd = 'CLS') AND " +
                 " ((ta.real_time_start BETWEEN :from AND :to)" +
                 " OR (ta.real_time_stop BETWEEN :from AND :to)" +
                 " OR (ta.scheduled_time_start BETWEEN :from AND :to)" +
                 " OR (ta.scheduled_time_stop BETWEEN :from AND :to))";
+
+        String sql = "SELECT " +
+                " cl.client_id, cl.applicant_id, cl.iso3166_3, cl.sex_cd, cl.birth_date, rf.unhcr_date  " +
+                " FROM clients.t_registration_form AS rf" +
+                " LEFT JOIN clients.t_client AS cl ON cl.client_id = rf.client_id" +
+                " LEFT JOIN clients.t_registration_state AS rs ON cl.client_id = rs.client_id " + //--fix deleted
+                " WHERE " +
+                " (rs.file_status_id > 0 OR rs.file_status_id IS NULL) AND" + //--fix deleted
+                " (rf.unhcr_date BETWEEN :from AND :to)";
 
         List<Query5> query =
                 (List<Query5>) namedParameterJdbcTemplate.query(sql, namedParameters, new RowMapper<Query5>() {
@@ -58,10 +66,7 @@ public class ReportFiveDao {
                         item.setSexCd(rs.getString("sex_cd"));
                         item.setIso3166_3(rs.getString("iso3166_3"));
                         item.setBirthDate(rs.getTimestamp("birth_date"));
-                        item.setRealTimeStart(rs.getTimestamp("real_time_start"));
-                        item.setRealTimeStop(rs.getTimestamp("real_time_stop"));
-                        item.setScheduledTimeStart(rs.getTimestamp("scheduled_time_start"));
-                        item.setScheduledTimeStop(rs.getTimestamp("scheduled_time_stop"));
+                        item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
                         return item;
                     }
                 });

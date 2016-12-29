@@ -182,37 +182,16 @@ public class RFiveBuilder extends AbstractXlsxView {
             cell.setCellValue(item.getSexCd());
             cell.setCellStyle(cellStyle);
 
-            if (item.getRealTimeStart() != null) {
+            if (item.getUnhcrDate() != null) {
                 cell = row.createCell(25);
                 cell.setCellStyle(cellDateStyle);
-                date = Date.from(item.getRealTimeStart().atZone(ZoneId.systemDefault()).toInstant());
-                cell.setCellValue(date);
-            }
-
-            if (item.getRealTimeStop() != null) {
-                cell = row.createCell(26);
-                cell.setCellStyle(cellDateStyle);
-                date = Date.from(item.getRealTimeStop().atZone(ZoneId.systemDefault()).toInstant());
-                cell.setCellValue(date);
-            }
-
-            if (item.getScheduledTimeStart() != null) {
-                cell = row.createCell(27);
-                cell.setCellStyle(cellDateStyle);
-                date = Date.from(item.getScheduledTimeStart().atZone(ZoneId.systemDefault()).toInstant());
-                cell.setCellValue(date);
-            }
-
-            if (item.getScheduledTimeStop() != null) {
-                cell = row.createCell(28);
-                cell.setCellStyle(cellDateStyle);
-                date = Date.from(item.getScheduledTimeStop().atZone(ZoneId.systemDefault()).toInstant());
+                date = Date.from(item.getUnhcrDate().atZone(ZoneId.systemDefault()).toInstant());
                 cell.setCellValue(date);
             }
 
             i++;
         }
-
+/*
         rowShift = 3;
         i = 0;
         line = rowShift + i;
@@ -224,7 +203,7 @@ public class RFiveBuilder extends AbstractXlsxView {
                 fillPerson(person, line, sheet);
                 line = rowShift + ++i;
             }
-        }
+        }*/
     }
 
     private void fillPerson(Person item, int line, Sheet sheet) {
@@ -236,27 +215,27 @@ public class RFiveBuilder extends AbstractXlsxView {
         CellStyle cellStyle = sheet.getRow(6).getCell(1).getCellStyle();
         CellStyle cellDateStyle = sheet.getRow(3).getCell(21).getCellStyle();
 
-        Cell cell = row.createCell(30);
+        Cell cell = row.createCell(27);
         cell.setCellValue(item.getClientId());
         cell.setCellStyle(cellStyle);
 
-        cell = row.createCell(31);
+        cell = row.createCell(28);
         cell.setCellValue(item.getApplicantId());
         cell.setCellStyle(cellStyle);
 
         Date date;
         if (item.getBirthDate() != null) {
-            cell = row.createCell(32);
+            cell = row.createCell(29);
             cell.setCellStyle(cellDateStyle);
             date = Date.from(item.getBirthDate().atZone(ZoneId.systemDefault()).toInstant());
             cell.setCellValue(date);
         }
 
-        cell = row.createCell(33);
+        cell = row.createCell(30);
         cell.setCellValue(DateUtils.getAge(item.getBirthDate()));
         cell.setCellStyle(cellStyle);
 
-        cell = row.createCell(34);
+        cell = row.createCell(31);
         cell.setCellValue(item.getSexCd());
         cell.setCellStyle(cellStyle);
     }
