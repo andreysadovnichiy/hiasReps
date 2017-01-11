@@ -120,6 +120,11 @@ jQuery(document).ready(function($){
            else {
                 from = date;
                 updateUrls();
+               //attr('disabled', 'true');
+               //  $('.ahref').removeAttr("href");
+               //$('.ahref').bind('click', function(e){
+               //        e.preventDefault();
+               //})
            }
         });
 

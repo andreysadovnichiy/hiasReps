@@ -26,8 +26,10 @@ public class ROneService {
     @Autowired
     private FamilyDao familyDao;
 
+    private final String title = "Number of new clients";
+
     public Map<String, Object> getReport(LocalDateTime from, LocalDateTime to) {
-        String title = "Количество новых клиентов, посетивших офис за отчетный период";
+//        String title = "Количество новых клиентов, посетивших офис за отчетный период";
         Map<String, Object> toView = new HashMap<>();
 
         List<Query1> query = reportOneDao.getQuery(from, to);
