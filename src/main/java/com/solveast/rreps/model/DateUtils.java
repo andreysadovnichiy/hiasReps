@@ -8,6 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -86,9 +87,12 @@ public class DateUtils {
         return LocalDateTime.now().getYear();
     }
 
-    public static Integer getAge(LocalDateTime dateTime) {
-        if (dateTime != null)
-            return LocalDateTime.now().getYear() - dateTime.getYear();
+
+    public static Integer getAge(LocalDateTime birthdate) {
+        if (birthdate != null) {
+            Period p = Period.between(birthdate.toLocalDate(), LocalDate.now());
+            return p.getYears();
+        }
         else
             return 999;
     }

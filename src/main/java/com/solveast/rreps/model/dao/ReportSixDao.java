@@ -39,7 +39,8 @@ public class ReportSixDao {
                 " WHERE " +
 //                " (rs.file_status_id > 0) AND" + //--fix deleted
                 " (rs.file_status_id > 0 OR rs.file_status_id IS NULL) AND" + //--fix deleted
-                " (ta.service_id = 139 AND ta.action_state_cd = 'CLS') AND " +
+//                " (ta.service_id = 139 AND ta.action_state_cd = 'CLS') AND " +
+                " (ta.service_id = 139 AND ta.action_result_id IN (2, 5, 10, 19, 20)) AND " +
                 " ((ta.real_time_start BETWEEN :from AND :to)" +
                 " OR (ta.real_time_stop BETWEEN :from AND :to)" +
                 " OR (ta.scheduled_time_start BETWEEN :from AND :to)" +
