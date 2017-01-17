@@ -20,6 +20,7 @@ import java.util.Locale;
  * Created by Андрей on 30.11.2016.
  */
 public class DateUtils {
+    public static LocalDateTime periodEnd;
 
     public static Timestamp toTimestamp(String str_date) {
         try {
@@ -70,7 +71,6 @@ public class DateUtils {
         return null;
     }
 
-
     public static Timestamp toTimestamp(LocalDateTime localDateTime) {
         if (localDateTime == null)
             return null;
@@ -83,17 +83,11 @@ public class DateUtils {
         return timestamp.toLocalDateTime();
     }
 
-    public static Integer getNowYear() {
-        return LocalDateTime.now().getYear();
-    }
-
-
     public static Integer getAge(LocalDateTime birthdate) {
         if (birthdate != null) {
-            Period p = Period.between(birthdate.toLocalDate(), LocalDate.now());
+            Period p = Period.between(birthdate.toLocalDate(), periodEnd == null ? LocalDate.now() : periodEnd.toLocalDate());
             return p.getYears();
-        }
-        else
+        } else
             return 999;
     }
 
@@ -101,14 +95,14 @@ public class DateUtils {
         if (dateTime != null)
             return getAge(dateTime.toLocalDateTime());
         else
-            return 100;
+            return 999;
     }
 
     public static Integer getAge(Person person) {
         if (person != null && person.getBirthDate() != null)
             return getAge(person.getBirthDate());
         else
-            return 100;
+            return 999;
     }
 
     public static String getTitle(String source, LocalDateTime from, LocalDateTime to) {

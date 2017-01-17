@@ -33,6 +33,7 @@ public class XlsViewController {
     public ModelAndView xlsReportOne(@RequestParam("from") String from,
                                      @RequestParam("to") String to) {
 
+        DateUtils.periodEnd = DateUtils.toLocalDateTime(to);
         Map<String, Object> data = rOneService.getReport(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewROne", "model", data);
@@ -42,6 +43,7 @@ public class XlsViewController {
     public ModelAndView xlsReportThree(@RequestParam("from") String from,
                                        @RequestParam("to") String to) {
 
+        DateUtils.periodEnd = DateUtils.toLocalDateTime(to);
         Map<String, Object> data = rTreeService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewReportThree", "model", data);
@@ -51,6 +53,7 @@ public class XlsViewController {
     public ModelAndView xlsReportFour(@RequestParam("from") String from,
                                       @RequestParam("to") String to) {
 
+        DateUtils.periodEnd = DateUtils.toLocalDateTime(to);
         Map<String, Object> data = reportTwoService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewRFour", "model", data);
@@ -60,6 +63,7 @@ public class XlsViewController {
     public ModelAndView xlsReportFive(@RequestParam("from") String from,
                                       @RequestParam("to") String to) {
 
+        DateUtils.periodEnd = DateUtils.toLocalDateTime(to);
         Map<String, Object> data = rFiveService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewRFive", "model", data);
@@ -69,6 +73,7 @@ public class XlsViewController {
     public ModelAndView xlsReportSix(@RequestParam("from") String from,
                                      @RequestParam("to") String to) {
 
+        DateUtils.periodEnd = DateUtils.toLocalDateTime(to);
         Map<String, Object> data = rSixService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewRSix", "model", data);
@@ -78,6 +83,7 @@ public class XlsViewController {
     public ModelAndView xlsReportSeven(@RequestParam("from") String from,
                                      @RequestParam("to") String to) {
 
+        DateUtils.periodEnd = DateUtils.toLocalDateTime(to);
         Map<String, Object> data = rSevenService.getData(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
 
         return new ModelAndView("excelViewRSeven", "model", data);

@@ -1,7 +1,6 @@
 package com.solveast.rreps.model.dao;
 
 import com.solveast.rreps.model.DateUtils;
-import com.solveast.rreps.model.queries.five.Query5;
 import com.solveast.rreps.model.queries.six.Query6;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
