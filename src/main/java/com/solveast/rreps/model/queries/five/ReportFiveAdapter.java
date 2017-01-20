@@ -57,6 +57,7 @@ public class ReportFiveAdapter {
 
         report.setIso3166_3(iso3166_3);
         report.incAge(person);
+        report.setUAC(person);
 
         totalClientsWithFamilyNumber++;
         map.put(iso3166_3, report);

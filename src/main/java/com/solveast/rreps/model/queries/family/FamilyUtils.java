@@ -2,9 +2,7 @@ package com.solveast.rreps.model.queries.family;
 
 import com.solveast.rreps.model.queries.base.BaseQuery;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Андрей on 12.12.2016.
@@ -24,5 +22,16 @@ public class FamilyUtils {
             families.add(new Family(person, familyMembers));
         }
         return families;
+    }
+
+    public static Set<Person> cleanNotAplicant(Set<Person> personApplicant) {
+        Collection<Person> toDelete = new HashSet<>();
+
+        for (Person person : personApplicant)
+            if (person.getApplicant() == false)
+                toDelete.add(person);
+
+        personApplicant.removeAll(toDelete);
+        return personApplicant;
     }
 }

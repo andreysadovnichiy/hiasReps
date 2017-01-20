@@ -197,6 +197,15 @@ public class Report5 {
         this.cases = cases;
     }
 
+    public void setUAC(Person person) {
+        if(person != null && person.getAge() < 18 && person.getApplicant()){
+            if("m".equals(person.getSexCd()))
+                incMUAC();
+            else if("f".equals(person.getSexCd()))
+                incFUAC();
+        }
+    }
+
     @Override
     public String toString() {
         return "Report5{" +

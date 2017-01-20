@@ -41,6 +41,7 @@ public class RFiveService {
             personApplicant.add(item.toPerson());
         }
 
+        personApplicant = FamilyUtils.cleanNotAplicant(personApplicant);
         List<Family> families = FamilyUtils.getFamilies(personApplicant, familyQuery);
 
         for (Family item : families) {
