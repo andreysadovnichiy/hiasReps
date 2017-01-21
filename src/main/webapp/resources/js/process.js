@@ -144,7 +144,7 @@ jQuery(document).ready(function($){
                 updateUrls();
            }
            else {
-                alert('Error on date range');
+                alert('Error on date From field!');
                 $("#fromDate").val(dateToString(save));
            }
         });
@@ -159,7 +159,7 @@ jQuery(document).ready(function($){
                 updateUrls();
            }
            else {
-                alert('Error on date range');
+                alert('Error on date To field!');
                 $("#toDate").val(dateToString(save));
            }
         });
