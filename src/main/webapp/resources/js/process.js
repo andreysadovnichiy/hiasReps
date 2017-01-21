@@ -1,6 +1,7 @@
 jQuery(document).ready(function($){
         var to;
         var from;
+        var save;
 
         var firstCommitFrom;
         var firstCommitTo;
@@ -35,23 +36,35 @@ jQuery(document).ready(function($){
                 now.setDate(31);
                 to = new Date(now.setMonth(11));
             }
-            $("#fromDate").mask("99.99.99", {placeholder: "дд.мм.гг" });
-            $("#toDate").mask("99.99.99", {placeholder: "дд.мм.гг" });
+            $("#fromDate").mask("99.99.99", {placeholder: "dd.mm.yy" });
+            $("#toDate").mask("99.99.99", {placeholder: "dd.mm.yy" });
             $("#fromDate").val(dateToString(from));
             $("#toDate").val(dateToString(to));
         }
 
         function dateToString(date) {
-            return date.getDate()+'.'+(date.getMonth()+1)+'.'+(date.getFullYear()-2000);
+            str = date.getDate()+'.'+(date.getMonth()+1)+'.'+(date.getFullYear()-2000);
+            return str;
         }
 
         function stringToDate(str) {
            now = new Date();
            var nowYear = now.getFullYear();
 
-           dayStr = str[0]+str[1];
-           monthStr = str[3]+str[4];
-           yearStr = str[6]+str[7];
+           var pattern = new RegExp("^([0-9]{1,2}\\.){2}[0-9]{1,2}$");
+           var isOk = pattern.test(str);
+           if(isOk == false)
+                return null;
+
+           afterDayPos = str.indexOf(".");
+           dayStr = str.substring(0,afterDayPos);
+           str = str.substring(afterDayPos+1);
+
+           afterMonthPos = str.indexOf(".");
+           monthStr = str.substring(0,afterMonthPos);
+           str = str.substring(afterMonthPos+1);
+
+           yearStr = str;
 
            var day = parseInt(dayStr);
            var month = parseInt(monthStr)-1;
@@ -113,31 +126,41 @@ jQuery(document).ready(function($){
             $("#refQuery7").attr("href", q7Link);
         }
 
-        $('#fromDate').focusout(function() {
-           date = stringToDate($('#fromDate').val());
-           if(date == null)
-                $('#fromDate').focus();
-           else {
-                from = date;
+        function isFillDateFieldsOk(fromDate, toDate) {
+            if(fromDate == null || toDate == null)
+                return false;
+            if(fromDate.getTime() < toDate.getTime())
+                return true;
+            return false;
+        }
+
+        $('#fromDate').blur(function() {
+           save = from;
+
+           fromDate = stringToDate($('#fromDate').val());
+           toDate = stringToDate($('#toDate').val());
+           if(isFillDateFieldsOk(fromDate, toDate) == true){
+                from = fromDate;
                 updateUrls();
-               //attr('disabled', 'true');
-               //  $('.ahref').removeAttr("href");
-               //$('.ahref').bind('click', function(e){
-               //        e.preventDefault();
-               //})
+           }
+           else {
+                alert('Error on date range');
+                $("#fromDate").val(dateToString(save));
            }
         });
 
-        $('#toDate').focusout(function() {
-           dateTo = stringToDate($('#toDate').val());
-           dateFrom = stringToDate($('#fromDate').val());
-           if(dateTo == null)
-                $('#toDate').focus();
-           else if(dateFrom != null && dateTo.getTime() < dateFrom.getTime())
-                $('#toDate').focus();
-           else {
-                to = dateTo;
+        $('#toDate').blur(function() {
+           save = to;
+
+           fromDate = stringToDate($('#fromDate').val());
+           toDate = stringToDate($('#toDate').val());
+           if(isFillDateFieldsOk(fromDate, toDate) == true){
+                to = toDate;
                 updateUrls();
+           }
+           else {
+                alert('Error on date range');
+                $("#toDate").val(dateToString(save));
            }
         });
 });
