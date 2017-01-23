@@ -49,7 +49,7 @@ public class Report5 {
         fUAC = fUAC + 1;
     }
 
-    public int getTotalByIso(){
+    public int getTotalByIso() {
         return getInds();
     }
 
@@ -197,13 +197,18 @@ public class Report5 {
         this.cases = cases;
     }
 
-    public void setUAC(Person person) {
-        if(person != null && person.getAge() < 18 && person.getApplicant()){
-            if("m".equals(person.getSexCd()))
+    public boolean setUAC(Person person) {
+        if (person != null && person.getAge() < 18 && person.getApplicant()) {
+            if ("m".equals(person.getSexCd())) {
                 incMUAC();
-            else if("f".equals(person.getSexCd()))
+                return true;
+            }
+            else if ("f".equals(person.getSexCd())) {
                 incFUAC();
+                return true;
+            }
         }
+        return false;
     }
 
     @Override
