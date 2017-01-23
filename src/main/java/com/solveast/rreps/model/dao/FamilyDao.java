@@ -68,6 +68,7 @@ public class FamilyDao {
                         item.setRegisterTime(rs.getTimestamp("unhcr_date"));
                         item.setSexCd(rs.getString("sex_cd"));
                         item.setBirthDate(rs.getTimestamp("birth_date"));
+                        item.setUnhcrDate(rs.getTimestamp("unhcr_date"));
                         item.setUnRelationshipCd(rs.getString("un_relationship_cd"));
                         return item;
                     }

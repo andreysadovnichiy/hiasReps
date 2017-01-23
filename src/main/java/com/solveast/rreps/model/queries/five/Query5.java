@@ -25,6 +25,7 @@ public class Query5 extends BaseQuery {
         person.setClientId(getClientId());
         person.setApplicantId(getApplicantId());
         person.setBirthDate(getBirthDate());
+        person.setUnhcrDate(getUnhcrDate());
         person.setIso3166_3(getIso3166_3());
         person.setSexCd(getSexCd());
         return person;

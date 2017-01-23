@@ -13,9 +13,9 @@ public class FamilyUtils {
 
         for (Person person : clients) {
             List<Person> familyMembers = new ArrayList<>();
-            for (BaseQuery familyQuery : familyQueries) {
-                if ((long) familyQuery.getApplicantId() == (long) person.getClientId()) {
-                    familyMembers.add(familyQuery.toPerson());
+            for (BaseQuery item : familyQueries) {
+                if ((long) item.getApplicantId() == (long) person.getClientId()) {
+                    familyMembers.add(item.toPerson());
                 }
             }
 
@@ -24,7 +24,7 @@ public class FamilyUtils {
         return families;
     }
 
-    public static Set<Person> cleanNotAplicant(Set<Person> personApplicant) {
+    public static Set<Person> cleanNotApplicant(Set<Person> personApplicant) {
         Collection<Person> toDelete = new HashSet<>();
 
         for (Person person : personApplicant)

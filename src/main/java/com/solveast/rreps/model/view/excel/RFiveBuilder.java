@@ -148,6 +148,7 @@ public class RFiveBuilder extends AbstractXlsxView {
         rowShift = 3;
         i = 0;
         Date date;
+/*
         for (Query5 item : rawData) {
             line = rowShift + i;
             row = sheet.getRow(line);
@@ -191,19 +192,21 @@ public class RFiveBuilder extends AbstractXlsxView {
 
             i++;
         }
-/*
-        rowShift = 3;
-        i = 0;
-        line = rowShift + i;
+*/
         for (Family item : rawDataFamilies) {
+            line = rowShift + i;
             fillPerson(item.getClient(), line, sheet);
-            line = rowShift + ++i;
+            i++;
 
             for (Person person : item.getFamily()) {
+                line = rowShift + i;
+                person.setUnhcrDate(item.getClient().getUnhcrDate());
+                person.setIso3166_3(item.getClient().getIso3166_3());
                 fillPerson(person, line, sheet);
-                line = rowShift + ++i;
+                i++;
             }
-        }*/
+        }
+
     }
 
     private void fillPerson(Person item, int line, Sheet sheet) {
@@ -215,29 +218,40 @@ public class RFiveBuilder extends AbstractXlsxView {
         CellStyle cellStyle = sheet.getRow(6).getCell(1).getCellStyle();
         CellStyle cellDateStyle = sheet.getRow(3).getCell(21).getCellStyle();
 
-        Cell cell = row.createCell(27);
+        Cell cell = row.createCell(19);
         cell.setCellValue(item.getClientId());
         cell.setCellStyle(cellStyle);
 
-        cell = row.createCell(28);
+        cell = row.createCell(20);
         cell.setCellValue(item.getApplicantId());
         cell.setCellStyle(cellStyle);
 
         Date date;
         if (item.getBirthDate() != null) {
-            cell = row.createCell(29);
+            cell = row.createCell(21);
             cell.setCellStyle(cellDateStyle);
             date = Date.from(item.getBirthDate().atZone(ZoneId.systemDefault()).toInstant());
             cell.setCellValue(date);
         }
 
-        cell = row.createCell(30);
+        cell = row.createCell(22);
         cell.setCellValue(DateUtils.getAge(item.getBirthDate()));
         cell.setCellStyle(cellStyle);
 
-        cell = row.createCell(31);
+        cell = row.createCell(23);
+        cell.setCellValue(item.getIso3166_3());
+        cell.setCellStyle(cellStyle);
+
+        cell = row.createCell(24);
         cell.setCellValue(item.getSexCd());
         cell.setCellStyle(cellStyle);
+
+        if (item.getUnhcrDate() != null) {
+            cell = row.createCell(25);
+            cell.setCellStyle(cellDateStyle);
+            date = Date.from(item.getUnhcrDate().atZone(ZoneId.systemDefault()).toInstant());
+            cell.setCellValue(date);
+        }
     }
 
     private void fillTitle(String title, Sheet sheet) {

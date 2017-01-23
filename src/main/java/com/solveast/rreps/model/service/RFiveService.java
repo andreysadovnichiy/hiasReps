@@ -5,16 +5,13 @@ import com.solveast.rreps.model.dao.FamilyDao;
 import com.solveast.rreps.model.dao.ReportFiveDao;
 import com.solveast.rreps.model.queries.base.BaseQuery;
 import com.solveast.rreps.model.queries.family.Family;
-import com.solveast.rreps.model.queries.family.FamilyQuery;
 import com.solveast.rreps.model.queries.family.FamilyUtils;
 import com.solveast.rreps.model.queries.family.Person;
 import com.solveast.rreps.model.queries.five.Query5;
-import com.solveast.rreps.model.queries.five.Report5;
 import com.solveast.rreps.model.queries.five.ReportFiveAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -41,7 +38,7 @@ public class RFiveService {
             personApplicant.add(item.toPerson());
         }
 
-        personApplicant = FamilyUtils.cleanNotAplicant(personApplicant);
+        personApplicant = FamilyUtils.cleanNotApplicant(personApplicant);
         List<Family> families = FamilyUtils.getFamilies(personApplicant, familyQuery);
 
         for (Family item : families) {

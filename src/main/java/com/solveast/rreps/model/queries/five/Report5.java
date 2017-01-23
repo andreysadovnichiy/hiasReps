@@ -199,14 +199,11 @@ public class Report5 {
 
     public boolean setUAC(Person person) {
         if (person != null && person.getAge() < 18 && person.getApplicant()) {
-            if ("m".equals(person.getSexCd())) {
+            if ("m".equals(person.getSexCd()))
                 incMUAC();
-                return true;
-            }
-            else if ("f".equals(person.getSexCd())) {
+            else if ("f".equals(person.getSexCd()))
                 incFUAC();
-                return true;
-            }
+            return true;
         }
         return false;
     }
