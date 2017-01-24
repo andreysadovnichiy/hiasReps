@@ -99,17 +99,26 @@ jQuery(document).ready(function ($) {
         updateUrls();
     }
 
+
     function updateUrls() {
         refParams = "?from=" + from.getDate() + "+"
             + (from.getMonth() + 1) + "+" + from.getFullYear() + "&to="
             + to.getDate() + "+" + (to.getMonth() + 1) + "+" + to.getFullYear();
 
-        q1Ref = "/reports/xls/report-1.xls";
-        q3Ref = "/reports/xls/report-3.xls";
-        q4Ref = "/reports/xls/report-2-4.xls";
-        q5Ref = "/reports/xls/report-5.xls";
-        q6Ref = "/reports/xls/report-6.xls";
-        q7Ref = "/reports/xls/report-7.xls";
+//        var hostname = location.hostname;
+//        var port = location.port;
+//        console.log("====");
+//        console.log(hostname);
+//        console.log(port);
+
+        var urlPref = $("#appname").attr("href");
+
+        q1Ref = urlPref + "reports/xls/report-1.xls";
+        q3Ref = urlPref + "reports/xls/report-3.xls";
+        q4Ref = urlPref + "reports/xls/report-2-4.xls";
+        q5Ref = urlPref + "reports/xls/report-5.xls";
+        q6Ref = urlPref + "reports/xls/report-6.xls";
+        q7Ref = urlPref + "reports/xls/report-7.xls";
 
         q1Link = q1Ref + refParams;
         q3Link = q3Ref + refParams;

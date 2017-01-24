@@ -8,7 +8,7 @@
     <artifactId>rreps</artifactId>
     <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
-    <name>Spring MVC Application</name>
+    <name>Refugee reporting subsystem</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java-version>1.8</java-version>
@@ -255,7 +255,7 @@
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.1.1</version>
                 <configuration>
-                    <warName>rreps-1.0-SNAPSHOT</warName>
+                    <warName>refugee-report</warName>
                 </configuration>
             </plugin>
             <plugin>
