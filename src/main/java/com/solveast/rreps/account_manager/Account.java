@@ -1,9 +1,5 @@
 package com.solveast.rreps.account_manager;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
-import java.time.Instant;
 
 public class Account implements java.io.Serializable {
 	private Long id;

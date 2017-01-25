@@ -9,7 +9,7 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import com.solveast.rreps.Application;
 
 @Configuration
-@PropertySource("classpath:persistence.properties")
+//@PropertySource("classpath:persistence.properties")
 @PropertySource("classpath:jdbc.properties")
 @PropertySource("classpath:excel-views.properties")
 @PropertySource("classpath:application.properties")
