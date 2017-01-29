@@ -19,6 +19,9 @@ public class ProjectPasswordEncoder implements PasswordEncoder {
 
     @Override
     public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        if (rawPassword == null || encodedPassword == null) {
+            return false;
+        }
         String encode = encode(rawPassword);
         if (encode.equals(encodedPassword))
             return true;

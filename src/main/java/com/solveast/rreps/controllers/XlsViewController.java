@@ -1,5 +1,6 @@
 package com.solveast.rreps.controllers;
 
+import com.solveast.rreps.account_manager.Account;
 import com.solveast.rreps.model.DateUtils;
 import com.solveast.rreps.model.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,8 @@ public class XlsViewController {
 
     @RequestMapping("/reports/xls/report-1.xls")
     public ModelAndView xlsReportOne(@RequestParam("from") String from,
-                                     @RequestParam("to") String to) {
+                                     @RequestParam("to") String to,
+                                     Account accountTestModelSpringInject) {
 
         DateUtils.periodEnd = DateUtils.toLocalDateTime(to);
         Map<String, Object> data = rOneService.getReport(DateUtils.toLocalDateTime(from), DateUtils.toLocalDateTime(to));
